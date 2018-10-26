@@ -24,6 +24,8 @@ Drugi sposób jest taki że sam tworzysz katalog do którego przechodzisz i pisz
 
 11.poleceni # git push twoja_nazwa_zdalnego_repo nazwa_gałęzi - wypycha informacje z twojego lokalnego repo na serwer zdalnego repo.
 
+12.aby było wiadomo kto zrobił comita piszesz # git config --global user.name "Mona Lisa" -global stworzy specjalny plik w katalogu domowym .gitcofig , bez global nasza informacja zapisze się w ./git/config . można też dodać mejla 
+
 // zapisujemy pliki w wybtanym folderze ,
 // git add "nazwa_pliku" ,
 // git commit -m "nazwa_gałęzi_master"
