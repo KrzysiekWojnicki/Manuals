@@ -1,0 +1,55 @@
+Składnia: make [opcje] [obiekt] ...
+Opcje:
+  -b, -m                      Ignorowane dla kompatybilności.
+  -B, --always-make           Bezwarunkowe utworzenie wszystkich obiektów.
+  -C KATALOG, --directory=KATALOG
+                              Przejście do KATALOGu przed robieniem
+                              czegokolwiek.
+  -d                          Wyświetla dużo informacji diagnostycznych.
+  --debug[=FLAGI]             Wyświetla różne rodzaje informacji
+                              diagnostycznych.
+  -e, --environment-overrides
+                              Zmienne środowiska przykrywają makefile.
+  --eval=ŁAŃCUCH              Wyznacza ŁAŃCUCH jako instrukcję pliku makefile.
+  -f PLIK, --file=PLIK, --makefile=PLIK
+                              Czyta PLIK jako makefile.
+  -h, --help                  Wyświetla ten komunikat i kończy działanie.
+  -i, --ignore-errors         Ignoruje błędy poleceń.
+  -I KATALOG, --include-dir=KATALOG
+                              Szuka dołączanych makefile w KATALOGu.
+  -j [N], --jobs[=N]          Dopuszcza N zadań naraz; brak N oznacza brak
+                              ograniczeń.
+  -k, --keep-going            Kontynuuj jeśli nie da się zrobić jakichś
+                              obiektów.
+  -l [N], --load-average[=N], --max-load[=N]
+                              Nie uruchamiaj wielu zadań jeśli load nie jest
+                              poniżej N.
+  -L, --check-symlink-times   Używanie ostatniego mtime między dowiązaniem a celem.
+  -n, --just-print, --dry-run, --recon
+                              Nie wykonuje poleceń; jedynie je wyświetla.
+  -o PLIK, --old-file=PLIK, --assume-old=PLIK
+                              Uznanie PLIKu za bardzo stary i nie tworzenie go
+                              ponownie.
+  -O[SPOSÓB], --output-sync[=SPOSÓB]
+                              Sposób synchronizacji wyjścia zadań równoległych.
+  -p, --print-data-base       Wyświetla wewnętrzną bazę danych make.
+  -q, --question              Nie uruchamia żadnych poleceń; status powrotu
+                              wskazuje aktualność.
+  -r, --no-builtin-rules      Wyłącza wbudowane reguły standardowe.
+  -R, --no-builtin-variables  Wyłącza ustawianie wbudowanych zmiennych.
+  -s, --silent, --quiet       Nie wypisuje poleceń.
+  -S, --no-keep-going, --stop
+                              Wyłącza -k.
+  -t, --touch                 Uaktualnia obiekty zamiast je robić.
+  --trace                     Wypisywanie informacji ze śledzenia.
+  -v, --version               Wyświetla wersję make i kończy działanie.
+  -w, --print-directory       Wyświetla aktualny katalog.
+  --no-print-directory        Wyłącza -w, nawet jeśli było ono włączone
+                              domyślnie.
+  -W PLIK, --what-if=PLIK, --new-file=PLIK, --assume-new=PLIK
+                              Uznaje PLIK za nieskończenie nowy.
+  --warn-undefined-variables  Ostrzega przy odwołaniach do niezdefiniowanych
+                              zmiennych.
+
+Ten program został zbudowany dla x86_64-pc-linux-gnu
+Błędy proszę zgłaszać na adres <bug-make@gnu.org>

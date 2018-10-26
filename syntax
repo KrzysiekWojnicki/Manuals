@@ -1,0 +1,71 @@
+---------------------------------------------------------
+------------------FFMPEG MANUAL--------------------------
+---------------------------------------------------------
+# syntax:
+# ffmpeg -i input.avi -vf"..." output.avi
+
+# filtrów może być kilka:
+# "filter1=setting1=value1:setting2=value2,filter2..."
+
+# "unsharp" - ostrość
+# można dodać wartości ..lx=3:ly=3" - (wysokość,szerokość)wartości domyślne , zwiększanie oczywiście zaostrza.
+# oddatkowo można dodać parametr la -który zwiększa intensywność efektu (domyślnie ..:la=1.0")
+
+# "eq-contrast-.."
+# "eq-brightness-.."
+# "eq-gamma_r=.."
+# "colorbalance=rs=..:bs=..:rh=..:bh=.." (red-shadows,blue-sh.,red-highlights,blue-hig.)
+# oprócz 3 kolorów: r-g-b , są cienie , midtotes , highlights.
+
+# Do tworzenia wizualizacji audio na wejści dajemy plik .mp3 a na wyjści jakiś video
+# wtedy też piszemy -filter_complex 
+
+# "showwaves" może mieć mode=line , mode=cline , size=1280x720
+# "showfreqs" może mieć colors=col1|col2
+# "showcqt"
+# "avectorscope" może mieć rc=..:gc=..:bc=.." -kolory RGB
+#  również rf gf bf - do szybkości zanikania kolorow
+
+# Do wideo :
+# -vf "vectorscope" - wizualizacja kształtu koloru
+
+-----------------------------------------------------------
+
+ffmpeg (konwersja)
+ffprobe (interrogacja)
+ffserver (streaming)
+
+> ffmpeg -i plik.mp3 plik.mp3 # ekstrakcja audio
+
+-vf -video filter
+
+> -i plik1.mow -vf scale=-1:720 plik2_720.mow
+# scale - sklaowanie , -1 -użyj fromatu pliku wyjścia , :720 - docelowy format.
+
+ -r 2 -take frames at 2Hz (every 0.5 sec.) !output musi być .gif
+
+-f concat -i plik.txt -c copy plik_concatenate.mov 
+# KONKATENAJA , w pliku .txt są zapisane : file 'plik1' file 'plik2' , -c -use same audio/video CODECs as source. bitwise copy
+
+słownik:
+KOTENER - is a file format , streams are within containers ,examples: mp4,webm,avi
+
+STRUMIENIE - streams are media components ,video: h 264,mpeg-2,wmv,vps . audio: mp3, acc ,wma . napisy .
+
+CODEC - Strumienie są formowane/przechowywane/enkodowane za pomocą CODEC
+
+T I P S !!!!
+ -loglevel panic -make ffmpeg silent (nie zapisuje loga)
+ -y -always overrite output without asking
+ -n -never overrite output
+
+ $/ ffmpeg -h > ffmpeg.txt
+ $/ ffmpeg -h long ffmpeg_h_long.txt 
+ $/ ffmpeg -h full ffmepg_h_full.txt 
+
+---------------------------------------
+FUNKCJONALNOŚCI
+--------------------------------------
+-i <plik_wejścia> -ss <mm:ss> -t <mm:ss> -c <plik_wyjścia>
+	{flaga -ss to skip , -t czas trwania procesu , -c CODEC}
+

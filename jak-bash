@@ -1,0 +1,412 @@
+SPIS TREŚCI:
+	1.POLECENIA
+	2.UPRAWNIENIA
+	3.HISTORIA POWŁOKI
+	4.ZNAKI SPECJALNE
+	5.MANIPULACJA ŁAŃCUCHAMI I ROZSZERZANIE ZMIENNYCH
+	6.ZAKRES ZNAKÓW
+	7.STRUKTURA KATALOGÓW
+	8.ZMIENNE SYSTEMOWE
+	9.STRUMIENIE
+	10.MYLĄCE PRZEKIEROWANIA
+	11.WYRARZENIA REGULARNE
+	12.BITY ODCZYTU
+	13.ZARZĄDZANIE KONTAMI
+	15.SKRÓTY
+----------------------
+
+1.POLECENIA
+--------
+strace - śledź wywołania systemowe i sygnały
+echo -e - uruchamia formatowanie tj; znaki \n \r itd . Uwaga muszą być w cudzysłowiu np; 'dupa\nupa\n'
+w - info o userach ,i tym co teraz robią
+last - onfo o userach którzy się logowali ,i wylogowywali z systemu .urzywaj z tail i head bo plik jej balszoj
+lastb - to co wyżej ale dla root-a
+du [plik] lub [katalog] - szacuje zużycie miejsca na dysku
+	- B mB - w mega bitach np.
+	-h -human format
+lsblk -wypisuje urządzenia blokowe
+df - info o zużyciu przestrzeni dyskowej systemu pliku 
+	-h human readable form
+parted - pisać z sudo 
+	-l listuje dyski i info o nich
+fdisk - też z sudo
+	-l jak wyżej
+ cat /proc/partitions -  alternatywne sposoby podglądania utrządzeń
+ ls /dev/[s|x|v]d* - alternatywne sposoby podglądania utrządzeń
+nestst - z sudo , statystyki o połączeniach sieciowych
+whoami - nazwa usera
+id - info o user i jego grupie ,albo id root - info o root
+cp [co?] [gdzie?] - copy
+cp -p - zachowuje arybuty domyślne takie jak właściciel i prawa dostępu
+mv [co?] [gdzie?] - move
+rm - remove
+	-rf rekursywnie force wsówa wszystko
+rmdid - remove katalog
+file [plik] - określa typ pliku
+stat [plik] - statystyki pliku
+wc - word count
+grep [co?] [gdzie?] - operator wyłuskiwania
+grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?') przed , czyli samo polecenie grep też na się nie wyświetli
+ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN)
+	-s tworzy dowiązanie symboliczne
+alias e="echo" - tworzy alias dla echo
+alias - pokazuje liste alisasów ; alisa l - pokarze alias do l
+cal - pokazuje kalendarz ,ale tydzień zaczyna się od niedzieli
+ncal - wertylakny ,normalnie od poniedziałku
+sudo !! - wykrzykniki przywołują wcześniejsze polecenie
+reset - resertuje terminal
+fg - for ground , przywraca na pierwszy plan zatrzymane polecenie
+bg - background przesówa proces w tło
+jobs - wyświetla zatrzymane procesy
+kill -Term -przerwanie procesu ,domyślne ustawienie
+	-Cont -wznowienie zatrzymanego procesu ( patrz MAN 7 signal)
+locate - wyszukiwanie po indeksach, jak coś nie zostało zaindeksowane to nie znajdziemy
+diff -q plik1 plki2 - porównuje pliki , q- tylko info że się różnią
+man -k -wyszukuje podręcznik po słowach kluczowych
+whatis - wyszukuje w MAN , np whatis ls --> ls(1)
+pv - (NIEMA TEGO DOMYŚLNIE , TRZEBA ZAINSTALOWAĆ) pasek postępu np; 
+	pv duzy_plik | gzip > duzy_plik.gz - podczas pakowania mamy podgląd co się święci
+stat jakiś_plki - pokazuje statystyki plilu
+touch -t - time stamp zmieniamy czas modyfikacji pliku rrrrmmddggmm
+touch -r - referens podajemy (plik1 plik2) - drugi plik zosatnie dotknięty pierwszym i oba będą miały taką samą date
+batch - kolejkuje pliki , np; 
+	echo gzip jakiś_plki | batch - wykona polecenie gdy obciążenie systemu spadnie ,domyslnie 1.5
+	SPRAWDŹ MAN AT , BATCH 
+whereis - lokalizuje pliki źródłowe i binarke progremu którego szukamy
+type - typ pliku , czy jest wbudowny czy zainstalowany 
+grep [OPCJE] WZORZEC [PLIK...]
+	-v odwrócenie wyszukania
+	-i rozróżnienie wielkości liter
+	-A1 również 1 lina po wyniku jest wyświetlana
+	-B1 jedna przed wynikiem
+	-C1 jedna po i przed 
+grep a$ plik -gdzie ostatnia "a" w stringu
+grep ^F plki - piewsza "F" w stringu
+grep '\bdupa\b' plik - znacznik \b to spacja , czyli szuka słowa "dupa" w stringu
+grep -w dupa plik - tak też szukamy słowa
+	!!!!--- Wszystkie wyrarzenia umieszczamy w cytatach aby nie kolidowały ze spacjalnymi znakami powłoki
+	jak np; $ ---!!!!
+cut - wycina kolumny z plików
+	cut -d: -f1,3 /etc/passwd | tail -2
+	otrzymamy	jan:510
+			marian:511
+		-d ogranicznik (delimiter)
+		-f pola
+	cut -d: -f1 /etc/passwd | column - wyświetli wszystkich lokalnych urzytkowników
+let - ewaluacja zmiennch arytmetycznych np;
+	let x="3 +4" - zmienna x równa się 7
+	let x="0xFF' - zmienna x równa się 255
+	let potrafi sobie przemienić system ósemkowy i szesnastkowy 
+tr - translacja
+	cat plik.txt | tr 'a' 'A' -zamieni a na A
+	cat plik.txt | tr '\n' ' ' -zamieni zanak końca lini na spacje , tekst bedzie w jednej lini
+	tr -s ' ' -zamieni wielokrotne spacja na pojedyńcze
+sort - sortowanie alfabetyczne
+sort -n -sortowanie numeryczne 1,2,3 . a alfabet posortuje 1,100,2,20,..
+uniq - unikaty , jak się powtarza to wyświetka raz
+ubiq -c -wybiera i zlicza wystąpienia np; 1 jan , 1 marian , 3 dupa
+comm - comparing streams (or files) , porównywarka
+	comm file1 file2	| jan		 |
+				|   	marian   |
+				| dupa		 |
+	domyślnie wyświetla 3 koluny 
+	comm -13 - tylko 1 i 3 itd..
+
+od - pokazuje zawartość pliku w kodzie szesnastkowym 
+	-b ósemkowym
+	-c ASCII
+sed - strumieniowy edytor urzywający wyrarzeń regularnych
+	echo level15 | sed 's/5/43' 	wynik level143
+	's/level/dupa/g' - zastąpi level na dupa
+	'x/d' -karzda linia zawierająca x zostanie przesiana
+find - szuka
+	find . -name "*.conf" - szuka w aktualnym folderze po nazwie
+		-type -d -szuka katalogów
+		-newer file42 -nowszych niż plik file42
+	find /data - name "*.odf" -exec cp {} /backup/\; kopiujewybrane pliki do backup
+		polecenie {} -pyta o zgode ok?
+locate - raczej nie istnieje domyślnie w systemie. Wyszukuje po indeksach, jeżeli są niaktulane trzeba zrobić UPDATEDB
+date +%s - czas UNIX-owy w sekundach
+bzip2 - kompresja w bzip
+gzip - kompresja w gzip
+gunzip - dekompresuje gzip
+zcat 
+zmore - oba to podgląd skompresowanych gzip
+bunzip - dekompresja bzip
+bzcat
+bzmore - podgląd gzip
+ln -s cel nazwa_dowiązania - tworzy dowiązanie symboliczne( dowiązanie nazwy)
+	( s -jest nizbędne , bez nigo jest HARD LINK czyli dowiązanie do danych pliku)
+tar cvf archiwum.tar plik1 plik2 ... - tworzy archiwóm z podanych elemetów
+	-c tworzenie archiwum
+	-v tryb wypisywania danych diagnostycznych (podgląd)
+	-vv drugie v to szczegułowe info (rozmir..)
+	-f nazwa pliku (trzeba po tym argumencie podać nazwe , ale jest wyjątek przy sdtout ,istdin wtedy można napisać -f - myśnik)
+tar xvf plik.tar [nazwa pliku składowego]-opcjonalnie 
+	-x tryb rozpakowywania
+	-t tryb wyświetlania zawartości pliku tar
+	-p zachowanie uprawnień plików z archiwum
+zcat plik.tar.gz | tar xvf - (rozpakowywanie ,i rozariwizowanie w potoku)
+	zcat <---> gunzip -dc (to to samo)
+	-d dekompresja
+	-c wysyłanie wyniku na stdout
+tar ztvf plik.tar.gz - spradza zawartość archiwum
+	-z automatyczne uruchaminie gzip
+	-j automatyczne uruchaminie bzip2
+	.tgz <---> .tar.gz
+set -x [plik] - ustawia wykonywanie dla pliku dla usera,grupy,innych
+set +u - domyślnie jeśli zmienna nie istniej to nie pojawi się nic , opcja set +u wyświetli nam wiadomość że zmienna jest unabled . 
+set -u - wraca do stanu domyślnego
+	set +u <--> set +o nounset
+	set -u <--> set -o nounset
+env - wyświetla exportowane zmienne
+env -i - czyści środowisko dla zmiennych
+
+2.UPRAWNIENIA
+-----------
+
+1	nywanie	--x
+2	Zapis	-w-
+3	Zapis i wykonanie	-wx
+4	Odczyt	r--
+5	Odczyt i wykonanie	r-x
+6	Odczyt i zapis	rw-
+7	Odczyt, zapis i wykonanie	rwx
+
+3.HISTORIA POWŁOKI
+----------------
+! +znak - rzywrac komende która zaczyna się od znaku
+! +numer - komenda o numerze
+$HISTFILESIZE- zmienna pokazująca akualny rozmiar biblioteki
+$HISTFILE - pokazuje gdzie znajduje się plik z historią bash
+histsize = 100 - ustawi nam rozmiar histori na 100
+
+
+
+4.ZNAKI SPECJALNE
+---------------
+* - dzika karta , dowolna długość dowolnego znaku
+? - dzika karta , dowolny pojedyńczy zak
+[] - powłoka generuje nazwy z podanych w nawiasach elementów , każdy nawias to jeden element
+	> ls file[58a] [b39] 
+	> file53
+	# wszystkie dzikie karty można mieszać
+	> ls file[!4]*
+	> file1 file2 file3 fileabc
+
+; - rozdziela polecenia w tej samej linie
+& - postawiony na końcu polecenia wrzuca je w bacgroun , można pojerzeć - jobs
+$ - zmiena środowiskowa np; $user $uid
+$? - parametr powłoki w którym przechowywany jest code wyjścia poprzedniej powłoki np; echo $? - jak zwraca 0 to nie ma error
+$#    Stores the number of command-line arguments that 
+      were passed to the shell program.
+      $?    Stores the exit value of the last command that was 
+            executed.
+	    $0    Stores the first word of the entered command (the 
+	          name of the shell program).
+		  $*    Stores all the arguments that were entered on the
+		        command line ($1 $2 ...).
+			"$@"  Stores all the arguments that were entered
+			      on the command line, individually quoted ("$1" "$2" ...).
+			      /command -yes -no /home/username
+			      $# = 3
+			      $* = -yes -no /home/username
+			      $@ = array: {"-yes", "-no", "/home/username"}
+			      $0 = ./command, $1 = -yes etc.
+&& - logiczne AND czyli I
+|| - logiczne or
+# - znak komentarza w powłoce
+\ - znak ucieczki
+
+5.MANIPULACJA ŁAŃCUCHAMI I ROZSZERZANIE ZMIENNYCH
+----------------------------------------------
+${parameter:-defaultValue}	Get default shell variables value
+${parameter:=defaultValue}	Set default shell variables value
+${parameter:?"Error Message"}	Display an error message if parameter is not set
+${#var}	Find the length of the string
+${var%pattern}	Remove from shortest rear (end) pattern
+${var%%pattern}	Remove from longest rear (end) pattern
+${var:num1:num2}	Substring
+${var#pattern}	Remove from shortest front pattern
+${var##pattern}	Remove from longest front pattern
+${var/pattern/string}	Find and replace (only replace first occurrence)
+${var//pattern/string}	Find and replace all occurrences
+
+6.ZAKRES ZNAKÓW
+-------------
+ls file[0-9] - plik z dowolną liczbą od 0 do 9 na końcu
+ls file[a-z] - to samo dla a-z
+$LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A-Z mogą być inne gdyż niektóre języki nie rozróżniają wielkości liter
+
+
+7.STRUKTURA KATALOGÓW
+------------------
+/bin - pliki binarne dla wszystich urzytkowników
+/home/marian/bim - pliki binarne mariana w jego katalogu domowym
+/sbin - pliki binarne do kofiguracji systemu , dostęp tylko dla ruta lub sudoera
+/usr - Drugorzędowa hierarchia dla danych (ang. Unix system resources), dane tylko do odczytu.
+/usr/lib - pliki wspólne ,stateczne , i pomocnicze
+/usr/local - Trzeciorzędowa hierarchia danych lokalnych (ang. local data), specyficzna dla tego hosta. Tu admin może lokalnie instalowć software
+/usr/share - Dane niezależne od architektury, a więc między nimi współdzielone (ang. shared).
+/usr/shared/games - statyczne pliki gier np; play log , high score
+/usr/src/ - Kod źródłowy (ang. source code; np. źródła kernela z jego nagłówkami)
+/usr/include/ - standardowe pliki nagłówkowe (do kompilatora c)
+/lib - biblioteki dla plików binarnych /bin i /sbin , zawiera pliki wspólne
+/opt - opcjonalny software irm trzecich 
+/boot - pliki potrzebne do rozruchu systemu , są tu grub.cfg , grub.conf , kernel
+/etc - pliki konfiguracyjne systemu , urządzeń , sieci , i hasła
+/etc/init.d - pliki stop-start demon
+/etc/skel - "szkielet" który jest kopiowany do nowego pliku home urządzeń ,zazwyczaj zawiera .bashrc
+/etc/X11 - pliki konfiguracyjne grafiki
+/etc/opt - pliki konfiguracyjne dla katalogu opt
+/etc/xml - pliki konfiguracyjne dla xml
+/etc/shadw - zahaszowane hasła , można sobie skopiować i na swoje się wkleić
+/etc/profile - ustawienia profilowe dla powłoki bourne-a
+/media - Punkty montowań dla nośników wymienialnych (ang. media; np. CD-ROMów) (pojawiło się w FHS-2.3).
+/srv - 	Dane specyficzne dla miejsca (site-specific), które są udostępniane (ang. served) przez system.
+/mnt - Punkt montowania (ang. mount point) innych niż natywny systemów plików.
+/dev - device; np. /dev/null 
+/dev/zero - niprzerwany ciąg plików , jest źródłem danych
+	dd if=/dev/zero of=przyklad bs=1k count=100 - za pomocą dd można zapchć dysk danymi z /dev/zero
+/dev/random - generator liczb losowych w postaci losowych bajtów
+/dev/full - zwraca: No space left on device (symbol ENOSPC) przy próbie zapisu do niego. Jest używany do testowania zachowania programów przy braku miejsca na dysku 
+	$ echo Hello world > /dev/full
+	bash: echo: write error: No space left on device
+/dev/pts i /dev/tty - terminale
+/var - 	Pliki często ulegające zmianom (ang. variable files), takie jak: logi, bazy danych, tymczasowe pliki e-mail.
+/var/tmp - podobne do /tmp ale pliki są zachowywane po zamknięciu sytemu
+/var/log - logi
+/var/log/syslog - info o tym co się stalo w systemie
+/var/lib - info o stanie aplikacji
+/proc - Wirtualny system plików proc informujący o stanie systemu i poszczególnych procesów, w większości pliki tekstowe (np. uptime, network).
+/sys - informacje kernela o hardware
+
+8.ZMIENNE SYSTEMOWE
+-----------------
+$HOME - katalog domowy usera 
+$LANG - zmienn przchowyjąca kodowanie znaków np; utf-8
+
+9.STRUMIENIE
+-----------
+polecenie >| plik - wymusza nadpisanie jeśli przy > jest odmowa
+polecenie > plik -zapisujie lub nadpisuje stdout
+polecenie >> plik -dopisuje na końcu pliku
+polecenie > plik 2>&1 -zapis do pliku stdout i stderr
+head < /proc/cpuinfo
+head /proc/cpuinfo -oba to to samo
+2> - przekierowuje stderr
+1> - przekierowuje stdout , to samo co >
+&> - łączy stdout i stderr w jeden strumień
+0< - to samo co < ,czyli stdin
+<<< - przekazuje ppolecenie bezpośrednio
+	base64 <<< dupa 	wynik to b38yf239
+	base64 <<< b38yf23	wynik to dupa
+> plik - najszybsza matoda na wyczyszczenie pliku
+>| plik - a tak gdy jest włączony nocluber czyli set -u
+
+10.MYLĄCE PRZEKIEROWANIA
+--------------------
+powłoka skanuje całą linie zanim dokona przekierowania
+cat w.txt > s.txt 2>e.txt
+2> e.txt cat w.txt > s.txt
+< w.txt > s.txt 2> e.txt
+wszystkie komendy zrobą takie samo zadanie
+
+11.WYRARZENIA REGULARNE
+--------------------
+BRE - basic regex
+ERE - extsnded regex
+PRCE - perl regex
+	grep -E   zmusza czytanie stringa jako ERE
+	     -G jako BRE
+	     -P PRCE
+	     -F dosłownie
+PRCE i ERC używają | jako logicznego OR 
+	grep -E 'i|a' plik	tania laura -jest "i" i "a"
+		'*' 	oznacza zero , jeden ,lub wiele wystąpień w poprzedającym
+		'+'	oznacza jeden lub więcej wystąpień
+rename (to PRCE swoją drogą)
+	
+
+12.BITY ODCZYTU
+------------
+-r--r--r-- -typ (d,s,l) użytkownik grupa inni_użytkownicy
+	s - to stemp etuid czyli identyfikator użytkownika (passwd tak ma aby root mógł zmienić hasło)
+chmod go+r plik - dodajemy grupie i innym(others) prawa do read ( a u to user:)
+chmod u=rwx,ug+rw,o=r permissions.txt - kombinacja pozwoleń dla usera ,grupy ,i reszty
+chmod 644 plik - TRYB BEZWZGLĘDNY wszystkie bity są zmienione
+	1--x 2-w- 3-wx 4r-- 5r-x 6rw- 7rwx 0---   SYSTEM ósemkowy
+umask - pokaże domyślne ustawienia dla nowych plików , np;0022 
+
+13.ZARZĄDZANIE KONTAMI
+-------------------
+useradd - dodawanie usera
+	useradd -m -d /home/yanina -c "yanina wickmayer" yanina
+	-m -tworzy katalog domowy 
+	-d - nazwa tego katalogu
+	-c -opis konta
+	-D -opis twojego stanu konta
+userdel -r - kasuje rekursywnie z katalogiem domowym
+usermod - zmienia informacje konta
+	-s - zmienia powłkę urzytkownika
+	-L -zawiesza hasło . W pliku /etc/shadow dodaje na początku hasła '!' co powoduje niemożność zalogowania
+	-a -G -dodaje grupe do usera , -a append -dopisuje , bez tego nadpisze
+	!!!--- Natomiast nadal urztkownik może się zalogować przez SSH ---!!!!
+	-U -odwiesza wcześniej zawieszone hasło
+vipw - bezpieczny sposób na edycje /etc/passwd i /etc/shadow
+vigr - bezpieczna edycja /etc/group -pliku mówiącego kto do jakich grup należy
+	/etc/group - nazwa/hasło/GID/kto_należy
+chsh - zmienia powłokę na inna wybną znajdującą się w /etc/shells
+	-l -listuje wszystkie powłoki
+	-s /etc/ksh - zmienia na krona
+chfn - change full name - zmienia dane usera , imie,naz,tel,itp
+grep ^PASS /etc/login.defs - tutaj są domyślne ustawienia dla haseł urzytkowników jak minimalna długość 
+chage - edycja ustawień haseł , passwd też ma takie możliwości
+chage -l kw -informacje o ustawieniach hasła dla urztkownia kw
+passwd - ustawia hasło np; passwd kw
+	-d -szybkie usuwanie hasła
+	-l -lock , to samo co usermod -L , czyli '!' na początku hasła /etc/shadow
+	-S -info , jak na początku jest L -zanczy locked
+vipw - bezpieczny sposób na edycje /etc/passwd i /etc/shadow
+openssl - szyfrowanie
+	openssl aes-256-cbc -a -salt in plik_do_szyfrowania -out plik_zaszyfrowany
+	-a - ASCII , zaszyfrowaną wiadomość będzie można wyświetlić w formie ASCII
+	aes-256-cbc - rodzaj szyfrowania
+	openssl aes-256-cbc -d -a in plik_zaszyfrowany -out plik_odszyfrowany
+	-d - odszyfruj
+openssl passwd hasło - szyfrowanie hasła hasła
+openssl passwd -salt 666 hasło - dodana sól będzie pierwszymi znakami tj; 666jbnshjvbjvb
+useradd -m -p $(openssl passwd hunter2) mohamed - a tak stworzyć zaszyfrowane hasło mochamedowi !!!--tak stworzone hasło będzie widoczne w historii ---!!!
+????---> można napisać program w C używający funkcji do szyfrowania <---????
+groupadd - dodaje grupe
+groups - polecenie pokazujące grupy do których należy user
+groupmod - modyfikuje nazwe,id,passwd
+	usermod -a -G tennis,sports kw - dodaje urzytkownika kw do grup . -G -grupy ,-a append
+groupdel - wiadomo
+gpasswd - edycja /etc/group o /etc/gshadow - pliku z danymi kto jest adminem
+	- A -minowuje admina , admin może się wypisać z grupy
+	-a -dodaje do grupy ,-d -usówa
+	gpasswd -A serena sports - serena jest teraz adminem grupy sports
+chgrp - zmień grupe , np; chgrp grupa2 plik - plik teraz jest własnością grupy 2
+chown - właściciel pliku/katalogu np; chown kw plik
+	chown kw:grupa2 plik - zmienia właściciela i grupe
+
+14.TYPY PLIKÓW
+----------
+d -katalog , l -link symboliczny , p -potok , b -block dev ,c -character dev (dev/console) , s -socet gniazdo
+
+15.SKRÓTY
+-------
+C+k - cięcie do końca lini
+C+u - cięcie przed kursorem do początku
+C+y - wyciągnięcie z bufora wcześniej wyciętego teksty
+C+w - wytnij słowo do tyłu
+C+x+e - edytor , później wq 
+A+. - przywołuje argument z poprzedniej komendy
+C+z - zatrzymuje wykonywane polecenie
+C+t - prz ajechaniu krusorem na 2 litery , zamienia drugą z pierszą
+
+SZTUCZKI
+--------
+^tak^nie - w poprzedniej komendzie gdzie było słow "tak" zostanie zastąpione przez "nie" i ponownie wywołane

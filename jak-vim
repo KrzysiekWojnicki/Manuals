@@ -1,0 +1,95 @@
+----- ROZRUCH VIM-a ------
+> vim plik1 plik2 plik3 - otwieramy trzy pliki na raz
+:args - lstujemy wszystkie te otwarte pliki
+:e - zamien na ostatnio edytowany plik
+:n - zacznij edytowac nastepny plik
+:rew - wróć do pirerwszego z edytownych plików
+
+----- TRYB EDYCJI ------
+"add - utwórz bufor "a" z wyciętą linią , buforów może być max 36.
+"ap - wklej zawartość bufora "a"
+yy - piewsze y otwiera kopjowanie do schowka , druga kopiuje
+dd - jak wyzej , d2d -kasuje dwie linie (domyślnie poniżej)
+gg - początek teksu
+G  - koniec teksu
+c  - cut
+ci" - wycinamy wszystko wewnątrz cudzysłowiach 
+cit - wytnij wewnątrz tagów np; <html> to wytne </html>
+m + (jakaś litera) - tworzymy zakładkę na lini w której się znajdujemy , a wracamy do nie znakiem ` + (nasza litera)
+> - wcięcie
+< - anulowanie wcięcia
+r - zamina litery
+7r - zamina 7 liter
+/ - wyszukiwanie do przodu, po / wpisyjemy co nas intersuje , enter ,n - następne wyszukanie , N -poprzednie wyszukanie 
+/dup[aci]a - szuka dupa lub dupcia.
+	dodając \c - case insensitiv szuka nam małych i wielkich liter np; /\c ..nasze wyszukiwanie
+? - wyszukiwanie do tylu przodu, po / wpisyjemy co nas intersuje , enter ,n - następne wyszukanie , N -poprzednie wyszukanie
+{ - początek akapitu
+} - koniec akapitu
+t - wyszukuje do przodu w lini , t + nasz znak , i ustawia nam kursor przd nim
+gt - go to tab , idzie do zakładki , jak may zakładki to tak między nimi skaczemy do przodu
+gT - skacze zakładke do tyłu
+ctrl + N lub P  - uzupełnianie składni
+i - tryb wpisywania pod kursorem
+I - tryb wpisywania na pierwszej w lini literze
+s - skasuj znak pod kursorem i wejdź w tryb wpisywania
+S - skasuj całą linie i wejdź w tryb wpisywania
+o - wejdź w tryb wpisywania na początku nowej lini
+O - wejdź w tryb wpisywania na początku lini nad naszą
+C - skasuj od kursora do końca i wejdź w tryb wpisywania
+w - początek nastepnego słowa
+W - początek następnego SŁOWA(słowa rozdzielone tylko spacjami)
+b - począten poprzeniego słowa
+B - począten poprzeniego SŁOA
+e - koniec nastepnego słowa (łącznie z tym na którym jesteśmy)
+E - koniec nastepnego SŁOWA (łącznie z tym na którym jesteśmy)
+f + (znak) - do przdu znak na znak
+F + (znak) - do tyłu znak , na znak
+t + (znak) - do przdu znak , przed znak
+F + (znak) - do tyłu znak , przed znak
+* - szuka słowo pod kursorem po przdu ( ograniczone wyszukanie up - szuka tylko "up")
+g* - szuka słowo pod kursorem po przdu ( nieograniczone wyszukanie up - szuka każdego wystąpienia "up")
+# - to co * ale do tyłu
+g# - to co g* ale do tyłu
+ctrl+r - redo stuf
+u - undo stuf
+0 - początek lini
+$ - ostatni znak w lini
+^ - pierwszy znak w lini
+ 
+------ TRYB KOMEND ------
+:4,8 s/wy/dupa/g - wyrarzenie regularne , zamieni ,między 4 a 8 linią ciąg znaków "wy" na "dupa"
+:1,$ s/wy/dupa/g - jak wyżej ale zamieni wszystkie linie
+:bn - bufor next , jak w sesji vim otwieramy więcej plików to stare lądują do buforów
+:r jakiś_plik - czyta zawartoś pliku i zapisuje do dokumentu
+:r !ls - zapisuje wynik wywołanego polecenia powłoki , tu "ls"
+:bp - bufor previus
+:tebe plik. - otwiera plik w zakładce
+:!bash % - uruchamia program np; w bash , ale może byc php itd. , % - to nasz plik który edytujemy , np; napiszemy program i chcemy go odrazu odpalić
+:map <F5> !bash % - mapujemy sobie klawisz , czyli pod f5 mamy naszą poprzednią komende uruchamijącą skrypt w bash
+:imap du dupa - mapowanie w trybie input (wpisywania) , teraz kiedy napiszemy "du" to nam się zmieni w "dupe"
+:ab du dupa blada - ustawi abberacje(podmiane) , wpisane "du" zamieni się na "dupa blada"
+:una du - wyłącza abberacje "du"
+
+----- TRYB VISUAL ------
+shift + v - visual tryb blokowy
+v - wizalany tryb
+:sory - zaznaczony tekst sortujemy
+:norm A',^i' - norm i polecenie który się wykona dla zaznaczonego tekstu , np; 
+	A edycja na końcu lini ,  wyjście (napisałem to wciskając ctr+v i Esc ) , ^ powtót na początek linijki , i tryb wpisywani
+	Sumarycznie zamkneliśmy wszystko wew. cudzysłowia
+	TROCHE TO JAK MAKRO
+:s/a/x/g - substitude czyli zamina znaku w zaznaczonym obszarze , zamieniamy a na x , g jest globalna czyli zamienia wszystkie wystąpienia w tekście
+
+TRYB BLOKOWY
+
+TRYB PRZEGLĄDARKI PLIKÓW
+
+KONFIGURACJA .VIMRC
+inoremap <Space><Space> <Esc>/<++><Enter>"_c4l - tworzy mapowanie we wszystkich rodzja plików , przy dwukrotnym wciśnięciu spacji przenosi nas
+	do miejsca gdzie jest <++> , potem kasuje ten znak do bufora i ustawia nam kursor na początku
+	TO JEST POLECENIE KTÓRE PRZYDAJE SIĘ DO INNYCH INOREMAPÓW
+autocmd FileType html iroremap ;i <em></em><Space><++><Esc>FeT>i - mapowani ale tyko gdy typ pliku to html , wyedy inoremap ;i pisze 
+	nam tagi w które nas wlłada, i znacznik <++> do którego możemy przeskoczyć 2 razy wciskając spacje dzieki poprzedniemu przykładowi inoremap
+dodając ścieżkę w nagłówku vimrc z plikiem zawierającym ustawienia do vim-a można ich urzywać , i uniknąć robienia bałaganu w orginalnym vimrc
+

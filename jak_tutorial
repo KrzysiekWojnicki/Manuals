@@ -1,0 +1,27 @@
+/* na początek wykonuje się all:myfile2 .
+* myfile2 - mówi że potrzebuje 2 plików , 
+*więc szuka takich targetów i wykonuje ich receptury . 
+*Kiedy ma już wszystko wykonuje swoją recepture.
+*Moge przy wpisywaniu make , w terminalu dopisać
+* konkretnie który target chcę wyegzekfować
+* $(RM) - jest domyślnym pleceniem systemowy na usówanie
+* takie pisanie jest crosplatformowe.
+* Na górze możemy sami zdefiniować metode receptury ,
+* jest to wygodne gdyż przy potrzebie zmiany dokonujemy
+* jej w jednym miejscu.
+* $@ - jakikolwiek jest TARGET
+* $^ - jakikolwiek jest dependencies (ZALEŻNOŚCI)
+* Polecenia są wykonywania linia po lini ,
+* jak potrzebujesz np. przenieść się komendą cd do 
+* innego katalogu musi to polecenie rozdzielać ';' w jednej 
+* lini .
+* Jeżeli mamy takie same dwa targety , tj. powtarza się np. na końcu 
+* wtedy make rozumie go jako jeden i sumuje ich ZALEŻNOŚCI 
+* jednak receptury nie wchodzą w kolizjie i mogą być inne .
+* Znak '%' jest dziką kartą , wyznacza taki sam znak w TARGECIE 
+* i w ZALEŻNOŚCIACH , muszą się natomiast w recepturze znaleść
+* znaczniki $@ $^ .
+**/
+-W -all (all wornings)
+	
+ make -p {pokazuje jakie są dostępne uniwersalne komendy w make np: $(RM) - "rm -f"}

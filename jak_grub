@@ -1,0 +1,5 @@
+sudo grub-mkconfig -o /boot/grub/grub.cfg {wyświetla wszystkie dostępne sysemy}
+sudo grep "menuentry '" /boot/grub/grub.cfg | less -N {wyszuka wejścia i je wyświetki , flaga -N to numbers .
+	to się puźniej przyda do ustawiania odpowiedniego domyślnego boot-a}
+vim /dev/default/grub {plik z ustawieniami guba , można zmienić wygląd , boot , zachwania . UWAGA po dokonaniu zmian
+	nalerzy je zrestartować <grub-update> lub <grub-mkconfig -o ?boot/grub/grub.cfg> }

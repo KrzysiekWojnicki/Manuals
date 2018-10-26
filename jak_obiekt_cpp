@@ -1,0 +1,5 @@
+w pliku nagłówkowym jest tylko iostream , a w karzdym innym zawsze nagłówek i niezbędne bibliteki.
+pisząc klase zamykamy ją }; - tak , średnikiem.
+w karzdej funkcji która jest częścią clasy piszemy najpierw <nazwę klasy>::<nazwę funkcji>
+w funkcji main piszemy <klase> <jakąś nazwę> , puźniej wywolujemy <ta nazwa>.<funkcja tej klasy>
+
