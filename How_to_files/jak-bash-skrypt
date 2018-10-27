@@ -137,6 +137,23 @@ f)
 echo received -f with $OPTARG
 ;;
 	# taki zapis pozwala na nadanie opcji "f" argumentu
+
+FUNKCJE
+-------
+generowanie losowych liczb
+	r=$(( $RANDOM % 10 + 40 )); echo $r -generuje liczbe od 40 do 49
+	r=$(( $RANDOM % 10 )); echo $r -generuje liczbe od 0 do 10
+	grep -m1 -ao '[0-9]' /dev/urandom | sed s/0/10/ | head -n1
+	shuf -i1-10 -n1 -tworzy losowe permutacje , -i to dolna górna liczba -n ilość wywołanych liczb
+
+generowanie losowych stringów
+	head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo ''
+	</dev/urandom tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c 13  ; echo
+		to ta sama komenda co powyżej ale więcej znaków jest wliczonych do puli , i ma pomieszaną kolejność
+	openssl rand -hex 12
+	openssl rand -base64 12   -inne sposoby na generowanie glosowych stringów
+	date | md5sum   -najłatwiejszy do zapamiętania
+
 GRUPOWANIE FUNKCJI
 ------------------
 #!/bin/ksh

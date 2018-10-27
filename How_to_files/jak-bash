@@ -32,8 +32,11 @@ parted - pisać z sudo
 	-l listuje dyski i info o nich
 fdisk - też z sudo
 	-l jak wyżej
- cat /proc/partitions -  alternatywne sposoby podglądania utrządzeń
- ls /dev/[s|x|v]d* - alternatywne sposoby podglądania utrządzeń
+cat /proc/partitions -  alternatywne sposoby podglądania utrządzeń
+cat /proc/devices - wypisuje urządzenia blokow i znakowe , którym system przydzielił streowniki
+cat /sys/block/sad/sad1/start -odczytuje liczbe która jest początkiem sektora
+mount - wyświetli urządzenia dyskowe które już widoczne w systemie
+ls /dev/[s|x|v]d* - alternatywne sposoby podglądania utrządzeń
 nestst - z sudo , statystyki o połączeniach sieciowych
 whoami - nazwa usera
 id - info o user i jego grupie ,albo id root - info o root
@@ -46,8 +49,6 @@ rmdid - remove katalog
 file [plik] - określa typ pliku
 stat [plik] - statystyki pliku
 wc - word count
-grep [co?] [gdzie?] - operator wyłuskiwania
-grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?') przed , czyli samo polecenie grep też na się nie wyświetli
 ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN)
 	-s tworzy dowiązanie symboliczne
 alias e="echo" - tworzy alias dla echo
@@ -73,8 +74,14 @@ touch -r - referens podajemy (plik1 plik2) - drugi plik zosatnie dotknięty pier
 batch - kolejkuje pliki , np; 
 	echo gzip jakiś_plki | batch - wykona polecenie gdy obciążenie systemu spadnie ,domyslnie 1.5
 	SPRAWDŹ MAN AT , BATCH 
+tee - czyta ze standarowego wyjcia i zapisuje do pliku np;
+	$ cat czytyaj.txt | tee temp.txt
+	-a -append dopisuje zamiast natpisywać
 whereis - lokalizuje pliki źródłowe i binarke progremu którego szukamy
 type - typ pliku , czy jest wbudowny czy zainstalowany 
+grep [co?] [gdzie?] - operator wyłuskiwania
+grep -E 'ooo?' plik -szuka trzech liter "o" ale trzecia jest opcjonalna
+grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?') przed , czyli samo polecenie grep też na się nie wyświetli
 grep [OPCJE] WZORZEC [PLIK...]
 	-v odwrócenie wyszukania
 	-i rozróżnienie wielkości liter
@@ -87,6 +94,8 @@ grep '\bdupa\b' plik - znacznik \b to spacja , czyli szuka słowa "dupa" w strin
 grep -w dupa plik - tak też szukamy słowa
 	!!!!--- Wszystkie wyrarzenia umieszczamy w cytatach aby nie kolidowały ze spacjalnymi znakami powłoki
 	jak np; $ ---!!!!
+grep -E 'o{3}' plik -pokarze w pliku string gdie są dokładnie 3 'o'
+grep -E 'o{2,3}' plik -wybierze string gdzie 'o' występuje od 2 do 3 razy
 cut - wycina kolumny z plików
 	cut -d: -f1,3 /etc/passwd | tail -2
 	otrzymamy	jan:510
@@ -105,21 +114,16 @@ tr - translacja
 sort - sortowanie alfabetyczne
 sort -n -sortowanie numeryczne 1,2,3 . a alfabet posortuje 1,100,2,20,..
 uniq - unikaty , jak się powtarza to wyświetka raz
-ubiq -c -wybiera i zlicza wystąpienia np; 1 jan , 1 marian , 3 dupa
+uniq -c -wybiera i zlicza wystąpienia np; 1 jan , 1 marian , 3 dupa
 comm - comparing streams (or files) , porównywarka
 	comm file1 file2	| jan		 |
 				|   	marian   |
 				| dupa		 |
 	domyślnie wyświetla 3 koluny 
 	comm -13 - tylko 1 i 3 itd..
-
 od - pokazuje zawartość pliku w kodzie szesnastkowym 
 	-b ósemkowym
 	-c ASCII
-sed - strumieniowy edytor urzywający wyrarzeń regularnych
-	echo level15 | sed 's/5/43' 	wynik level143
-	's/level/dupa/g' - zastąpi level na dupa
-	'x/d' -karzda linia zawierająca x zostanie przesiana
 find - szuka
 	find . -name "*.conf" - szuka w aktualnym folderze po nazwie
 		-type -d -szuka katalogów
@@ -162,6 +166,43 @@ set -u - wraca do stanu domyślnego
 	set -u <--> set -o nounset
 env - wyświetla exportowane zmienne
 env -i - czyści środowisko dla zmiennych
+rename 's/string/inny_string/'* - szuka wzorca i podmienia nazwe
+rename 's/text/txt/' *.text - zamiana rozszerzenia na txt
+rename -n 's/TXT/txt/g' aTXT.TXT 
+	-n - pokarz pliki które pomienisz
+	/g -global
+rename 's/.txt/.txt/i' * -podmieni wszystkie rozszrzenia , ale tylko małe litery
+	/i -case sensitive
+rename 's/.txt$/.TXT/' *.txt - znak '$' znaczy at the end (na końcu) 
+	czyli jakmamy plik.txt.txt to zamieni na plik.txt.TXT 
+sed -edytor strumieniowy do filtrowania i przekształcania tekstu
+	ech Sunday | sed 's/Sun/Mon/' -otrzymmy Monday
+	???--- W sed znak '/' można zastąpiś : _ |    ----????
+	$ echo Monday > dzien
+	$ sed -i 's/Mon/Sun/' dzien -zamieni w pliku string na Sunday 
+		-i -interactiv mode 
+	$ echo Sunday | sed 's/Sun/&&/' -otrzymamy SunSunday
+	$ echo Sunday | sed 's_\(Sun\)_\1ny_' -otrzymamy Sunnyday
+	$ echo Sunday | sed 's_\(Sun\)_\1ny\1_' -otrzymamy Sunny Sunday
+	$ echo 2014-04-01 | sed 's/....-..-../yyyy-mm-dd/' -otrzymamy yyyy-mm-dd .Kropka zastępuje dowolny znak
+	$ echo -e 'today\tis\twarm' | sed 's_\s__g' -otrzymamy todayiswarm , nie wiem czy taki miał być wynik \s -to white spaces
+	$ echo level15 | sed 's/5/43' 	wynik level143
+	's/level/dupa/g' - zastąpi level na dupa
+	'x/d' -karzda linia zawierająca x zostanie przesiana
+	$ cat plik | sed 's/o\{3\}/A/' -zastąpi 3 'o' na A
+udevadm info --query=all --name=/dev/sda -wyświetli ścieżkę i inne atrybuty użądzenia	
+	P: ścieżka urządzenia w systemie sysfs
+	S: dowiązanie symboliczn do urządzenia utworzonego prza proces udev w /dev
+	N: węzeł urządzenia , czyli nadaną nazwe plików w /dev
+	E: dodatkowe info o urządzeniu pobrane z reguł procesu udev
+udevadm monitor - monitorowanie 
+dmesg - wypisuje ostatnie komunikaty jądra
+pwgen - generuje randomowe hasło . Nie jest domyślnie zainstalowany do dystrybucji
+	pwgen -s 12 3 -stworzy 3 hasła o 12 znakch , -s to more secure (hasła mają wyszą entropie)
+gpw - generuje losowe ciągi liter dla np, nazw userów
+	gpw 3 13 - trzy hasła o 13 literach
+block --rereadpt /dev/sda -polecenie wymusza na jądrze systemu ponowne załadowanie tablicy partycji urządzenia sda
+
 
 2.UPRAWNIENIA
 -----------
@@ -246,6 +287,7 @@ $LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A
 /home/marian/bim - pliki binarne mariana w jego katalogu domowym
 /sbin - pliki binarne do kofiguracji systemu , dostęp tylko dla ruta lub sudoera
 /usr - Drugorzędowa hierarchia dla danych (ang. Unix system resources), dane tylko do odczytu.
+/usr/info -dokumetacja GNU , nie wszysto tu jest ale można szkać ,wpisujesz $ info temat
 /usr/lib - pliki wspólne ,stateczne , i pomocnicze
 /usr/local - Trzeciorzędowa hierarchia danych lokalnych (ang. local data), specyficzna dla tego hosta. Tu admin może lokalnie instalowć software
 /usr/share - Dane niezależne od architektury, a więc między nimi współdzielone (ang. shared).
@@ -253,6 +295,7 @@ $LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A
 /usr/src/ - Kod źródłowy (ang. source code; np. źródła kernela z jego nagłówkami)
 /usr/include/ - standardowe pliki nagłówkowe (do kompilatora c)
 /lib - biblioteki dla plików binarnych /bin i /sbin , zawiera pliki wspólne
+/lib/modules -moduły jądra
 /opt - opcjonalny software irm trzecich 
 /boot - pliki potrzebne do rozruchu systemu , są tu grub.cfg , grub.conf , kernel
 /etc - pliki konfiguracyjne systemu , urządzeń , sieci , i hasła
@@ -267,9 +310,12 @@ $LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A
 /srv - 	Dane specyficzne dla miejsca (site-specific), które są udostępniane (ang. served) przez system.
 /mnt - Punkt montowania (ang. mount point) innych niż natywny systemów plików.
 /dev - device; np. /dev/null 
+/dev/tty1 -pirwsza konsola wirtualna
+/dev/ttyUSB0 -port usb
 /dev/zero - niprzerwany ciąg plików , jest źródłem danych
 	dd if=/dev/zero of=przyklad bs=1k count=100 - za pomocą dd można zapchć dysk danymi z /dev/zero
 /dev/random - generator liczb losowych w postaci losowych bajtów
+/dev/urandom - inny generator losowych rzeczy
 /dev/full - zwraca: No space left on device (symbol ENOSPC) przy próbie zapisu do niego. Jest używany do testowania zachowania programów przy braku miejsca na dysku 
 	$ echo Hello world > /dev/full
 	bash: echo: write error: No space left on device
@@ -280,6 +326,7 @@ $LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A
 /var/log/syslog - info o tym co się stalo w systemie
 /var/lib - info o stanie aplikacji
 /proc - Wirtualny system plików proc informujący o stanie systemu i poszczególnych procesów, w większości pliki tekstowe (np. uptime, network).
+/proc/partitions - info o partycjach
 /sys - informacje kernela o hardware
 
 8.ZMIENNE SYSTEMOWE
@@ -327,6 +374,7 @@ PRCE i ERC używają | jako logicznego OR
 		'*' 	oznacza zero , jeden ,lub wiele wystąpień w poprzedającym
 		'+'	oznacza jeden lub więcej wystąpień
 rename (to PRCE swoją drogą)
+
 	
 
 12.BITY ODCZYTU
