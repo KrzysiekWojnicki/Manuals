@@ -64,7 +64,7 @@ ZNAKI SPECJALNE
 	# polecenie file określa typ pliku
 	# czyli każdy plik .ksh zostanie skopiowany pod nową zazwą *.backup
 
-i=100;
+i=101;
 while [ $i -ge 0 ] ;
 do
 echo Counting down, from 100 to 0, now at $i;
