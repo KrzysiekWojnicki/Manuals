@@ -28,6 +28,9 @@ du [plik] lub [katalog] - szacuje zużycie miejsca na dysku
 lsblk -wypisuje urządzenia blokowe
 df - info o zużyciu przestrzeni dyskowej systemu pliku 
 	-h human readable form
+	-i -inode "węzły" An inode is a data structure that contains metadata about a file.
+	???--- Everything about a file is in the inode, except two things : name them!
+	The name of the file is in a directory, and the contents is somewhere on the disk. ---???
 parted - pisać z sudo 
 	-l listuje dyski i info o nich
 fdisk - też z sudo
@@ -37,11 +40,14 @@ cat /proc/devices - wypisuje urządzenia blokow i znakowe , którym system przyd
 cat /sys/block/sad/sad1/start -odczytuje liczbe która jest początkiem sektora
 mount - wyświetli urządzenia dyskowe które już widoczne w systemie
 ls /dev/[s|x|v]d* - alternatywne sposoby podglądania utrządzeń
+	-li -listuju węzły inode , pokarze numer węzła
+lspci - listuje wszystkie podłączone urządzenia pci
 nestst - z sudo , statystyki o połączeniach sieciowych
 whoami - nazwa usera
 id - info o user i jego grupie ,albo id root - info o root
 cp [co?] [gdzie?] - copy
 cp -p - zachowuje arybuty domyślne takie jak właściciel i prawa dostępu
+	???--- Ciekawostka , jak plik można odczytać , to kopiując go bez opcji -p właścicielem staje się kopiujący ---???
 mv [co?] [gdzie?] - move
 rm - remove
 	-rf rekursywnie force wsówa wszystko
@@ -49,8 +55,8 @@ rmdid - remove katalog
 file [plik] - określa typ pliku
 stat [plik] - statystyki pliku
 wc - word count
-ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN)
-	-s tworzy dowiązanie symboliczne
+ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN) . Węzły inode są takie same
+	-s tworzy dowiązanie symboliczne, węzły inode mają różne numery , i dlatego mogą dowiązywać do innych systemów plików i nawet sieci.
 alias e="echo" - tworzy alias dla echo
 alias - pokazuje liste alisasów ; alisa l - pokarze alias do l
 cal - pokazuje kalendarz ,ale tydzień zaczyna się od niedzieli
@@ -130,6 +136,8 @@ find - szuka
 		-newer file42 -nowszych niż plik file42
 	find /data - name "*.odf" -exec cp {} /backup/\; kopiujewybrane pliki do backup
 		polecenie {} -pyta o zgode ok?
+	find -inum 817270 2> /dev/null -szuka węzła inode o podanym numerze (ratycje mają swoje osobne kolekcje węzłów)
+			-samefile nazwa -Plik odnosi się do tego samego i-węzła co nazwa. Gdy działa opcja -L, obejmuje to dowiązania symboliczne.
 locate - raczej nie istnieje domyślnie w systemie. Wyszukuje po indeksach, jeżeli są niaktulane trzeba zrobić UPDATEDB
 date +%s - czas UNIX-owy w sekundach
 bzip2 - kompresja w bzip
@@ -197,6 +205,8 @@ udevadm info --query=all --name=/dev/sda -wyświetli ścieżkę i inne atrybuty 
 	E: dodatkowe info o urządzeniu pobrane z reguł procesu udev
 udevadm monitor - monitorowanie 
 dmesg - wypisuje ostatnie komunikaty jądra
+	dmesg | grep "irq 1[45]" - wyszukuje IRQ (interrupt request) onumerz 14 i 15 podczas bootowania
+	IRQ to sygnał urządzenia do CPU ,bo na przykład ma dane gotowe do urzycia
 pwgen - generuje randomowe hasło . Nie jest domyślnie zainstalowany do dystrybucji
 	pwgen -s 12 3 -stworzy 3 hasła o 12 znakch , -s to more secure (hasła mają wyszą entropie)
 gpw - generuje losowe ciągi liter dla np, nazw userów
@@ -386,7 +396,30 @@ chmod u=rwx,ug+rw,o=r permissions.txt - kombinacja pozwoleń dla usera ,grupy ,i
 chmod 644 plik - TRYB BEZWZGLĘDNY wszystkie bity są zmienione
 	1--x 2-w- 3-wx 4r-- 5r-x 6rw- 7rwx 0---   SYSTEM ósemkowy
 umask - pokaże domyślne ustawienia dla nowych plików , np;0022 
+	-S pokazuje w formacie u=rwx,g=rx,o=rx
 
+--"sticky bit""setgid""setuid"---
+chmod +t -dodaje "lepki bit" ,dodanie go do katalogu zapobiega usówaniu plików urzytkownikom którzy nie są ich właścicielami . 
+	Bit symbolizuje litera 't' jeśli x jest ustawiony , i 'T' jeśli nie np; drwxr-xr-t
+	chmod 1775 -jedynka symblizuje lepki bit
+Aby ustawić bit grupy "setgid" można urzyć dwójki np; 
+	chmod 2775 lub 3 ustawi nam "setuid"
+	chmod 4775 ustawi "setuid"
+	innym sposobem jest dopisanie u+s , g+s , o+t
+	Bit grupy "setgid" na katalogu powoduje że wszystkie pliki w nim są własnością grupy rodzica czyli katalogu a nie grupy tego kto je tam stworzył
+	Bit grupy na pliku powoduje że plik uruchamia się z przywilejami grupy właściciela pliku ,a nie tego kto go uruchamia
+	bit "setgid" i "setuid" jest symbolizowany prza 's' i 'S' dla braku x
+	bit "setuid" ustawiony na pliku powoduje że plik jest uruchamiany z przywilejami właściciela pliku ,a nie tego kto go uruchamia
+find / -type d -perm -2000 2> /dev/null -odnajdzie nam wszystkie katalogi z ustawionym setgid
+find /usr/bin -type f -perm -04000 -odnajdzie wszystkie pliki z ustawionym steuid
+getfacl plik - pokarze acls (access control lists) danego pliku
+setfacl - pozwal ustawić acls pliku np;
+	setfacl -m u:sandra:7 file33 -ustawi dla urzytkownika sandra rwx
+	setfacl -m g:tennis:6 file33 -ustawi dla grupy tenis rw-
+	setfacl -x sandra file33 -usunie wszystkie przywileje sandry
+	setfacl -b file33 -usunie wszystkie ustawienia acls z wybranego pliku
+	setfacl --no-mask -m u:sandra:7 file33 -opcja no-mask doda #effective:rw- czyli ustawienie maski acls bedzie zignorowane , a efektywne będzie ustawione na połączenie wszystkich grup będącej właścicielem i wszystkich nazwanych wpisów użytkowników i grup.
+	
 13.ZARZĄDZANIE KONTAMI
 -------------------
 useradd - dodawanie usera
@@ -439,6 +472,7 @@ gpasswd - edycja /etc/group o /etc/gshadow - pliku z danymi kto jest adminem
 chgrp - zmień grupe , np; chgrp grupa2 plik - plik teraz jest własnością grupy 2
 chown - właściciel pliku/katalogu np; chown kw plik
 	chown kw:grupa2 plik - zmienia właściciela i grupe
+
 
 14.TYPY PLIKÓW
 ----------
