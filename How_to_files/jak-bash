@@ -17,15 +17,45 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+readonly - wyświetli zmienne globalne tylko do odczytu tj.rzadna funkcja ich nie może nadpisać
+	-f --funkcje readonly
+logrotate - automaticlly purge messages
+netstat -połączenia sieciowe
+	-tulpn
+arp -a -Adderss Resolution Protocol , wyświelta sieci IPv4 z pamięci kernela ,
+	flaga -a BDS style output format ,pokarze ipadres
+ssh -X ip_adres -połączenie z xserwerm na zdalnej maszynie , bez x tylko terminal
+	ssh root@adres_ip -- łączymy się z kontem root na maszynie
+nice - nadaje pryjorytet procesowi . -20 najwyższy , 19 najniższy
+	nice -10 cat > file --odpali z pry. 10
+	nice --10 cat > file --odpali z pry.-10
+renice - zmiejsza
+	renice -n -19 -p PID --zmniejszy do 19 proces
+nohup - to samo co & na końcu komendy , wrzuca w background
+sar -u 1 3 -- sys.activity.reporting monitorowanie aktywności cpu , pamięci .Dmoyślnie może nie być zainstalowny
+resize2fs /ścierzka_do_dysku -- zmiejsza file sys na wybranym dysku. Aby zmniejszyć logical.par. najpierw umontujemy dysk.
+lvreduce - logical disk reduce
+	lvreduce -L 3G /ścierzka_do_dysku --zmiejsza do 3 G
+e2fsck - sprawdza linuxksowy sys. plików ext..234 . Należy używać przy zmianie rozmiaru partycji
+	-r --pamięć urzyta i wolna
+mvstat - statystyki pamięci wirtualnej
+	vmstat 2 6 - wywołuj co dwie sek , sześć razy
+	- t --time format
+free - info o pamięci wykorzystanej w sys.
+	-m mega bity
 strace - śledź wywołania systemowe i sygnały
 echo -e - uruchamia formatowanie tj; znaki \n \r itd . Uwaga muszą być w cudzysłowiu np; 'dupa\nupa\n'
+	echo * - wyświetli liste plików w lini
 w - info o userach ,i tym co teraz robią
 last - onfo o userach którzy się logowali ,i wylogowywali z systemu .urzywaj z tail i head bo plik jej balszoj
 lastb - to co wyżej ale dla root-a
 du [plik] lub [katalog] - szacuje zużycie miejsca na dysku
+	-S -dla katalogów z uwzględnieniem roz. podkatalo.
 	- B mB - w mega bitach np.
 	-h -human format
 lsblk -wypisuje urządzenia blokowe
+blkid -locate /print block device attributes
+e2label - creating disc lables 
 df - info o zużyciu przestrzeni dyskowej systemu pliku 
 	-h human readable form
 	-i -inode "węzły" An inode is a data structure that contains metadata about a file.
@@ -35,14 +65,19 @@ parted - pisać z sudo
 	-l listuje dyski i info o nich
 fdisk - też z sudo
 	-l jak wyżej
+cat /proc/meminfo - info o pamięci sys.
 cat /proc/partitions -  alternatywne sposoby podglądania utrządzeń
 cat /proc/devices - wypisuje urządzenia blokow i znakowe , którym system przydzielił streowniki
 cat /sys/block/sad/sad1/start -odczytuje liczbe która jest początkiem sektora
 mount - wyświetli urządzenia dyskowe które już widoczne w systemie
 ls /dev/[s|x|v]d* - alternatywne sposoby podglądania utrządzeń
 	-li -listuju węzły inode , pokarze numer węzła
+ip address - info o sieci , tak jak ifconfig
 lspci - listuje wszystkie podłączone urządzenia pci
 nestst - z sudo , statystyki o połączeniach sieciowych
+host - wyszukuje nazwy hostów , urzywając dns
+	/etc/hosts - lista hostów , ona jest zawsze przeszykiwana pierwsza przed zapytaniem dns
+	ale można zmienić to zachowanie edytując /etc/nsswitch.conf (name service switch)
 whoami - nazwa usera
 id - info o user i jego grupie ,albo id root - info o root
 cp [co?] [gdzie?] - copy
@@ -57,6 +92,7 @@ stat [plik] - statystyki pliku
 wc - word count
 ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN) . Węzły inode są takie same
 	-s tworzy dowiązanie symboliczne, węzły inode mają różne numery , i dlatego mogą dowiązywać do innych systemów plików i nawet sieci.
+	Hard linki tylko file
 alias e="echo" - tworzy alias dla echo
 alias - pokazuje liste alisasów ; alisa l - pokarze alias do l
 cal - pokazuje kalendarz ,ale tydzień zaczyna się od niedzieli
@@ -86,6 +122,8 @@ tee - czyta ze standarowego wyjcia i zapisuje do pliku np;
 whereis - lokalizuje pliki źródłowe i binarke progremu którego szukamy
 type - typ pliku , czy jest wbudowny czy zainstalowany 
 grep [co?] [gdzie?] - operator wyłuskiwania
+	grep -n dupa plik.txt --pokarze na której lini w pliku jest dupa
+	-c --count policzy ilość wystąpień 
 grep -E 'ooo?' plik -szuka trzech liter "o" ale trzecia jest opcjonalna
 grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?') przed , czyli samo polecenie grep też na się nie wyświetli
 grep [OPCJE] WZORZEC [PLIK...]
@@ -130,6 +168,9 @@ comm - comparing streams (or files) , porównywarka
 od - pokazuje zawartość pliku w kodzie szesnastkowym 
 	-b ósemkowym
 	-c ASCII
+xargs - wykonaj polecenie z arg. ze stdout
+find / -name *.txt | xargs grep -i dupa --odszuka w całyej gałęzi nazwy *.txt i wybierze tylko te z stringiem dupa
+find . -printf "%M\t%u\t%p\t%g\n" - wyświetli coś jak ls -l , trzeba tylko konkretny katalog wybrać bo wyrzyga wszystko
 find - szuka
 	find . -name "*.conf" - szuka w aktualnym folderze po nazwie
 		-type -d -szuka katalogów
@@ -173,6 +214,7 @@ set -u - wraca do stanu domyślnego
 	set +u <--> set +o nounset
 	set -u <--> set -o nounset
 env - wyświetla exportowane zmienne
+Hard linki tylko file
 env -i - czyści środowisko dla zmiennych
 rename 's/string/inny_string/'* - szuka wzorca i podmienia nazwe
 rename 's/text/txt/' *.text - zamiana rozszerzenia na txt
@@ -309,6 +351,8 @@ $LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A
 /opt - opcjonalny software irm trzecich 
 /boot - pliki potrzebne do rozruchu systemu , są tu grub.cfg , grub.conf , kernel
 /etc - pliki konfiguracyjne systemu , urządzeń , sieci , i hasła
+/etc/fstab - plik ze statycznymi informacjami systemu plików
+/etc/network/interfaces - opisuje dostępne na systemie
 /etc/init.d - pliki stop-start demon
 /etc/skel - "szkielet" który jest kopiowany do nowego pliku home urządzeń ,zazwyczaj zawiera .bashrc
 /etc/X11 - pliki konfiguracyjne grafiki
