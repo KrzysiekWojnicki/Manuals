@@ -1,5 +1,5 @@
 SPIS TREŚCI:
-	1.POLECENIA
+	2.POLECENIA
 	2.UPRAWNIENIA
 	3.HISTORIA POWŁOKI
 	4.ZNAKI SPECJALNE
@@ -17,6 +17,25 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+shuf - tworzy losowe permutacje
+lsof - list open files , bez agrumentów pokarze wszystkie otwarte pliki w systemie
+	lsof ścierzka/do/pliku --Which processes have this file open?
+	lsof -p PID --Which files does process X have open?
+	lsof -p `pgrep ABC` --albo tak
+	Where is the binary for this process?
+	lsof -p ABC | grep bin
+	Which shared libraries is this program using? (manually upgrading software, i.e. openssl)
+	lsof -p PID | grep .so
+	Where is this thing logging to?
+	lsof -p ABC | grep log
+	Which processes still have this old library open?
+	lsof grep libname.so
+	Which files does user XYZ have open?
+	lsof -u XYZ
+	lsof -u XYZ -i # network only
+	Which process is listening on Port X (or using Protocol Y)?
+	lsof -i :80
+	lsof -i tcp
 readonly - wyświetli zmienne globalne tylko do odczytu tj.rzadna funkcja ich nie może nadpisać
 	-f --funkcje readonly
 logrotate - automaticlly purge messages
@@ -90,20 +109,23 @@ rmdid - remove katalog
 file [plik] - określa typ pliku
 stat [plik] - statystyki pliku
 wc - word count
-ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN) . Węzły inode są takie same
-	-s tworzy dowiązanie symboliczne, węzły inode mają różne numery , i dlatego mogą dowiązywać do innych systemów plików i nawet sieci.
+
+
 	Hard linki tylko file
 alias e="echo" - tworzy alias dla echo
 alias - pokazuje liste alisasów ; alisa l - pokarze alias do l
 cal - pokazuje kalendarz ,ale tydzień zaczyna się od niedzieli
 ncal - wertylakny ,normalnie od poniedziałku
-sudo !! - wykrzykniki przywołują wcześniejsze polecenie
 reset - resertuje terminal
 fg - for ground , przywraca na pierwszy plan zatrzymane polecenie
 bg - background przesówa proces w tło
 jobs - wyświetla zatrzymane procesy
-kill -Term -przerwanie procesu ,domyślne ustawienie
+trap --wyświelti wszystkie trap-y ustawine aktualnie
+	( trap słóży do chwytania sygnałów )
+kill -Term -przerwanie procesu (SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c 
+	kill PID --zabije
 	-Cont -wznowienie zatrzymanego procesu ( patrz MAN 7 signal)
+	-9 --sygnał kill , zabija proces i wyświetla killed
 locate - wyszukiwanie po indeksach, jak coś nie zostało zaindeksowane to nie znajdziemy
 diff -q plik1 plki2 - porównuje pliki , q- tylko info że się różnią
 man -k -wyszukuje podręcznik po słowach kluczowych
@@ -191,7 +213,8 @@ bzcat
 bzmore - podgląd gzip
 ln -s cel nazwa_dowiązania - tworzy dowiązanie symboliczne( dowiązanie nazwy)
 	( s -jest nizbędne , bez nigo jest HARD LINK czyli dowiązanie do danych pliku)
-tar cvf archiwum.tar plik1 plik2 ... - tworzy archiwóm z podanych elemetów
+ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN) . Węzły inode są takie same
+	-s tworzy dowiązanie symboliczne, węzły inode mają różne numery , i dlatego mogą dowiązywać do innych systemów plików i nawet sieci.tar cvf archiwum.tar plik1 plik2 ... - tworzy archiwóm z podanych elemetów
 	-c tworzenie archiwum
 	-v tryb wypisywania danych diagnostycznych (podgląd)
 	-vv drugie v to szczegułowe info (rozmir..)
@@ -307,6 +330,7 @@ $#    Stores the number of command-line arguments that
 			      $* = -yes -no /home/username
 			      $@ = array: {"-yes", "-no", "/home/username"}
 			      $0 = ./command, $1 = -yes etc.
+			      $$ = PID procesu
 && - logiczne AND czyli I
 || - logiczne or
 # - znak komentarza w powłoce
@@ -345,6 +369,8 @@ $LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A
 /usr/share - Dane niezależne od architektury, a więc między nimi współdzielone (ang. shared).
 /usr/shared/games - statyczne pliki gier np; play log , high score
 /usr/src/ - Kod źródłowy (ang. source code; np. źródła kernela z jego nagłówkami)
+trap --wyświelti wszystkie trap-y ustawine aktualnie
+	( trap słóży do chwytania sygnałów )
 /usr/include/ - standardowe pliki nagłówkowe (do kompilatora c)
 /lib - biblioteki dla plików binarnych /bin i /sbin , zawiera pliki wspólne
 /lib/modules -moduły jądra
@@ -524,15 +550,70 @@ d -katalog , l -link symboliczny , p -potok , b -block dev ,c -character dev (de
 
 15.SKRÓTY
 -------
-C+k - cięcie do końca lini
-C+u - cięcie przed kursorem do początku
-C+y - wyciągnięcie z bufora wcześniej wyciętego teksty
-C+w - wytnij słowo do tyłu
-C+x+e - edytor , później wq 
-A+. - przywołuje argument z poprzedniej komendy
-C+z - zatrzymuje wykonywane polecenie
-C+t - prz ajechaniu krusorem na 2 litery , zamienia drugą z pierszą
 
+	Podstawy:
+	---------
+
+TAB – automatyczne dokończenie nazwy zaczętego polecenia ,( /etc/bash_completion - tu jest auto autocompletion , a w bashrc jest uruchamiane przy każdej sesji)
+TAB – wciśnięte dwa razy – w przypadku gdy powłoka nie jest w stanie dokończyć zaczętego polecenia powtórne wciśnięcie klawisza TAB spowoduje wyświetlenie podpowiedzi z listą dostępnych komend zaczynających się od wpisanej wartości.
+(↑ | ↓) – strzałki góra / dół – Poruszanie się po historii poleceń, które wcześniej były już wpisywane w konsole,
+CTRL+P / CTRL+N – tak samo jak w przypadku strzałek – poruszanie się po historii poleceń, które wcześniej były już wpisywane w konsole,
+CTRL+R – wyszukuje w historii poleceń wcześniej już wykonanych, po wciśnięciu skrótu wpisujemy początkowy jakiejś komendy – i otrzymujemy podpowiedź
+Ctrl+G – wychodzi z wyszukiwania historii poleceń
+ALT+. – wkleja ostatnie słowo z poprzedniego polecenia
+^słowo^zamiennik – zastępuje słowo zamiennikiem w poprzednim poleceniu
+CTRL+C – przerwanie/zabicie działania programu
+CTRL+Z – zatrzymanie działania programu
+CTRL+S – zatrzymanie transferu do terminala
+CTRL+Q – kontynuowanie transferu do terminala – (jeśli wcześniej użyto ctrl+s)
+CTRL+L – wyczyszczenie ekranu (działa jak polecenie clear)
+!! – wykonaj ostatnie polecenie
+!wpis – wykonaj najczęściej wykonywane polecenie zaczynające się od wpis
+!wpis:p – to samo co wyżej, tylko bez wykonywania (wyświetlenie pełnej nazwy komendy)
+CTRL+x+e  - uruchamia domyślny edytor tekstu , wpisujemy nasze polecenie ,zapisujemy i wychodzimy ,polecenie się wykonuje
+
+	Skróty przeznaczone do edycji polecenia:
+	---------------------------------------
+
+Ctrl+A – przesuwa kursor na początek linii
+Ctrl+E – przesuwa kursor na koniec linii
+Ctrl+K – usuwa wszystko od kursora do końca linii
+Ctrl+U – usuwa wszystko od kursora do początku linii
+Ctrl+W – usuwa słowo przed kursorem
+Ctrl+Y – wkleja poprzednio wymazany fragment poprzez Ctl-U oraz Ctl-K,W
+Ctrl+D – usuwa literę przed kursorem (lub słowo – również ALT+BackSpace)
+Alt+B – cofa kursor o słowo do tyłu
+Alt+F – przenosi kursor o słowo do przodu
+Alt+T – zmienia kolejność wpisywanych słów
+Alt+C – Zamienia pierwszą literę w wyrazie na Wielką, a kolejne na małe.
+Alt+L – Zamienia wszystkie znaki w wyrazie na prawo od kursora na małe litery
+Alt+U – Zamienia wszystkie znaki w wyrazie na prawo od kursora na Wielkie litery
+
+	Skróty okien:
+	-------------
+CTRL+ALT+F1 – Przełącza na pierwszy terminal.
+CTRL+ALT+FN (N=1..6) – Przełącza na następne terminale.
+tty – wyświetla nazwę bieżącego terminalu.
+CTRL+ALT+F7 – Przełącza na pierwszy terminal graficzny (jest na tym terminalu uruchomiony jest X-window).
+CTRL+ALT+FN (n=7..12) – Przełącza na następny terminal graficzny (jeśli terminal GUI jest uruchomiony na ekranie n-1).
+SHIFT+PgUp – przewija dane wyjściowe z terminala w górę.
+SHIFT+PgDown – przewija dane wyjściowe z terminala w dół.
+CTRL+ALT+ESC – zabija okno w które klikniesz myszką
+CTRL+ALT+BACKSPACE – zabija środowisko graficzne lub je restartuje. Warto skorzystać z tej kombinacji, kiedy wszystko inne przestało działać.
+
+	Inne:
+	-----
+
+Alt-Ctrl-L Blokada komputera
+Alt-F1 Otwiera menu Aplikacje (dalej można się po nim poruszać strzałkami)
+Alt-F2 Otwiera menu ‘Uruchom’
+Alt-F3 Otwiera menu wyszukiwania (Deskbar)
+Alt-F4 Zamyka aktywne okno
+Alt-F5 Pomniejsza okno (jeśli jest na pełnym ekranie)
+Alt-F7 Pozwala na przesuwanie okna za pomocą strzałek
+Alt-F8 Pozwala na zmianę rozmiaru okna za pomocą strzałek
+Alt-F9 Minimalizuje aktywne okno
+Alt-F10 Maksymalizuje aktywne okno
 SZTUCZKI
 --------
 ^tak^nie - w poprzedniej komendzie gdzie było słow "tak" zostanie zastąpione przez "nie" i ponownie wywołane
