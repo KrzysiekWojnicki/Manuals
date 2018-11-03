@@ -10,8 +10,7 @@ funkcja_p_ile()
 
 	echo "wpisz ile chcesz plików: "
 	read liczba1
-	l=0
-	suma[l]=$liczba1
+	s_pie=$liczba1
 	for (( c=1 ; c<=$liczba1 ; c++))
 	do
 		r=$(( $RANDOM % 2 ))
@@ -30,13 +29,14 @@ funkcja_czy_jeszcze()
 {
 echo "chcesz utworzyć jeszcze? [t/n]:"
 read pytanie
+sum_l=$(( sum_l + s_pie ))
 if [[ $pytanie =~ [yYTt] ]]
 	then
 	funkcja_p_ile  
 elif [[ $pytanie =~ [nN] ]]
 then
 	# zliczanie
-	n_zlicz
+	zliczanie
 else
 	echo '[t/n]?'
 	funkcja_czy_jeszcze
@@ -45,11 +45,7 @@ fi
 }
 
 zliczanie(){
-sum_p=$(ls *.txt *.end | wc -w)
-echo utworzono $sum_p plików.
-}
-n_zlicz(){
-	echo "${suma[*]}" liczb
+echo utworzono $sum_l plików.
 }
 ###### CODE #########
 
