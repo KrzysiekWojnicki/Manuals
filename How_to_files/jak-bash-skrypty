@@ -1,0 +1,393 @@
+#!/bin/bash
+# KRÓDKIE WPROWADZENIE W SKRYPTOWANIE BASH
+
+# ?tip --pisząc nagłówek " #!/bin/bash -- " ustrzegamy się skryptowania SETUID , czyli ROOT SPOOFING
+# ?tip -pisząc komendy w jednej lini używaj ';' bo skrypt nie zadziała
+	# fragmet .bashrc uruchamiający dwa progrmy przy starcie terminala
+	if [ -f /usr/bin/screenfetch -a -f /usr/games/lolcat ]; then screenfetch | lolcat ; fi
+
+# ECHO READ
+------------
+	#!/bin/bash
+	echo pierwsze
+	read f
+	echo drugie 
+	read g
+	clear
+	os=('2' 3 $f $g )
+	os[9]='cokolwiek'
+	echo "${os[*]}" : wszystkie elementa
+	echo "${!os[*]}": numery elementów
+	echo "${#os[*]}": ilość elementów
+	echo "${os[3]}" : element 3
+	
+	string=njknjvnjnv
+	echo "${string[0]}" : wyświetli zmienną jak tablice
+	echo "${string[1]}" : nie wyświetli bo zminna jako tablica ma tylko pierwszy index
+	
+# PRZEKAZYWANIE PARMETRÓW DO SKRYPTU
+------------------------------------
+	#!/bin/bash
+	echo $0 $1 $2 $3 : kolejno argumety
+	echo $@ : wszystkie argumety
+	echo $# : ilość argumetów
+	
+# IF I TESTY
+------------
+	#!/bin/bash
+	
+	#ustawianie zmiennej
+	slowo=a
+	
+	if [[ $slowo == "b" ]]
+	then
+		echo condition b is true
+	elif [[ $slowo == "a" ]]
+	then
+			echo condition a is true
+	else
+	  		echo condition is false
+	fi
+	# Inne testy , Niektóre trzeba przeprowadzać w podwujnych nawiasach
+	# -eq
+	# is equal to
+	# if [ "$a" -eq "$b" ]
+	# -ne
+	# is not equal to
+	# if [ "$a" -ne "$b" ]
+	# -gt
+	# is greater than
+	# if [ "$a" -gt "$b" ]
+	# -ge
+	# is greater than or equal to
+	# if [ "$a" -ge "$b" ]
+	# -lt
+	# is less than
+	# if [ "$a" -lt "$b" ]
+	# -le
+	# is less than or equal to
+	# if [ "$a" -le "$b" ]
+	# <
+	# is less than (within double parentheses)
+	# (("$a" < "$b"))
+	# <=
+	# is less than or equal to (within double parentheses)
+	# (("$a" <= "$b"))
+	# >
+	# is greater than (within double parentheses)
+	# (("$a" > "$b"))
+	# >=
+	# is greater than or equal to (within double parentheses)
+	# (("$a" >= "$b"))
+	# string comparison
+	# =
+	# is equal to
+	# if [ "$a" = "$b" ]
+	# ==
+	# is equal to
+	# if [ "$a" == "$b" ]
+	# !=
+	# is not equal to
+	# if [ "$a" != "$b" ]
+	# This operator uses pattern matching within a [[ ... ]] construct.
+	# <
+	# is less than, in ASCII alphabetical order
+	# if [[ "$a" < "$b" ]]
+	# if [ "$a" \< "$b" ]
+	# Note that the "<" needs to be escaped within a [ ] construct.
+	# >
+	# is greater than, in ASCII alphabetical order
+	# if [[ "$a" > "$b" ]]
+	# if [ "$a" \> "$b" ]
+	# Note that the ">" needs to be escaped within a [ ] construct.
+	# See Example 27-11 for an application of this comparison operator.
+	# -z
+	# string is null, that is, has zero length
+	# -n
+	# strin is not null
+	# compound comparison
+	# -a
+	# logical and
+	# exp1 -a exp2 returns true if both exp1 and exp2 are true.
+	# w poniższym przykładzie trzy sposoby zapisu dają taki sam efekt
+	# if [ "$age" -gt 18 ] && [ "$age" -lt 30 ]
+	# if [[ "$age" -gt 18   &&   "$age" -lt 30 ]]
+	# if [ "$age" -gt 18 -a "$age" -lt 30 ]
+	# -o
+	# logical or
+	# if [ "$age" -gt 18 ] || [ "$age" -lt 30 ]
+	# if [[ "$age" -gt 18   ||   "$age" -lt 30 ]]
+	# if [ "$age" -gt 18 -o "$age" -lt 30 ]
+
+	# ATRYBUTY PORÓWNANIA
+	#-a file - True if file exists.
+	#-b file - True if file exists and is a block special file.
+	#-c file
+	#- True if file exists and is a character special file.
+	#-d dir - True if file exists and is a directory.
+	#-e file - True if file exists.
+	#-f file - True if file exists and is a regular file.
+	#-g file - True if file exists and is set-group-id.
+	#-h file - True if file exists and is a symbolic link.
+	#-k file - True if file exists and its ‘‘sticky’’ bit is set.
+	#-p file - True if file exists and is a named pipe (FIFO).
+	#-r file - True if file exists and is readable.
+	#-s file - True if file exists and has a size greater than zero.
+	#-t fd - True if file descriptor fd is open and refers to a terminal.
+	#-u file - True if file exists and its set-user-id bit is set.
+	#-w file - True if file exists and is writable.
+	#-x file - True if file exists and is executable.
+	#-O file - True if file exists and is owned by the effective user id.
+	#-G file - True if file exists and is owned by the effective group id.
+	#-L file - True if file exists and is a symbolic link.
+	#-S file - True if file exists and is a socket.
+	#-N file - True if file exists and has been modified since it was last read.
+	
+	#INNY SKRYPT	
+	# echo -e --umożliwia urzycie specjalnych znaków
+	# \c --prompt zostanie w tej samej lini co string echo
+	echo -e "wpisz nazwe pliku : \c"
+	read plik
+	
+	# [-e] --exist 
+	# [-f] --regular file
+	# [-d] --directory
+	if [ -e $plik ]
+	then
+		# zagnieżdżony warunek
+		if [ -w $plik ]
+		then
+			echo Wpisz dane ,i zakończ Ctrl+D
+			# dopisywanie do pliku
+			cat >> $plik
+		else
+			echo Pliku nie można zapisywać
+		fi
+	else
+		echo "nie ma tekiego pliku"
+	fi
+	# [-s] --czy plik jest pust
+	# [-r] --czy ma prawa do czytania
+	
+# OPERACJE ARYTMETYCZNE
+-----------------------
+	num1=10
+	num2=5
+	
+	# trzeba urzyć podwujnych nawiasów aby przprowadzić op. artmetyczne + - * / % 
+	# ostatni to modulo
+	echo $((num1 + num2))
+	
+	# alternatywnie można zapisać urzywając expr
+	echo $(expr $num1 + $num2 )
+	# wyjątkiem jest mnożenie gdzie trzeba urzyć znaku ucieczki
+	echo $(expr $num1 \* $num2 )
+	
+	# Aby robić operacje na liczbach zmiennoprzcinkowych
+	# trzeba urzyć programu bc --domyślnie może nie być zainstolowany z dystrybują
+	
+	num3=2.5
+	
+	echo "$num1+$num3" | bc 
+	# aby zmienić skale liczb po przcinku urzywamy przedrostka scale=2 --gdzie 2 to liczba miejsc po przecinku
+	echo "scale=20;$num1 / $num3" | bc 
+	
+	# potęgowanie ti znak ^
+	# jednak trzba powiedzieć bc aby urzył biblioteki matematycznej -l
+	echo "scale=10;$num2^3" | bc -l
+	
+	# pierwiastkowanie kwadratowe notujemy sqrt()
+	echo "scale=10;sqrt($num1)" | bc -l
+	
+	function plus {
+		let wynik="$1 + $2" # let to ewaluacja zmiennych arytmatycznych
+		echo $1 + $2 = $wynik ; }
+		# wywołujemy
+		plus 3 4  # otzrmamy 3 + 4 = 7
+	
+# CASE
+-------
+	# pierwszy argument dla skryptu
+	argument=$1
+	
+	case $argument in
+		"kot" )
+			echo miał ;;
+		"pies" )
+			echo hał ;;
+		* )
+			echo gwiazdka to dowolny ciąg ;;
+	esac
+	
+# WHILE LOOP
+------------
+	
+	#!/bin/bash
+	
+	n=1
+	while [ $n -lt 10 ]
+	do
+		echo "$n"
+		n=$(( n+1 ))
+	done
+	# inna forma zapisu
+	while (( $n <= 10 ))
+	do
+		echo "$n"
+		(( n++ ))
+	done
+# ?tip- zamiast wyświetlać echo cośtam , można porzytecznie wykonać jakieś polecenie x razy	
+# Kilka metod odczytywania plików:
+	while read p ;	do ; echo $p ; done < plik.txt
+
+	cat plik.txt while read p ; do ; echo $p ; done
+
+	while IFS= read -r p ; do ; echo $p ; done < plik.txt
+		#ifs to prog. powłoki , odnajduje spacje 
+# UNTIL LOOP
+-----------
+	until [ $n -ge 10 ] ; do ; echo $n n=$(( n+1 )) ; done
+	# (( $n >= 10 )) 	(( n++ )) 	-Alternatywnie
+
+# FOR LOOP
+---------
+	for i in 1 2 3 4 ..n ; do echo $i ; done
+	for i in {1..10} ; do echo $i ; done #  przynajmniej bash vesion 3
+	for i in {1..10..2} # wypisze co 2 . Przynajmniej bash v4
+	for (( i=0 ; i<5 ; i++ )) # jak c++
+
+	for polecenie in ls pwd date 
+	do  echo "-------------$polecenie-------------" ; $polecenie ; done
+	# i inny 
+	for item in * # we szystkim (wszystkie pliki w obecnym katalogu)
+	do if [ -d $item ] ; then echo $item ; fi done
+
+# SELECT LOOP
+-------------
+
+	select imie in mark john tom jerry ; do case $imie in 
+		mark)	echo wybrałeś marka ;;
+		john)	echo wybrałeś johna ;;
+		tom)	echo wybrałeś toma ;;
+		jerry)	echo wybrałeś jerrego ;;
+		*)	echo ERRORRRRRR : wybierz 1..4
+	esac done
+
+# BREAK & CONTINUE
+-----------------
+	# break przerywa pętle
+	for (( i=1 ; i<=10 ; i++ ))  do if [ $i -gt 5 ] 
+	then break ; fi ; echo "$i" ; done
+
+	# continue wstrzymuje dalsze instrukcje w pętli i robi kolejną iteracje
+	for (( i=1 ; i<=10 ; i++ )) do if [ $i -eq 3 -o $i -eq 6 ] 
+	then continue ; fi ; echo "$i" ; done
+
+# FUNKCJE
+---------
+	funkcja() { instrukcja }
+
+	# inny zapis oraz przykład przekazywania parametrów do funkcji , tak jak przy skrypcie
+	function print() { echo $1 $2 $3 ;  } ; print kot pies mysh  
+	
+	
+# ZMIENNE LOKALNE
+-----------------
+	# w bash trzeba zdefiniować zmienna lokalną aby nie przesłoniła globalnej
+	function kto() { local zwierz=$1 ; echo $zwierz ; } 
+	zwierz=kot ; kto pies # próba zasłonięcia psem kota się nie powiedzie
+	echo $zwierz 
+
+	# jeszcze jedna funkcja urzywająca zmiennych lokalnych
+	instrukcja(){ 
+		echo "musisz podać argument :"
+		echo " urzycie : $0 nazwa_pliku" ; } ;
+	czy_istnieje(){ local file=$1
+		# sprawdzamy czy istnieje i wysyłamy odpowiedni return TRUE of FALSE
+		# return może czekać na wiele atrybutów dlatego kończ znakiem ';'
+		[[ -f $file ]] && return 0 || return 1 ;  } ;
+		# start skryptu , spr. czy podano argument
+		[[ $# -eq 0 ]] && instrukcja 
+		if ( czy_istnieje $1 ) then echo plik znaleziono ; 
+		else echo pliku nie znaleziono ; fi
+
+# ZMIENNE I FUNKSCJE READONLY
+----------------------------
+	v=2 ; readonly v # oznaczomy zmienną jako tylko do odczytu , nie zostanie nadpisana
+	funkcja(){ instrukcje } ; readonly -f instrukcje # -f --oznaczany funkcje
+
+# TRAP NA SYGNAŁ
+----------------
+# ?tip -- Sygnałów SIGKILL oraz SIGSTOP nie można przechwycić, zablokować ani zignorować.
+	# trap chwyta sygnał o podanym numerze (patrz man 7 signals) i wykonuje polecenie
+	plik=ścierzka_do_pliku
+	trap " rm -f $plik ; exit" 0 2 15 # 0-sukces 2-SIGINT 15-SIGTERM ,którykolwiek wysłany wpada w trap a ten wykonuje polecenie , w tym przypadku usunięcie jakiegoś pliku i exit z skryptu
+	# ?tip -- można też pisać SIGINT zamiast 2
+	echo pid to $$ ; # wyświetla PID procesu
+	# pętla liczy do 10 i kończy prace , chyba że trap przechwyci sygnał , w tedy praca zostanie przewana wcześnieszym exit zdefiniowanym w trap
+	while (( licz < 10 )) ; do sleep 10 ; (( licz ++ )) ;  echo $licz ; done ; exit 0
+
+# DEBUGING
+----------
+	# są trzy sposoby na debugowanie kodu bash
+	# przy uruchamianu skryptu , piszemy powłoke która ma uruchomić skrypt i dajemy jej zrgument -x
+	$ bash -x nasz_skrypt.sh
+	# pisząc w nagłówku skryptu -x
+	#!/bin/bash -x
+	# lub pisząc set -x w samym kodzie , od tego miejsca skrypt bedzie się wykonywał w debug mode
+	# set +x -- kończy debug mode i skrypt wykonuje się normalnie , to dobre jeśli chcemy przejżeć fragment kodu
+	# ustawiamy set -x i set +x ,a wszystko pomiędzy będzie widoczne w debug mode
+
+# PRZEKAZYWANIE PARAMETRÓW DO FUNKCJI
+-------------------------------------
+	# funkcja() par1 par2
+	# odwołujemy się do nich $1 $2 itd
+	# $0 -to nazwa funkcji lub skryptu
+	# $$ -PID skryptu
+	# $? -return code , jak sukces to 0
+	# $* -wylistuje wszystkie argumenty
+	# $# -poda liczbe argumentów
+	
+	# załóżmy że przekazliśmy 2 argumenty
+	while (( $# )) ; do echo podałeś $1 
+		shift # shift podmieni nam arg. nr2 na pierwszy , i ponowne echo wyświetki arg nr2
+	done
+
+	# getopts -pozwala urzywać opcji przy uruchamianiu skryptów
+	while getopts ":afzh" option;
+	do
+		case $option in
+			a) echo otrzymałem -a ;;
+			b) echo otrzymałem -b ;;
+			..itd
+			*) echo błędny argument -$OPTARG
+		esac
+	done
+		# zmienna $OPTARG przechowuje argument
+
+# GENEROWANIE LICZB LOSOWYCH
+----------------------------
+	# generujemy liczbe od 40 do 49
+	r=$(( $RANDOM % 10 + 40 )); echo $r
+	# generujemy liczbe od 0 do 10
+	r=$(( $RANDOM % 10 )) ; echo $r
+	# wyszukajmy w urandom ,i podmieńmy aby sie zaczynały od 1 do 10 , i jedną linie chcemy
+	grep -m1 -ao '[0-9]' /dev/urandom | sed s/0/10/ | head -n1
+	# inny sposób
+	shuf -i1-10 -n1 # tworzymy losową permutacje
+	# od 1 do 10 , n razy
+
+	#generowanie losowych stringów
+	head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '' ;
+	</dev/urandom tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c 13  ; echo '#ostatni znak jest zbędny , postawiłem go bo mi komaterz nie chciał się wykoanć
+	# to ta sama komenda co powyżej ale więcej znaków jest wliczonych do puli , i ma pomieszaną kolejność
+	' openssl rand -hex 12 ' #ostatni zank to tylko w celach odkomentownia
+	' openssl rand -base64 12 ' # dwa inne sposoby
+	' date | md5sum   ' # najłatwiejszy do zapamiętania
+	
+# ZAGNIŻDŻANIE
+--------------
+	A=shell 
+	echo $C $B $A $(B=sub;echo $C $B $A ;echo $(C=sub; echo $C $B $A))
+	# otrzymamy
+	shell sub shell sub sub shell
