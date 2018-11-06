@@ -1,5 +1,5 @@
 SPIS TREŚCI:
-	2.POLECENIA
+	1.POLECENIA
 	2.UPRAWNIENIA
 	3.HISTORIA POWŁOKI
 	4.ZNAKI SPECJALNE
@@ -13,6 +13,8 @@ SPIS TREŚCI:
 	12.BITY ODCZYTU
 	13.ZARZĄDZANIE KONTAMI
 	15.SKRÓTY
+	16.SYSTEMD
+	17.CRONTAB
 ----------------------
 
 1.POLECENIA
@@ -55,11 +57,33 @@ sar -u 1 3 -- sys.activity.reporting monitorowanie aktywności cpu , pamięci .D
 resize2fs /ścierzka_do_dysku -- zmiejsza file sys na wybranym dysku. Aby zmniejszyć logical.par. najpierw umontujemy dysk.
 lvreduce - logical disk reduce
 	lvreduce -L 3G /ścierzka_do_dysku --zmiejsza do 3 G
+fsck - sprawdza system plików , tajk(tak jak) mkfs ma wiele modów do różny sf.
+	!!!--- nie należy urzywać fsck na zamontowanym sf .
+	wyjątk jeżeli w trybie pojedyńczego usera partycja podstawowa
+	zostanie zamontowana w trybie tylko do odczytu ---!!!
+	-p --automatycznie naprawia małe błędy , i tylko w poważnych wypadkach informuje
+	-n --tylko sprawdzi , nie wprowadzi modyfikacji
+	-b numer --można zastąpić uszkodzony superblok jedną z kopii utworzoną podczas tworzenia fs
+mke2fs -n --wyświetli dla danego dev. liste bloków przechowujących kopie
 e2fsck - sprawdza linuxksowy sys. plików ext..234 . Należy używać przy zmianie rozmiaru partycji
 	-r --pamięć urzyta i wolna
+	-fy /dev/cośtam --przepisuje dane z pliku dziebbika do bazy danych fs.
+tmpfs - zmienne konfigurujące sposób montowania tmpfs w trakcie rozruchu,
+	można przekształcić przestrzeń wymiany w coś w rodzaju tymczasowego dysku
 mvstat - statystyki pamięci wirtualnej
 	vmstat 2 6 - wywołuj co dwie sek , sześć razy
 	- t --time format
+vmstat - raport pamięci wirtualnej
+tcpdump - sniffer do przechwytywania paczek otrzymanych albo wysyłanych przez sieć (TRZEBA ZAINSTALOWAĆ)
+	tcpdump -i eth0 -łapie wszystko z wybranego interfejsu
+	tcpdump -c 5 -i eth0 -złapie 5
+	tcpdump -A -i eth0 -wyświetli w ASCII
+	tcpdump -D -wyświetli dostępne interfejsy
+	tcpdump -w 0001.pcap -i eth0 - zapis do pliku
+	tcpdump -r 0001.pcap -odczyt
+	tcpdump -i eth0 port 22 -łapie z portu
+	tcpdump -i eth0 src 192.168.0.2 -łapie z źródła
+	tcpdump -i eth0 dst 50.116.66.139 -łapie idące do celu
 free - info o pamięci wykorzystanej w sys.
 	-m mega bity
 strace - śledź wywołania systemowe i sygnały
@@ -73,7 +97,9 @@ du [plik] lub [katalog] - szacuje zużycie miejsca na dysku
 	- B mB - w mega bitach np.
 	-h -human format
 lsblk -wypisuje urządzenia blokowe
-blkid -locate /print block device attributes
+blkid - lista sys.plików z ich UUID (universally unique identifier)
+	???---partycje FAT nie mają UUID ale można się do nich odwołać
+	poprzez numer seryjny np;UUID="6528-6273" ---???
 e2label - creating disc lables 
 df - info o zużyciu przestrzeni dyskowej systemu pliku 
 	-h human readable form
@@ -89,6 +115,26 @@ cat /proc/partitions -  alternatywne sposoby podglądania utrządzeń
 cat /proc/devices - wypisuje urządzenia blokow i znakowe , którym system przydzielił streowniki
 cat /sys/block/sad/sad1/start -odczytuje liczbe która jest początkiem sektora
 mount - wyświetli urządzenia dyskowe które już widoczne w systemie
+	mount -t typ urządzenie punkt_montowania --montowanie
+	np; mount -t ext4 /dev/sdf2 /mnt
+	mount UUID=cośtam666 /mnt --montuje dev. o podanym uuid w /mnt
+	-r --zamontuje sys.plików tylko do odczytu
+	-o --umożliwia podanie długig opcji polecenia
+		mount -t vfat /dev/hda1 /dos -o ro,conv=auto
+		ro - to to samo co -r , conv=auto -nakazuje konwerowac znaki końca wiersza
+		tu z formatu DOS na format właściwy dla danego systemu unix 
+		exec , noexec - włącza i wyłącza możliwość uruchamiania progamu w danym sys.plików
+		suid , nosuid - wł/wył możliwość korzystania przez progam z bitu setuid
+		conv=text -wszystkie pliki będą traktowane jak tekstowe
+		defaults - domyślne ustawienia (bity dostępu)
+		noauto - pomija wpis w fstab
+		user - umożliwia userom uruchomienie mount
+	???---zazwyczasj typu nie trzba podawać ,jednak mkfs może mieć problem
+	z rozpoznaniem różnych wariantów np FAT ---???
+umount punkt_montowania --odmontowowuje , można też podać urządzenie
+sync - synchronizuje zbuforowany zapis z trwałym nośnikiem
+mkfs - tworzy wybrany system plików . patrz MAN ,lub /sbin/mkfs.*
+ls -i -przegląda węzły inode
 ls /dev/[s|x|v]d* - alternatywne sposoby podglądania utrządzeń
 	-li -listuju węzły inode , pokarze numer węzła
 ip address - info o sieci , tak jak ifconfig
@@ -97,11 +143,23 @@ nestst - z sudo , statystyki o połączeniach sieciowych
 host - wyszukuje nazwy hostów , urzywając dns
 	/etc/hosts - lista hostów , ona jest zawsze przeszykiwana pierwsza przed zapytaniem dns
 	ale można zmienić to zachowanie edytując /etc/nsswitch.conf (name service switch)
+route - pokazuje / obsługuje tablicę trasowania protokołu IP
+	route add -net 10.10.10.0/24 gw 192.168.0.1 - dodaje
+	route del -net 10.10.10.0/24 gw 192.168.0.1 - delete
+	route add default gw 192.168.0.1 - dodaje domyślny gateway
+host - wyszukuje nazwy hostów, używając serwerów domen
+	host www.dupa.ru
 whoami - nazwa usera
+who -r -sprawdza poziom uruchomienia systemu
 id - info o user i jego grupie ,albo id root - info o root
 cp [co?] [gdzie?] - copy
 cp -p - zachowuje arybuty domyślne takie jak właściciel i prawa dostępu
+	-i -kopjuje hierarchie katalogów rekursywnie ,zachowuje pozwolenia i linki (-R -p -d)
 	???--- Ciekawostka , jak plik można odczytać , to kopiując go bez opcji -p właścicielem staje się kopiujący ---???
+scp - secure copy ,scp kopiuje pliki między komputerami w sieci. 
+	Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację oraz daje takie samo bezpieczeństwo jak ssh(1).  
+	scp pyta w razie potrzeby o hasła uwierzytelniające.
+	$ scp plik.txt uesr@server_ip:ścierzka/docelowa
 mv [co?] [gdzie?] - move
 rm - remove
 	-rf rekursywnie force wsówa wszystko
@@ -109,30 +167,51 @@ rmdid - remove katalog
 file [plik] - określa typ pliku
 stat [plik] - statystyki pliku
 wc - word count
-
-
-	Hard linki tylko file
+nl - number line , numeruje wiersze w pliku
+less - podczas przeglądania pliku można:
+	f -strona do przodu , lub ^V ,^F 
+	b -trona do tyłu ,lub ^B
+	? , / -wyszykaj do tyłu , przodu
+		n , N - natępne , poprzednie
+	v - edytuj w edytorze
+	< , > - początek , koniec
+	:n , :p - następny plik , poprzedni
 alias e="echo" - tworzy alias dla echo
 alias - pokazuje liste alisasów ; alisa l - pokarze alias do l
 cal - pokazuje kalendarz ,ale tydzień zaczyna się od niedzieli
 ncal - wertylakny ,normalnie od poniedziałku
 reset - resertuje terminal
+ps - wyświetla statut procesu
+	-o pid,tname,time,cmd, - wyśietli podane kolumny
+at - kolejkuje sprawdza lub usówa zadania do późniejszego wykonania
+	at 9:30 PM Tue -albo- 22:30 10/21/2014 -albo- now + 30 minutes
+	Bardzo elastycznie podchodzi do czasu , pozostaje tylko podać zadanie
+atq - listuje zadania
+atrm - usówa zadanie
 fg - for ground , przywraca na pierwszy plan zatrzymane polecenie
+	fg % 2 - umieszcza prace o numerze 2 na forground
+	fg % - wznowi ostatnią zatrzymaną prace
+	% - to samo co wyżej
 bg - background przesówa proces w tło
+	opcje te same co przy fg
 jobs - wyświetla zatrzymane procesy
+disown %[number] - żaden terminal nie będzie właścicielem 
+	praca będzie trwać nadal po jego zamknięciu
 trap --wyświelti wszystkie trap-y ustawine aktualnie
 	( trap słóży do chwytania sygnałów )
 kill -Term -przerwanie procesu (SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c 
 	kill PID --zabije
 	-Cont -wznowienie zatrzymanego procesu ( patrz MAN 7 signal)
 	-9 --sygnał kill , zabija proces i wyświetla killed
+	kill -[signal] %[number] - Send the signal [signal] to job number [number]
 locate - wyszukiwanie po indeksach, jak coś nie zostało zaindeksowane to nie znajdziemy
 diff -q plik1 plki2 - porównuje pliki , q- tylko info że się różnią
 man -k -wyszukuje podręcznik po słowach kluczowych
+info - coś jak man ale nie zawsze zawiera dokumentacje /usr/share/doc
 whatis - wyszukuje w MAN , np whatis ls --> ls(1)
 pv - (NIEMA TEGO DOMYŚLNIE , TRZEBA ZAINSTALOWAĆ) pasek postępu np; 
 	pv duzy_plik | gzip > duzy_plik.gz - podczas pakowania mamy podgląd co się święci
-stat jakiś_plki - pokazuje statystyki plilu
+stat jakiś_plki - pokazuje statystyki plilu , węzeł inode
 touch -t - time stamp zmieniamy czas modyfikacji pliku rrrrmmddggmm
 touch -r - referens podajemy (plik1 plik2) - drugi plik zosatnie dotknięty pierwszym i oba będą miały taką samą date
 batch - kolejkuje pliki , np; 
@@ -160,15 +239,21 @@ grep '\bdupa\b' plik - znacznik \b to spacja , czyli szuka słowa "dupa" w strin
 grep -w dupa plik - tak też szukamy słowa
 	!!!!--- Wszystkie wyrarzenia umieszczamy w cytatach aby nie kolidowały ze spacjalnymi znakami powłoki
 	jak np; $ ---!!!!
-grep -E 'o{3}' plik -pokarze w pliku string gdie są dokładnie 3 'o'
+grep -E 'o{3}' plik -pokarze w pliku string gdzie są dokładnie 3 'o'
 grep -E 'o{2,3}' plik -wybierze string gdzie 'o' występuje od 2 do 3 razy
 cut - wycina kolumny z plików
 	cut -d: -f1,3 /etc/passwd | tail -2
 	otrzymamy	jan:510
 			marian:511
+	# innymi słowy wyłuska 1 i 3 pole które są rozdzielone znakiem ':'
 		-d ogranicznik (delimiter)
 		-f pola
 	cut -d: -f1 /etc/passwd | column - wyświetli wszystkich lokalnych urzytkowników
+ping -c 1 costam.ru | grep 'bytes from' | cut -d = -f 4 
+	# jeden raz wywołujemy ping 
+	# ze zwrotnej informacji wyłuskujemy linie zawierającą 'bytes from'
+	# z wyłuskanej lini wybieramy 4 pole które jest oddzielone znakiem '='
+column - bierze dane z wyjścia i wyświetla je w formie kolmn
 let - ewaluacja zmiennch arytmetycznych np;
 	let x="3 +4" - zmienna x równa się 7
 	let x="0xFF' - zmienna x równa się 255
@@ -211,10 +296,9 @@ zmore - oba to podgląd skompresowanych gzip
 bunzip - dekompresja bzip
 bzcat
 bzmore - podgląd gzip
-ln -s cel nazwa_dowiązania - tworzy dowiązanie symboliczne( dowiązanie nazwy)
-	( s -jest nizbędne , bez nigo jest HARD LINK czyli dowiązanie do danych pliku)
-ln - tworzy dowiązania między plikani ,domyślnie tworzy twarde (patrz MAN) . Węzły inode są takie same
-	-s tworzy dowiązanie symboliczne, węzły inode mają różne numery , i dlatego mogą dowiązywać do innych systemów plików i nawet sieci.tar cvf archiwum.tar plik1 plik2 ... - tworzy archiwóm z podanych elemetów
+ln - tworzy hard link (ma taki sam inode , musi być na tym samym dysku)
+	-s --tworzy link symboliczny ,inny inode , dowolne miejsce nawet inna sieć
+tar cvf archiwum.tar plik1 plik2 ... - tworzy archiwóm z podanych elemetów
 	-c tworzenie archiwum
 	-v tryb wypisywania danych diagnostycznych (podgląd)
 	-vv drugie v to szczegułowe info (rozmir..)
@@ -237,7 +321,6 @@ set -u - wraca do stanu domyślnego
 	set +u <--> set +o nounset
 	set -u <--> set -o nounset
 env - wyświetla exportowane zmienne
-Hard linki tylko file
 env -i - czyści środowisko dla zmiennych
 rename 's/string/inny_string/'* - szuka wzorca i podmienia nazwe
 rename 's/text/txt/' *.text - zamiana rozszerzenia na txt
@@ -248,6 +331,14 @@ rename 's/.txt/.txt/i' * -podmieni wszystkie rozszrzenia , ale tylko małe liter
 	/i -case sensitive
 rename 's/.txt$/.TXT/' *.txt - znak '$' znaczy at the end (na końcu) 
 	czyli jakmamy plik.txt.txt to zamieni na plik.txt.TXT 
+awk - czyli qawk język wyszukiwania i przetwarzania wzorców.
+	awk '{ print $3 }' filename - wyświetli string z pliku w trzeciej kolumnie
+	awk '{ print }' filename - wyświetli zawartość pliku , jak cat
+	awk '/b/ { print $2 }' filename - wyświetli wsłystkie zaczynające sie na małe b ,w 2 kolumnie
+	awk '/^[0-9]/ { print }' filename - wyświetli każdą linie zaczynająca się od dowolnego znaku
+	awk '/[a-z]$/ { print }' filename - wyświetli każdą linie kończącą się na dowolnej małej literze
+	awk '{ if($2 ~ /dupa/) print }' filename - jeśli w 2 kolumnie jest dupa ,to wyświetl
+	awk -F: '{ print $1 }' - zastąpi nam delimiter w postaci : na spacje(domyślny delimiter awk)
 sed -edytor strumieniowy do filtrowania i przekształcania tekstu
 	ech Sunday | sed 's/Sun/Mon/' -otrzymmy Monday
 	???--- W sed znak '/' można zastąpiś : _ |    ----????
@@ -263,6 +354,7 @@ sed -edytor strumieniowy do filtrowania i przekształcania tekstu
 	's/level/dupa/g' - zastąpi level na dupa
 	'x/d' -karzda linia zawierająca x zostanie przesiana
 	$ cat plik | sed 's/o\{3\}/A/' -zastąpi 3 'o' na A
+	sed 's/t/T/' plik.txt - zastąpi pierwszą napotkaną litere "t" w lini ,na wielką "T"
 udevadm info --query=all --name=/dev/sda -wyświetli ścieżkę i inne atrybuty użądzenia	
 	P: ścieżka urządzenia w systemie sysfs
 	S: dowiązanie symboliczn do urządzenia utworzonego prza proces udev w /dev
@@ -365,6 +457,7 @@ $LANG - w zależności od ustawienia tej zmiennej wyniki wyszukiewania a-z lub A
 /usr - Drugorzędowa hierarchia dla danych (ang. Unix system resources), dane tylko do odczytu.
 /usr/info -dokumetacja GNU , nie wszysto tu jest ale można szkać ,wpisujesz $ info temat
 /usr/lib - pliki wspólne ,stateczne , i pomocnicze
+/usr/lib/system/system - konfiguracja globalna , lepiej tego nie ruszć , w zamian /etc/systemd/system
 /usr/local - Trzeciorzędowa hierarchia danych lokalnych (ang. local data), specyficzna dla tego hosta. Tu admin może lokalnie instalowć software
 /usr/share - Dane niezależne od architektury, a więc między nimi współdzielone (ang. shared).
 /usr/shared/games - statyczne pliki gier np; play log , high score
@@ -377,6 +470,10 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 /opt - opcjonalny software irm trzecich 
 /boot - pliki potrzebne do rozruchu systemu , są tu grub.cfg , grub.conf , kernel
 /etc - pliki konfiguracyjne systemu , urządzeń , sieci , i hasła
+/etc/ssh/sshd_config - plik z ustawieniami ssh
+	zawiera info o domyślnym porcie 22
+	oraz Authentication , gdzie w polu PermitRootLogin możwmy ustawić wartiść NO
+	aby uniemożliwić logowanie się przez ssh za pomocą hasła , a jedynie klucza ssh
 /etc/fstab - plik ze statycznymi informacjami systemu plików
 /etc/network/interfaces - opisuje dostępne na systemie
 /etc/init.d - pliki stop-start demon
@@ -386,6 +483,7 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 /etc/xml - pliki konfiguracyjne dla xml
 /etc/shadw - zahaszowane hasła , można sobie skopiować i na swoje się wkleić
 /etc/profile - ustawienia profilowe dla powłoki bourne-a
+/etc/systemd/ststem - definicje lokalne , tu można bezpiecznie umieszczać własne zmiany
 /media - Punkty montowań dla nośników wymienialnych (ang. media; np. CD-ROMów) (pojawiło się w FHS-2.3).
 /srv - 	Dane specyficzne dla miejsca (site-specific), które są udostępniane (ang. served) przez system.
 /mnt - Punkt montowania (ang. mount point) innych niż natywny systemów plików.
@@ -407,12 +505,17 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 /var/lib - info o stanie aplikacji
 /proc - Wirtualny system plików proc informujący o stanie systemu i poszczególnych procesów, w większości pliki tekstowe (np. uptime, network).
 /proc/partitions - info o partycjach
+/proc/cmdline - parametry jądra użyte przy uruchamianiu jądra
 /sys - informacje kernela o hardware
 
 8.ZMIENNE SYSTEMOWE
 -----------------
 $HOME - katalog domowy usera 
 $LANG - zmienn przchowyjąca kodowanie znaków np; utf-8
+$DISPLAY - nazwa x którego urzywasz
+$OLDPWD - poprzedni katalog
+$TERM - terminal
+$LOGNAME - login name
 
 9.STRUMIENIE
 -----------
@@ -454,6 +557,9 @@ PRCE i ERC używają | jako logicznego OR
 		'*' 	oznacza zero , jeden ,lub wiele wystąpień w poprzedającym
 		'+'	oznacza jeden lub więcej wystąpień
 rename (to PRCE swoją drogą)
+ala{ma,dypa,y,x}kota - dopasuje wszystkie wyniki z uwzglendnieniem opcji z nawiasów
+^V - ucieczka znaków kontrolnych
+	echo "tu jest^V^Itabulacja" -otrzymamy- tu jest		tabulacja
 
 	
 
@@ -492,6 +598,10 @@ setfacl - pozwal ustawić acls pliku np;
 	
 13.ZARZĄDZANIE KONTAMI
 -------------------
+	/etc/passwd -- kowalski:x:3676:1000:Jan Kowalski:/bin/bash
+	nazwausera:hasło(x oznacza że hasło jest w etc/shadow):id:grup_id:nazwa_rzeczywist:powłoka
+	???--- można stworzyć pseudo usera bez praw zapisu ani logowania ,jednak
+	system może uruchamiać procesy z jego identyfikatora ---???
 useradd - dodawanie usera
 	useradd -m -d /home/yanina -c "yanina wickmayer" yanina
 	-m -tworzy katalog domowy 
@@ -513,12 +623,18 @@ chsh - zmienia powłokę na inna wybną znajdującą się w /etc/shells
 	-s /etc/ksh - zmienia na krona
 chfn - change full name - zmienia dane usera , imie,naz,tel,itp
 grep ^PASS /etc/login.defs - tutaj są domyślne ustawienia dla haseł urzytkowników jak minimalna długość 
+	grep słowo plik.txt -przeszuka plik wyłuskując linie zawierające słowo
+	grep color=auto słowo plik.txt - tak jak wyżej ale podkoloruje mu wynik
+		$ export GREP_OPTIONS='color=auto' -ustawienie konfiguracyjne na auto color dla grep
+	grep -i -case sensitiv
 chage - edycja ustawień haseł , passwd też ma takie możliwości
 chage -l kw -informacje o ustawieniach hasła dla urztkownia kw
 passwd - ustawia hasło np; passwd kw
 	-d -szybkie usuwanie hasła
 	-l -lock , to samo co usermod -L , czyli '!' na początku hasła /etc/shadow
 	-S -info , jak na początku jest L -zanczy locked
+	-f -rzeczywista nazwa usera
+	-s -powłoka
 vipw - bezpieczny sposób na edycje /etc/passwd i /etc/shadow
 openssl - szyfrowanie
 	openssl aes-256-cbc -a -salt in plik_do_szyfrowania -out plik_zaszyfrowany
@@ -531,6 +647,7 @@ openssl passwd -salt 666 hasło - dodana sól będzie pierwszymi znakami tj; 666
 useradd -m -p $(openssl passwd hunter2) mohamed - a tak stworzyć zaszyfrowane hasło mochamedowi !!!--tak stworzone hasło będzie widoczne w historii ---!!!
 ????---> można napisać program w C używający funkcji do szyfrowania <---????
 groupadd - dodaje grupe
+	nazwa_grupy:hasło(jak x to shadow):id:członkowie,wielu.wielu
 groups - polecenie pokazujące grupy do których należy user
 groupmod - modyfikuje nazwe,id,passwd
 	usermod -a -G tennis,sports kw - dodaje urzytkownika kw do grup . -G -grupy ,-a append
@@ -571,6 +688,8 @@ CTRL+L – wyczyszczenie ekranu (działa jak polecenie clear)
 !wpis – wykonaj najczęściej wykonywane polecenie zaczynające się od wpis
 !wpis:p – to samo co wyżej, tylko bez wykonywania (wyświetlenie pełnej nazwy komendy)
 CTRL+x+e  - uruchamia domyślny edytor tekstu , wpisujemy nasze polecenie ,zapisujemy i wychodzimy ,polecenie się wykonuje
+CTRL+j - enter , powrót karetki
+CTRL+d - exit
 
 	Skróty przeznaczone do edycji polecenia:
 	---------------------------------------
@@ -614,6 +733,68 @@ Alt-F7 Pozwala na przesuwanie okna za pomocą strzałek
 Alt-F8 Pozwala na zmianę rozmiaru okna za pomocą strzałek
 Alt-F9 Minimalizuje aktywne okno
 Alt-F10 Maksymalizuje aktywne okno
+
 SZTUCZKI
 --------
 ^tak^nie - w poprzedniej komendzie gdzie było słow "tak" zostanie zastąpione przez "nie" i ponownie wywołane
+
+16.SYSTEMD
+-------
+ 
+who -r -sprwadza run level
+systemctl list-units - lista aktywnych jednostek systemd
+	--full -pełne nazwy
+	--all -wszystkie jednostki ,nie tylko te uruchomione (-a)
+systemctl show -p typ_jednostki --podgląd zależności jednostki systemd
+systemctl status nazwa_jednostki --info ostatusie jednostki
+systemctl disable nazwa jednostki --jednosta nadal będzie działć ale nie zostanie
+	ponownie uruchomina przy ponownym włączeniu systemu
+systemd-cgls --info o grupie kontrolnej w oderwaniu od tanu samej jednostki
+pkg-config systemd --variable=systemdunitdir -katalogi jednostek systemowych
+pkg-config systemd --variable=systemdconfdir -katalogi jednostek konfiguracyjnych 
+systemd start -aktywacja jednostki
+	stop , restart - deaktywuje , restartuje
+systemctl reload jednostka - ponownie ładuje conf. jednostki
+systemctl daemon-reload - ponownie ładuje conf. wszystkich jednostek
+systemctl list-jobs - lista prac (żądań aktywacji i deaktywacji jednostek)
+systemctl poweroff - wyłącza maszyne
+systemctl reboot - rebootuje maszune 
+	start unit -aktywacja jednostki
+	stop , restart - deaktywuje , restartuje
+	disable unit - jeśli ma sekcje [install] trzeba ją wyłączyć aby
+	usunąć ewentualne dowiązania symboliczne
+systemctl reload jednostka - ponownie ładuje conf. jednostki
+systemctl daemon-reload - ponownie ładuje conf. wszystkich jednostek
+systemctl list-jobs - lista prac (żądań aktywacji i deaktywacji jednostek)
+	???--- trudno podejżeć prace bo systemd raczej szybciej je zakończy ,
+	ale można szybko się zalogować i spróbować ---???
+	???--- praca zakończona ni oznacza wyłączenia jednostki , może ona być 
+	nadal aktywna ,np; usługa ---???
+systemd --failed -pokaże usługi które nie uruchomiły się przy starcie maszyny
+	można potem zrobić status i zobaczyć szczeguły
+	systemctl status unit_co_faild
+systemctl is-enabled jakiś_unit -wyświetli czy jest enabled czy disabled
+systemctl journal -logi
+	-b -od ostatnigo boota
+	-u unit -logi tego unita
+
+17.CRONTAB
+----------
+
+???--- polecenie dla crona można zapisać w pliku a następnie podać ścieżkę przy wywołaniu crontab--???
+crontab -l -listuje zadania
+	-r -usówa wcześniej zainstalowany plik crontab
+	-e -jednoczesna edycja i instalaca pliku crontab
+	EDYCJA CRONTAB
+	-------------
+	minuta godz dzien dzień_miesiąca miesiąc dzień_tyg nasze_polecenie
+	W tabelach oprócz zadań możemy definiować zmienne środowiskowe np.:
+	SHELL=/bin/bash
+	PATH=/sbin:/bin:/usr/sbin:/usr/bin
+	MAILTO=jakis_user
+	NICE=15
+	
+	SHELL=/bin/bash
+	PATH=/sbin:/bin:/usr/sbin:/usr/bin
+	MAILTO=jakis_user
+	NICE=15
