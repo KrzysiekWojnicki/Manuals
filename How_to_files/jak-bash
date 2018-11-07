@@ -262,6 +262,7 @@ tr - translacja
 	cat plik.txt | tr 'a' 'A' -zamieni a na A
 	cat plik.txt | tr '\n' ' ' -zamieni zanak końca lini na spacje , tekst bedzie w jednej lini
 	tr -s ' ' -zamieni wielokrotne spacja na pojedyńcze
+	tr -d "\n" - skasuj wystąpienie nowej lini
 sort - sortowanie alfabetyczne
 sort -n -sortowanie numeryczne 1,2,3 . a alfabet posortuje 1,100,2,20,..
 uniq - unikaty , jak się powtarza to wyświetka raz
@@ -340,21 +341,64 @@ awk - czyli qawk język wyszukiwania i przetwarzania wzorców.
 	awk '{ if($2 ~ /dupa/) print }' filename - jeśli w 2 kolumnie jest dupa ,to wyświetl
 	awk -F: '{ print $1 }' - zastąpi nam delimiter w postaci : na spacje(domyślny delimiter awk)
 sed -edytor strumieniowy do filtrowania i przekształcania tekstu
-	ech Sunday | sed 's/Sun/Mon/' -otrzymmy Monday
+	sed 's/t/ooo/' - zamieni pierwsze wystąpienie 't' w każdym wierszu na 'ooo'
+		"s"to substitute ,zastępowanie
+		-i -interactiv mode , dokonuje permanentnych zmian w pliku
+	sed -f skrypt_sed text -zmodyfikuje plik text skryptem sed
+		skrypt piszemy poprostu podając polecenia
+			s/t/T/g
+			s/\w*.//g
+	sed 's/\bkot\b/pies/g' - zamieni kot na pies 
+		\b -bounds ,granice ,czyli nie uwzględni kotwatość , a jedynie stricte kot
+	sed -n 's/słowo/&/gp' - wyświetki tylko linie gdzie wystąpiło 'słowo' coś jak grep
+		-n -silen mode , nic nie wyświetla
+		/p -tylko przypadki
+		/I -wielka litera I na końcu to case sensitiv 
+	sed '/bzdury/dg' - d usunie bzdury globalnie , niema znaczenia wileki czy małer d
+	sed '4 q' - wyświetl 4 linie i quit
+	sed '5,& d' - wyświetl 5 zakończeń lini i usuń (piątą i reszte) sposób wyżej lepszy
+	sed '1!{/^#/d;}' -skasuje wszyskie linie zaczynające się od znaku "#" z wyjątkiem pierwszej
+	sed -n '$=' -nie wyświetlaj nic ,ale podja numer wierszy , i tylko ostatni
+		= -podaje numer lini
+	sed '=' text | sed 'N; s/\n/---/' -ponumeruje linie , doda nową linie ,a w jej miejscu wstawi "---"
+		N -append ,doda do ciągu 
+		\n -new line
+	sed 's/./&\n/g' - weź każdy znak "kropka" i wyświetl w nowej lini
+	sed 'n,d' - kasuj nową linie , czyli 1 wyświetli ,2 nie bo nowa linia , potem wyświetli 3 itd.
+	sed -n 'p,d' - wynik jak wyżej ale inaczej bo wyświetlamy tylko wybrane linie
+	sed '1!n,d' - to co wyżej ale pomiń pierwszą , czyli 2,4,6 itd.
+	sed -n 'p,n,n,n' - wyświetli co 3 linie ,itd
+	sed 's/[0-9]/ooo/g' - zamieni wszystkie liczby na 'ooo'
+	sed 's/[a-zA-Z]/ooo/g' - zamieni wielkie oraz małe litery
+	sed 's/[A-z]/ooo/g' - to co wyżej . 'A' musi być najpierw bo w tablicy ASCII wielkie występują 
+		wcześniej ,i  idwrotna kombinacja nie zadziała
+		Skrót dziła na tej zasadzie że oznaczmy na tablicy ASCII dwa punkty
+		a wszystko i wszystko między nimi jest wliczone w nasze zainteresowanie
+		ale uwaga bo między 0-z są też inne znaki takie jak np '.' '?' itp.
+	sed 's/[0-Z]/ooo/g' - jeszcze jeden skrót , wszystkie liczby i wielkie litery 
+		[0-z] - zastąpi wszystkie numery i liczby
+	sed 's/[0-9]i/ooo/g' - zastąpi każde wystąpienie liczby po której występuje litera 'i'
+	sed 's/[0-9]//g' - usunie liczby
+	sed 's/t/ooo/g' - xrobi to samo tylko globalnie w człym tekście
+	sed 's/^t/ooo/g' - zamieni tylko te 't' które znajdują się na początku lini
+	sed 's/t$/ooo/g' - zamieni tylko te 't' które są na końcu lini
+	sed 's/[0-9]/(&)/g' - zamieni każdą cyfre na tą cyfre ale w nawiasach
+		"$" to wynik wyszukania
+		To zapytanie rozdzieli dziesiętne i większe liczby na pojedyńcze
+		[0-9][0-9]* -doraźnie pomoże , "*"oznacza pierwsze lub pierwsze i drugie
 	???--- W sed znak '/' można zastąpiś : _ |    ----????
-	$ echo Monday > dzien
-	$ sed -i 's/Mon/Sun/' dzien -zamieni w pliku string na Sunday 
-		-i -interactiv mode 
-	$ echo Sunday | sed 's/Sun/&&/' -otrzymamy SunSunday
-	$ echo Sunday | sed 's_\(Sun\)_\1ny_' -otrzymamy Sunnyday
+	sed 's_/usr/share/local_ooo_g' - inny delimiter dla czytelności tekstu
+		delimiterem może być cokolwiek
+	sed 's/[^0-9]/ooo/g' - zastąpi wszystko ,nawe spacje, poza liczbami
+	sed 's/a/1/g;s/b/2/g' - dwa zadania dla sed rozdzielone ';' jak w skryptach bash
+	sed 's/\w*//g' - symbol \w* oznacza pierwsze słowo a-z 
+		dodatkowo \w*. -spacja po słowie też zostanie usunieta
+		\w*$ -ostatnie słowo
 	$ echo Sunday | sed 's_\(Sun\)_\1ny\1_' -otrzymamy Sunny Sunday
 	$ echo 2014-04-01 | sed 's/....-..-../yyyy-mm-dd/' -otrzymamy yyyy-mm-dd .Kropka zastępuje dowolny znak
 	$ echo -e 'today\tis\twarm' | sed 's_\s__g' -otrzymamy todayiswarm , nie wiem czy taki miał być wynik \s -to white spaces
-	$ echo level15 | sed 's/5/43' 	wynik level143
-	's/level/dupa/g' - zastąpi level na dupa
 	'x/d' -karzda linia zawierająca x zostanie przesiana
 	$ cat plik | sed 's/o\{3\}/A/' -zastąpi 3 'o' na A
-	sed 's/t/T/' plik.txt - zastąpi pierwszą napotkaną litere "t" w lini ,na wielką "T"
 udevadm info --query=all --name=/dev/sda -wyświetli ścieżkę i inne atrybuty użądzenia	
 	P: ścieżka urządzenia w systemie sysfs
 	S: dowiązanie symboliczn do urządzenia utworzonego prza proces udev w /dev
