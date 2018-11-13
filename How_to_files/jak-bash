@@ -15,10 +15,48 @@ SPIS TREŚCI:
 	15.SKRÓTY
 	16.SYSTEMD
 	17.CRONTAB
+	18.USŁUGI.SEVICES
 ----------------------
 
 1.POLECENIA
 --------
+logname - pokazuje login name usera
+uptime - pokazuje jak długo działa system od ostatniego boota
+lpr - drukowanie off line ,wysyła plik do druku
+lpq - program badający kolejkę buforowania druku
+aspell - interactive spell checker
+	-c -automatycznie spr.
+	-l -pokaż błędy
+dump - zapisuje całą partycje lub wybrane pliki na backup
+	!!!--- UMOUNT-uj partycje przed ,aby uniknąć błędów ---!!!
+restore - restore files or file systems from backups made with dump
+slocate - NIEzainstolowany domyślnie - secure locate tz. że przeszuka pliki roota 
+	ale nie wyświetli jego zawartości
+	-u -tworzy index od root w dół
+	-U -tworzy index od podręczego katalogu w dół
+	-l 1|0 -on/off security
+	-e katalog -exclude katalog z indexsu
+	-d index.txt -zapisz do pliku index.txt
+	-r regexp -szuka plików pasujących do regexp
+accton / acctoff - wł/wył proces
+dump-acct /var/account/pacct - drukuje plik acct 
+dump-utmp /var/run/utmp - dtukuje plik utmp
+last - (acct) pokazuje listing ostatnio logującuch userów
+which - pokazuje ścieżke polecenia np; /usr/bin/which
+sa - (acct) sumuryczne info o wcześniej wykonywanych poleceniach gdzie;
+        	- 9.86re is a “real time” as per wall clock minutes
+       		- 0.01cp is a sum of system/user time in cpu minutes
+       		- 2466k is a cpu-time averaged core usage, i.e. 1k units
+       		- sshd command name
+	-c -najwyższy procen urzycia
+	-m -numer procesu ,i numer minut CPU 
+ac - ( polecenie usługi acct ) Wypisuje statystyki odnośnie  czasu  połączenia  użytkowników ,na podstawie pliku wtmp
+	ac kw -dla użytkownika kw
+	-d -info z kilku dni
+	-p -dla każdego użytkownika , zamist sumy
+lastcomm - (polecenie usługi acct) Print out information about previously executed commands.
+	lastcomm kw -ostatni komendy usera kw
+	lastcomm vim -ostatnie wywołanie vim
 shuf - tworzy losowe permutacje
 lsof - list open files , bez agrumentów pokarze wszystkie otwarte pliki w systemie
 	lsof ścierzka/do/pliku --Which processes have this file open?
@@ -42,6 +80,10 @@ readonly - wyświetli zmienne globalne tylko do odczytu tj.rzadna funkcja ich ni
 	-f --funkcje readonly
 logrotate - automaticlly purge messages
 netstat -połączenia sieciowe
+	-t -tcp
+	-u -udp
+	-g -all multicast network subscribet to this host
+	-l -tylko porty które słuchają
 	-tulpn
 arp -a -Adderss Resolution Protocol , wyświelta sieci IPv4 z pamięci kernela ,
 	flaga -a BDS style output format ,pokarze ipadres
@@ -85,12 +127,11 @@ tcpdump - sniffer do przechwytywania paczek otrzymanych albo wysyłanych przez s
 	tcpdump -i eth0 src 192.168.0.2 -łapie z źródła
 	tcpdump -i eth0 dst 50.116.66.139 -łapie idące do celu
 free - info o pamięci wykorzystanej w sys.
+	-s N -pokazuje co N sekund
 	-m mega bity
 strace - śledź wywołania systemowe i sygnały
 echo -e - uruchamia formatowanie tj; znaki \n \r itd . Uwaga muszą być w cudzysłowiu np; 'dupa\nupa\n'
 	echo * - wyświetli liste plików w lini
-w - info o userach ,i tym co teraz robią
-last - onfo o userach którzy się logowali ,i wylogowywali z systemu .urzywaj z tail i head bo plik jej balszoj
 lastb - to co wyżej ale dla root-a
 du [plik] lub [katalog] - szacuje zużycie miejsca na dysku
 	-S -dla katalogów z uwzględnieniem roz. podkatalo.
@@ -137,21 +178,42 @@ mkfs - tworzy wybrany system plików . patrz MAN ,lub /sbin/mkfs.*
 ls -i -przegląda węzły inode
 ls /dev/[s|x|v]d* - alternatywne sposoby podglądania utrządzeń
 	-li -listuju węzły inode , pokarze numer węzła
+ifconfig -a -wszystkie infomacje o urządzeniach sieciowych i ich stanie
+	eth0 up -włącza , down -wyłącza wskazane urządzenie
+	ifup , ifdown eth0 -tak też można wł/wył
 ip address - info o sieci , tak jak ifconfig
 lspci - listuje wszystkie podłączone urządzenia pci
 nestst - z sudo , statystyki o połączeniach sieciowych
 host - wyszukuje nazwy hostów , urzywając dns
 	/etc/hosts - lista hostów , ona jest zawsze przeszykiwana pierwsza przed zapytaniem dns
 	ale można zmienić to zachowanie edytując /etc/nsswitch.conf (name service switch)
+	-p port -wybrany port tcp , domyślinie 43 (whatis service)
 route - pokazuje / obsługuje tablicę trasowania protokołu IP
 	route add -net 10.10.10.0/24 gw 192.168.0.1 - dodaje
 	route del -net 10.10.10.0/24 gw 192.168.0.1 - delete
 	route add default gw 192.168.0.1 - dodaje domyślny gateway
+nslookup - odszukuje ipaddres hosta ,albo odwrotnie
+traceroute - pokazuje ścierzkę po której leci nasz pakiet
 host - wyszukuje nazwy hostów, używając serwerów domen
 	host www.dupa.ru
+hostname - nazwa komputera
+	-i -ip addres
+	-a -alias name
+	-d -dns
+	-F hostfile -ustawi hostname czytając z pliku hostfile
+uname - info o maszynie
+	-a -all
+w - info o userach ,i tym co teraz robią
+last - onfo o userach którzy się logowali ,i wylogowywali z systemu .
+	urzywaj z tail i head bo plik jej balszoj
 whoami - nazwa usera
 who -r -sprawdza poziom uruchomienia systemu
+	-H -w jednej lini
+	-l -zdalnie zalogowani
 id - info o user i jego grupie ,albo id root - info o root
+	-G -pokazuje wszystkie grupy do których należy user
+	-u -tylko user
+	-g -tylko jego grupa
 cp [co?] [gdzie?] - copy
 cp -p - zachowuje arybuty domyślne takie jak właściciel i prawa dostępu
 	-i -kopjuje hierarchie katalogów rekursywnie ,zachowuje pozwolenia i linki (-R -p -d)
@@ -166,6 +228,9 @@ rm - remove
 rmdid - remove katalog
 file [plik] - określa typ pliku
 stat [plik] - statystyki pliku
+	-f -jaki filesystem ,jaki rozmiar bloku i inne
+	-l -podoąża za dowiązanimi
+	-t -zwięzła forma , w jednej lini
 wc - word count
 nl - number line , numeruje wiersze w pliku
 less - podczas przeglądania pliku można:
@@ -195,17 +260,21 @@ fg - for ground , przywraca na pierwszy plan zatrzymane polecenie
 bg - background przesówa proces w tło
 	opcje te same co przy fg
 jobs - wyświetla zatrzymane procesy
+	???---procesy są częścią działającego systemu , są znane tylko
+	powłoką w których pracują ---???
 disown %[number] - żaden terminal nie będzie właścicielem 
 	praca będzie trwać nadal po jego zamknięciu
 trap --wyświelti wszystkie trap-y ustawine aktualnie
 	( trap słóży do chwytania sygnałów )
 kill -Term -przerwanie procesu (SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c 
-	kill PID --zabije
+	kill -l -lista sygnałów 
 	-Cont -wznowienie zatrzymanego procesu ( patrz MAN 7 signal)
 	-9 --sygnał kill , zabija proces i wyświetla killed
 	kill -[signal] %[number] - Send the signal [signal] to job number [number]
 locate - wyszukiwanie po indeksach, jak coś nie zostało zaindeksowane to nie znajdziemy
 diff -q plik1 plki2 - porównuje pliki , q- tylko info że się różnią
+cmp - porównuje pliki bit po bicie
+sdiff - porównuje dwa pliki i tworzy trzeci plik zgodnie z instrukcjami
 man -k -wyszukuje podręcznik po słowach kluczowych
 info - coś jak man ale nie zawsze zawiera dokumentacje /usr/share/doc
 whatis - wyszukuje w MAN , np whatis ls --> ls(1)
@@ -213,7 +282,11 @@ pv - (NIEMA TEGO DOMYŚLNIE , TRZEBA ZAINSTALOWAĆ) pasek postępu np;
 	pv duzy_plik | gzip > duzy_plik.gz - podczas pakowania mamy podgląd co się święci
 stat jakiś_plki - pokazuje statystyki plilu , węzeł inode
 touch -t - time stamp zmieniamy czas modyfikacji pliku rrrrmmddggmm
-touch -r - referens podajemy (plik1 plik2) - drugi plik zosatnie dotknięty pierwszym i oba będą miały taką samą date
+	-r - referens podajemy (plik1 plik2) - drugi plik zosatnie dotknięty pierwszym i oba będą miały taką samą date
+	-a -zmini tylko czas wej.
+	-m -tylko czas modyfikacji
+	-d -timestamp "rr/mm/dd gg,mm" -ustawia date
+	-c -jesli plik nie istnieje nie twórz go
 batch - kolejkuje pliki , np; 
 	echo gzip jakiś_plki | batch - wykona polecenie gdy obciążenie systemu spadnie ,domyslnie 1.5
 	SPRAWDŹ MAN AT , BATCH 
@@ -273,6 +346,7 @@ comm - comparing streams (or files) , porównywarka
 				| dupa		 |
 	domyślnie wyświetla 3 koluny 
 	comm -13 - tylko 1 i 3 itd..
+xxdiff - graficzny program do porównywania plików
 od - pokazuje zawartość pliku w kodzie szesnastkowym 
 	-b ósemkowym
 	-c ASCII
@@ -520,7 +594,7 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 	aby uniemożliwić logowanie się przez ssh za pomocą hasła , a jedynie klucza ssh
 /etc/fstab - plik ze statycznymi informacjami systemu plików
 /etc/network/interfaces - opisuje dostępne na systemie
-/etc/init.d - pliki stop-start demon
+/etc/init.d - pliki stop-start demon czyli usługi , albo unity w systemd
 /etc/skel - "szkielet" który jest kopiowany do nowego pliku home urządzeń ,zazwyczaj zawiera .bashrc
 /etc/X11 - pliki konfiguracyjne grafiki
 /etc/opt - pliki konfiguracyjne dla katalogu opt
@@ -560,6 +634,11 @@ $DISPLAY - nazwa x którego urzywasz
 $OLDPWD - poprzedni katalog
 $TERM - terminal
 $LOGNAME - login name
+$EDITOR	- domyślny edytor tekstu
+$VISUAL - też domyśly edytor 
+	różne programy wybieraj inna zmienną ,dobrze mieć obie zmienione
+	export EDITOR VISUAL - ustawia obie
+
 
 9.STRUMIENIE
 -----------
@@ -646,6 +725,7 @@ setfacl - pozwal ustawić acls pliku np;
 	nazwausera:hasło(x oznacza że hasło jest w etc/shadow):id:grup_id:nazwa_rzeczywist:powłoka
 	???--- można stworzyć pseudo usera bez praw zapisu ani logowania ,jednak
 	system może uruchamiać procesy z jego identyfikatora ---???
+users - wszyscy aktualnie zalogowni
 useradd - dodawanie usera
 	useradd -m -d /home/yanina -c "yanina wickmayer" yanina
 	-m -tworzy katalog domowy 
@@ -666,6 +746,7 @@ chsh - zmienia powłokę na inna wybną znajdującą się w /etc/shells
 	-l -listuje wszystkie powłoki
 	-s /etc/ksh - zmienia na krona
 chfn - change full name - zmienia dane usera , imie,naz,tel,itp
+	-f name ,-h phone , -o office
 grep ^PASS /etc/login.defs - tutaj są domyślne ustawienia dla haseł urzytkowników jak minimalna długość 
 	grep słowo plik.txt -przeszuka plik wyłuskując linie zawierające słowo
 	grep color=auto słowo plik.txt - tak jak wyżej ale podkoloruje mu wynik
@@ -692,10 +773,13 @@ useradd -m -p $(openssl passwd hunter2) mohamed - a tak stworzyć zaszyfrowane h
 ????---> można napisać program w C używający funkcji do szyfrowania <---????
 groupadd - dodaje grupe
 	nazwa_grupy:hasło(jak x to shadow):id:członkowie,wielu.wielu
+	-f -nie pozwala aby nazwa się powtarzała
+	-g GID -sami wybieramy GID
 groups - polecenie pokazujące grupy do których należy user
 groupmod - modyfikuje nazwe,id,passwd
 	usermod -a -G tennis,sports kw - dodaje urzytkownika kw do grup . -G -grupy ,-a append
-groupdel - wiadomo
+groupdel - wiadomo . Dobrze jest przed skasowaniem spr. które pliki mają ID tej grupy
+	find / -group nazwa_grupy -print
 gpasswd - edycja /etc/group o /etc/gshadow - pliku z danymi kto jest adminem
 	- A -minowuje admina , admin może się wypisać z grupy
 	-a -dodaje do grupy ,-d -usówa
@@ -703,6 +787,17 @@ gpasswd - edycja /etc/group o /etc/gshadow - pliku z danymi kto jest adminem
 chgrp - zmień grupe , np; chgrp grupa2 plik - plik teraz jest własnością grupy 2
 chown - właściciel pliku/katalogu np; chown kw plik
 	chown kw:grupa2 plik - zmienia właściciela i grupe
+chattr - zmienia atrybuty plików	
+	u -niekasowalność , zobacz też inne [aAcCdDeijsStTu]
+	a -append only
+	A -access not timestamp , nie zmieni timestamp
+	c -skompresowane w zapisie , rozkompresowane w odczycie
+	d -don't dump , pominie przy robieniu kopii
+	i -immutable , niezmienialny , niskasowywalny
+	s -secure deletion ,przy kasowaniu plik jest zapisywany zerami
+	S -synchronous update ,informacje są odrazu synchronizowane przy zapisie
+
+lsattr - wyświetla atrybuty pliku
 
 
 14.TYPY PLIKÓW
@@ -842,3 +937,11 @@ crontab -l -listuje zadania
 	PATH=/sbin:/bin:/usr/sbin:/usr/bin
 	MAILTO=jakis_user
 	NICE=15
+
+18.USŁUGI.SEVICES
+-----------------
+
+ ???--- Na Debiani ,ubuntu .mint uruchamiane usługi automatycznie startują , w innym przypadku tzrba je statować ---???
+service --status-all  -status usług
+acct - włączenie/wyłączenie ewidencjonowania procesów . Dmoyślnie może jej nie być i trzeba ją zainstalować
+	systemctl enable acct - uruchamiamt usługe , startujemy jak sama nie wystowała.
