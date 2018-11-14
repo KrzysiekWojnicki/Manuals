@@ -55,3 +55,6 @@ funkcja_p_ile
 # funkce np; source ~/naszplik_z_funkcjami
 # np; na inne możliwe pliki do tworzenia
 
+# dodać tworzenie losowego pliku passwd
+# dodać t.l.p. z przypadkowymi słowami
+

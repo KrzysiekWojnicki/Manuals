@@ -20,6 +20,9 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+source - is a builtin command of the Bash shell. It takes a file name, 
+	and executes the commands in that file as if they had been typed on the command line.
+export - wbudowane polecenie bash , eksportuje zmienne środowiskowe lokalne do globalnych
 logname - pokazuje login name usera
 uptime - pokazuje jak długo działa system od ostatniego boota
 lpr - drukowanie off line ,wysyła plik do druku
@@ -112,7 +115,10 @@ e2fsck - sprawdza linuxksowy sys. plików ext..234 . Należy używać przy zmian
 	-fy /dev/cośtam --przepisuje dane z pliku dziebbika do bazy danych fs.
 tmpfs - zmienne konfigurujące sposób montowania tmpfs w trakcie rozruchu,
 	można przekształcić przestrzeń wymiany w coś w rodzaju tymczasowego dysku
-mvstat - statystyki pamięci wirtualnej
+ss - command use to dump socket statistics
+	ss -t -a -To ss all TCP and UDP sockets on Linux
+	ss -t -a -Z -Show all TCP sockets with process SELinux security contexts
+vmstat - statystyki pamięci wirtualnej
 	vmstat 2 6 - wywołuj co dwie sek , sześć razy
 	- t --time format
 vmstat - raport pamięci wirtualnej
@@ -233,6 +239,7 @@ stat [plik] - statystyki pliku
 	-t -zwięzła forma , w jednej lini
 wc - word count
 nl - number line , numeruje wiersze w pliku
+	-i 3 -wyświetli numerki co 3
 less - podczas przeglądania pliku można:
 	f -strona do przodu , lub ^V ,^F 
 	b -trona do tyłu ,lub ^B
@@ -272,7 +279,10 @@ kill -Term -przerwanie procesu (SIGKILL ),domyślne ustawienie , to to samo co C
 	-9 --sygnał kill , zabija proces i wyświetla killed
 	kill -[signal] %[number] - Send the signal [signal] to job number [number]
 locate - wyszukiwanie po indeksach, jak coś nie zostało zaindeksowane to nie znajdziemy
-diff -q plik1 plki2 - porównuje pliki , q- tylko info że się różnią
+diff -q plik1 plki2 - porównuje pliki 
+	q -informuje tylko że się różnią
+	c1 -wypisze jedną linie oprócz zmienionych (domyślnie 3 ,samo c)
+	y -side by side
 cmp - porównuje pliki bit po bicie
 sdiff - porównuje dwa pliki i tworzy trzeci plik zgodnie z instrukcjami
 man -k -wyszukuje podręcznik po słowach kluczowych
@@ -322,6 +332,7 @@ cut - wycina kolumny z plików
 		-d ogranicznik (delimiter)
 		-f pola
 	cut -d: -f1 /etc/passwd | column - wyświetli wszystkich lokalnych urzytkowników
+	cut -c 12-16 -wpisze tylko znaki od 12 do 16 w każdym wierszu
 ping -c 1 costam.ru | grep 'bytes from' | cut -d = -f 4 
 	# jeden raz wywołujemy ping 
 	# ze zwrotnej informacji wyłuskujemy linie zawierającą 'bytes from'
@@ -337,9 +348,12 @@ tr - translacja
 	tr -s ' ' -zamieni wielokrotne spacja na pojedyńcze
 	tr -d "\n" - skasuj wystąpienie nowej lini
 sort - sortowanie alfabetyczne
-sort -n -sortowanie numeryczne 1,2,3 . a alfabet posortuje 1,100,2,20,..
+	-n -sortowanie numeryczne 1,2,3 . a alfabet posortuje 1,100,2,20,..
+	-r -revers sort
+	--output='plik_wyjściowy' plik_wejściowy -zapisze wynik do wyjśiowego
 uniq - unikaty , jak się powtarza to wyświetka raz
-uniq -c -wybiera i zlicza wystąpienia np; 1 jan , 1 marian , 3 dupa
+	 -c -wybiera i zlicza wystąpienia np; 1 jan , 1 marian , 3 dupa
+	 --skip-char=1  -pominie pierwszy znak
 comm - comparing streams (or files) , porównywarka
 	comm file1 file2	| jan		 |
 				|   	marian   |
@@ -347,11 +361,33 @@ comm - comparing streams (or files) , porównywarka
 	domyślnie wyświetla 3 koluny 
 	comm -13 - tylko 1 i 3 itd..
 xxdiff - graficzny program do porównywania plików
+paste -d ":" plik plik2 - skleja wiersze z dwuch plików 
+	d -delimiter , bez nigo domyślnie jest \t (tabulacja)
+join -join - łączy wiersze dwóch plików według wspólnych pól
+	join -1 2 -2 3 t , plik plik2 -drugie pole w pliku1 bedzie wspólnym polem,
+		trzecie z pliku2 też (jak sa identyczne np; nazwiska to sie połączą)
+		t -delimiter , jak pola w wierszu sa rozdzielone np; "," to tak je join rozpozna
+	-a 1 -zawartość pierwszego bedzie wyświetlona najpierw
+fold - zawija tekst
+	-w 16 -s  -zawiń teks po 15 znakach ,s -zapobiega rozdzielaniu słów w środku
+fmt - prosty program formatujący tekst 
+	bez parametrów wyświetla teks w jednej lini
+	-w 20 -zawija tekst po 20 znakch
+	-s -dzieli długie linie ,do długości , wszystkie kródsze zostaną pominięte
+		czyli taka z 2 znakami taka zostanie
+	-p '#' -nie pokarze lini zaczynających się znakiem '#'
+	-u -unifikuje spacje
+	-c indentation of 2 first line
+	-g -width ,default 93%
 od - pokazuje zawartość pliku w kodzie szesnastkowym 
 	-b ósemkowym
 	-c ASCII
 xargs - wykonaj polecenie z arg. ze stdout
-find / -name *.txt | xargs grep -i dupa --odszuka w całyej gałęzi nazwy *.txt i wybierze tylko te z stringiem dupa
+	echo {1..9} | xargs -n3  -wywoła 3 argumenty na raz , czyli 1,2,3 ,i 4,5,6 w nowej lini itd.
+find / -name *.txt | xargs grep -i dupa --odszuka w całyej gałęzi nazwy *.txt i 
+	wybierze tylko te z stringiem dupa
+	-maxdepth -1  -przeszuka tylko bierzący katalog ,określamy głębokość szukania
+	-delete  -find domyśli robi print ale możemy skasować wyniki
 find . -printf "%M\t%u\t%p\t%g\n" - wyświetli coś jak ls -l , trzeba tylko konkretny katalog wybrać bo wyrzyga wszystko
 find - szuka
 	find . -name "*.conf" - szuka w aktualnym folderze po nazwie
@@ -395,8 +431,10 @@ set +u - domyślnie jeśli zmienna nie istniej to nie pojawi się nic , opcja se
 set -u - wraca do stanu domyślnego
 	set +u <--> set +o nounset
 	set -u <--> set -o nounset
+printenv - wyświetla zmienne środowiskowe
 env - wyświetla exportowane zmienne
-env -i - czyści środowisko dla zmiennych
+	-i - czyści środowisko dla zmiennych dla danego skryptu
+	-u ZMIENNA -unset pomija zmienna w skrypcie
 rename 's/string/inny_string/'* - szuka wzorca i podmienia nazwe
 rename 's/text/txt/' *.text - zamiana rozszerzenia na txt
 rename -n 's/TXT/txt/g' aTXT.TXT 

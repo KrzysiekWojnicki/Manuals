@@ -365,6 +365,28 @@
 	done
 		# zmienna $OPTARG przechowuje argument
 
+	# Aby spr. czy podaliśmy argumen można pętle zamknąć w if-je
+	if (($# == 0)); then
+	      echo -e "nie podano żadnej op\n -h --hepl"
+	      while..
+      	fi
+	# albo lepiej spr. czy podany arg. mieści się w naszych oczekiwaniach
+	# jak nie to stosuje dop. komunikaty
+	if ( ! getopts ":f:xh" opcja )
+	 then echo "funkcja $0 nie przyjmuje ($1)  ,spr -h"
+	     else
+	        while getopts ":f:xh" opcja;
+		   do
+		      case $opcja in
+		                h) echo -e "help\nf -tworzenie pliku\nh -help";;
+		                 f) echo $OPTARG ;;
+		                  \?) echo nieprawidłowa op -$OPTARG ;;
+		                   :) echo opcja -$OPTARG potrzebuje argumentu;;
+		            esac
+		   done
+		   fi
+			   
+
 # GENEROWANIE LICZB LOSOWYCH
 ----------------------------
 	# generujemy liczbe od 40 do 49
