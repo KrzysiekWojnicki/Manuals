@@ -581,8 +581,26 @@ $#    Stores the number of command-line arguments that
 			      $$ = PID procesu
 && - logiczne AND czyli I
 || - logiczne or
-# - znak komentarza w powłoce
 \ - znak ucieczki
+# - znak komentarza w skryptach sh.
+	Other # uses in Bash
+	The # is often used in bash to count the number of occurrences or the length of a variable.
+	
+	To find the length of a string:
+	
+		myvar="some string"; echo ${#myvar}
+		returns: 11
+	
+	To find the number of array elements:
+	
+		myArr=(A B C); echo ${#myArr[@]}
+		returns: 3
+	
+	To find the length of the first array element:
+	
+		myArr=(A B C); echo ${#myArr[0]}
+		returns: 1 (The length of A, 0 is first element as arrays use zero-based indices/subscripts).
+
 
 5.MANIPULACJA ŁAŃCUCHAMI I ROZSZERZANIE ZMIENNYCH
 ----------------------------------------------
