@@ -92,6 +92,7 @@ arp -a -Adderss Resolution Protocol , wyświelta sieci IPv4 z pamięci kernela ,
 	flaga -a BDS style output format ,pokarze ipadres
 ssh -X ip_adres -połączenie z xserwerm na zdalnej maszynie , bez x tylko terminal
 	ssh root@adres_ip -- łączymy się z kontem root na maszynie
+	-p port -użyje wybranego portu , domyślnie 22
 nice - nadaje pryjorytet procesowi . -20 najwyższy , 19 najniższy
 	nice -10 cat > file --odpali z pry. 10
 	nice --10 cat > file --odpali z pry.-10
@@ -199,9 +200,31 @@ route - pokazuje / obsługuje tablicę trasowania protokołu IP
 	route del -net 10.10.10.0/24 gw 192.168.0.1 - delete
 	route add default gw 192.168.0.1 - dodaje domyślny gateway
 nslookup - odszukuje ipaddres hosta ,albo odwrotnie
-traceroute - pokazuje ścierzkę po której leci nasz pakiet
+traceroute - program służący do badania trasy pakietów w sieci IP. 
+	traceroute ipaddress -albo- hostname - pokarze przez jakie routery leci paczka
+	Pierwsza jest gateway naszej sieci potem ISP (Internet service provider)
+	???--- domyślna paczka ma 40 bit ,jednak można to zmienić ---???
+	???--- traceroute może iść inną trasą niż pobierane pliki albo email ---???
+dig - lookup utilty ,zapytuje DNS o konkretne rekordy
+	dig wp.pl - domyślnie wyświetli rekord A przechowujący IPaddress
+	dig wp.pl mx - rekord mx (mail exchange record) , można też napisać dig -t mx -(type)
+		NS - an authoritative name server
+		CNAME - the canonical name for an alias 
+	dig wp.pl any - wyświeli wszelkie rekordy
+	dig wp.pl +short - sam address IP
+		+noall +answer - polarze nam tylko sekcje answer
+	dig @ns1.wp.pl. wp.pl - podejrzymy odpowiedź bezpośrednio od serwera nazw któy
+		posiada odpowiedzialność za domene wp . Tego można znaleś pocją 'any'
+	dig -f plik.txt - pobierze adresy z pliku np; wp.pl onet.pl
+	.digrc - w kat. domowym możemy zrobić konfiguracje do dig-a
+		po prostu piszemy np; +noall +answer  -i z takimi ust.domyślnie będzie dziłał
 host - wyszukuje nazwy hostów, używając serwerów domen
-	host www.dupa.ru
+	host wp.pl - pokaże domyślnie dns record A
+	host -t ns - pokaże domain name serwer
+	host wp.pl ns1.wp.pl - pokaż konkretny name server
+	host -a - wszystko , '-t any' -zadziła tak samo
+	host 212.77.98.9 - pokaże nazwe dns
+	host -v ..-pokaże w formacie TTL (jak polecenie dig)
 hostname - nazwa komputera
 	-i -ip addres
 	-a -alias name
@@ -209,6 +232,8 @@ hostname - nazwa komputera
 	-F hostfile -ustawi hostname czytając z pliku hostfile
 uname - info o maszynie
 	-a -all
+lscpu - info o architekturze procesora
+nproc - liczba rdzeni procka
 w - info o userach ,i tym co teraz robią
 last - onfo o userach którzy się logowali ,i wylogowywali z systemu .
 	urzywaj z tail i head bo plik jej balszoj
@@ -225,9 +250,33 @@ cp -p - zachowuje arybuty domyślne takie jak właściciel i prawa dostępu
 	-i -kopjuje hierarchie katalogów rekursywnie ,zachowuje pozwolenia i linki (-R -p -d)
 	???--- Ciekawostka , jak plik można odczytać , to kopiując go bez opcji -p właścicielem staje się kopiujący ---???
 scp - secure copy ,scp kopiuje pliki między komputerami w sieci. 
-	Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację oraz daje takie samo bezpieczeństwo jak ssh(1).  
-	scp pyta w razie potrzeby o hasła uwierzytelniające.
-	$ scp plik.txt uesr@server_ip:ścierzka/docelowa
+	Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację 
+	oraz daje takie samo bezpieczeństwo jak ssh(1).Scp pyta w razie potrzeby o hasła uwierzytelniające.
+	scp plik.txt uesr@server_ip:ścierzka/docelowa -kopjuje plik.txt gdzieś tam
+	-p -duplikuje atrybuty
+	-r -rekursywnie katalogi i ich zawartość
+	-v -rozległy output ,dobry do debugowania
+ftp - file transfer protocol , server ftp 
+	ftp adres_hosta -albo addressIP ,połączymy się z hostem
+	ftp root@costm
+		ftp> help -lista komend , ftp> ? -też help
+		ftp> cdup -katalog wyżej
+		ftp> get plik.txt  -pobiera plik
+		ftp> mget *.txt  -pobiera wiel plików .txt
+		ftp> put plik  -przesyła plik
+		ftp> quit -wyjście
+			-r -rekursywnie , katalogi z plikami
+sftp - secure ,ale to nie ftp , to subsystem ssh , urzywa tego samego portu 22
+	po prostu obsługuje się jak ftp
+mail - prosty klien poczty
+	mail root@abc.pl - wyśle rootowi ,zapyta o subjec , potem o body ,i o cc
+	mail -włączy tryb wpisywania mail , i pojawi się prompt '&'
+		? -wyświetli help
+wget - pobiera strony www, pliki ,obrazy
+	wget -r www... -pobiera strone i inne 5 głębiej (domyślna głębokość)
+		-r -l10 -głąbokość 10
+		-r -l inf -nieskończoność , może też być 0
+		???--- wget ma ponad 70 opcji ---???
 mv [co?] [gdzie?] - move
 rm - remove
 	-rf rekursywnie force wsówa wszystko
