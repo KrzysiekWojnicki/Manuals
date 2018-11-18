@@ -20,6 +20,38 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+
+scrot - screenshot
+dc - kalkulatror dowolnej precyzji (RPN -reverse polish notification). NIE jest zainstalowany
+	dc 3 4 +p -dodawanie
+watch - execute a program periodically, showing output fullscreen , domyślnie co 2 sek
+	watch -n 0.5 free -m - pokarze status pamieci i update-jtuje go co 0.5 sekundy
+	watch -d ls -l - pokazuje zmieniająca się zawartość katalogu
+	watch -d 'ls -l | fgrep joe' - a teraz tylko te należące do usera joe
+mesg - kotrola przesyłania informacji do twojego terminala
+	bez parametrów wyświetla stan Y albo N
+printf - formatuje i wypisuje dane
+	printf "mój penis ma %d długości i jest %s " 20 olbrzymi
+yes - domyślnie dodaje 'y' 
+	yes | komenda - jeżeli komenda posiada zapytanie to odrazu odpowie yes
+seq - sekfencja liczb
+	seq 1 20 - odliczy od 1 do 20 , domyślnie zaczyna od 1 wiec można napisać tylko 20
+	seq 3 9 - od 3 do 9
+	seq 2 2 10 - policzy od 2 ,co 2 do 10
+	seq -f "%02g/11/2018" 30 - policzy 30 dni październiak w podanym formacie
+	seq -s , 10 - domyślnie zaczyna od newline ale można określić inny separator no; ','
+	seq -w 100 - opcja wyświetli 001 002 003 itd.
+	seq 10 -1 1 - odliczy od 10 do 1
+expr - wykonuje obliczenia wyrażeń regularnych
+	expr 2 + 4 -dodawani
+	expr 10 % 3 -modulo
+	expr 2 \* 7 - przy mnożeniu trzeba uciec aby bash nie zinterpretował * po swojemu
+	expr length [sting] - poda długość stringa
+	expr substr jakiśdługistring 6 5 - wytnie od 6 znaku 5 kolejnych ,otrzmamy 'długi'
+	expt index cokolwiek k - poda liczbe (pozycje) w stringu którą zajmuje 'k'
+talk - program do komuniksji między urzytkownikami w terminalu
+write - szybki komunikator między urzytkownikamin na tej samej maszynie
+	write [user] [tty] - syntax
 source - is a builtin command of the Bash shell. It takes a file name, 
 	and executes the commands in that file as if they had been typed on the command line.
 export - wbudowane polecenie bash , eksportuje zmienne środowiskowe lokalne do globalnych
