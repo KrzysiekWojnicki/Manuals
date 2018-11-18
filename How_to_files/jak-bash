@@ -218,6 +218,34 @@ dig - lookup utilty ,zapytuje DNS o konkretne rekordy
 	dig -f plik.txt - pobierze adresy z pliku np; wp.pl onet.pl
 	.digrc - w kat. domowym możemy zrobić konfiguracje do dig-a
 		po prostu piszemy np; +noall +answer  -i z takimi ust.domyślnie będzie dziłał
+curl - narzędzie do transferu danych z i do serwera przy urzyciu różncy protokołów
+	np; http, ftp i wiele innych . Różni się tym od wget że obsługuje wiele więcej protokołów 
+	ma więcej metod autoryzacji
+	???--- można potestować na https://jsonplaceholder.typicode.com ---???
+	curl https://jsonplaceholder.typicode.com/users - pobierze informacje o userach ze strony
+		-# -prosty progres bar
+		-L -prekierowuje niedokładne adersy np; wp.pl na https://wp.pl
+		-s -silet mode 
+		-i - wyświetl też header
+		-h - tylko header , -I -ten sam efekt
+		-o plik.txt - zapisze wynik do pliku
+		-O -zapisze nam wynik jako plik , w tym przypadku o nazwie 'users'
+			można pobierać wiele: -O <URL> -O <URL> ..itd
+		-O http://www.mysite.com/images/image[1-100].jpg -pobierz od 1 do 100nego obrazka
+		-O http://www.{google,bing}.com - pobierze obie strony , google i blig
+		-O --limit-rate 1000b - określimi limit przyłu danych na 1000bitów
+		--data "title=Witaj&body=Witaj świecie" - zrobimy post do wybrnego targetu
+			zawierający tytuł ,i body . -d -robi to samo
+		-X put -d "title=dupa" - update-ujemy np;posts/1 nadając mu nowy tytuł
+		-d name=john email=john@mail.com www.mysite.com/formpage.php -przekarzemy submit 
+			data do formularza php . Gooole blokuje takie praktyki
+			jest wicej opcji tego typu , -F koduje przesył np;obrazka
+		-X delete - skasujemy
+		curl -L wp.pl - przekieruje nas na prawidłowwy adres www.wp.pl
+		curl -u kw:hasło - autoryzuje ,nazwa hosta i hasło
+		curl -i kw@mój_ser:hasło -T plik.txt ftp://ftp.cośtam.com - uploudujemy plik 
+			za pomocą protokołu ftp
+			-O -zamiast T ściągamy plik 
 host - wyszukuje nazwy hostów, używając serwerów domen
 	host wp.pl - pokaże domyślnie dns record A
 	host -t ns - pokaże domain name serwer
@@ -272,7 +300,10 @@ mail - prosty klien poczty
 	mail root@abc.pl - wyśle rootowi ,zapyta o subjec , potem o body ,i o cc
 	mail -włączy tryb wpisywania mail , i pojawi się prompt '&'
 		? -wyświetli help
-wget - pobiera strony www, pliki ,obrazy
+wget - pobiera strony www, pliki ,obrazy . Wget różni się tym od curl że pobiera rekuryswnie ,potrafi
+	podążać za odnośnikami ,oraz jest nieinteraktywny czyli może działać w tle , przy zerwaniu 
+	połączenia próbuje je zwnowić aż do skutku
+	???--- libcurl -biblioteka z poleceniami curl dla jezyków programowania ---???
 	wget -r www... -pobiera strone i inne 5 głębiej (domyślna głębokość)
 		-r -l10 -głąbokość 10
 		-r -l inf -nieskończoność , może też być 0
@@ -307,8 +338,12 @@ ps - wyświetla statut procesu
 at - kolejkuje sprawdza lub usówa zadania do późniejszego wykonania
 	at 9:30 PM Tue -albo- 22:30 10/21/2014 -albo- now + 30 minutes
 	Bardzo elastycznie podchodzi do czasu , pozostaje tylko podać zadanie
-atq - listuje zadania
-atrm - usówa zadanie
+	-m -wysyła maila z info o ukończeniu zadania
+	-f -czyta polecenie z podanego pliku
+	-l -alias dla atq
+	-d -alias dla atrm
+	atq - listuje zadania
+	atrm - usówa zadanie
 fg - for ground , przywraca na pierwszy plan zatrzymane polecenie
 	fg % 2 - umieszcza prace o numerze 2 na forground
 	fg % - wznowi ostatnią zatrzymaną prace
