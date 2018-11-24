@@ -1,19 +1,31 @@
 
-mysql -u root -p # odpalamy mysql u user p password , podajemy password.. , domyślnie w mysql konto root nie ma hasła , chyba że je ustawiliśmy :)
-create database "nazwa"; # tworzy baze
+mysql -u root -p
+	# odpalamy mysql u user p password , podajemy password.. , 
+	domyślnie w mysql konto root nie ma hasła , chyba że je ustawiliśmy :)
+create database "nazwa";
+	# tworzy baze
 show databases ; # pokazuje nam liste baz
-use "nazwa bazy"; # operujemy na konkretnej bazie
-show tables; # pokazuje tabele (jak są)
+use "nazwa bazy";
+	# operujemy na konkretnej bazie
+show tables;
+	# pokazuje tabele (jak są)
 create table "nazwa tabeli"("nazwa pola" "rodzaj zmiennej" "jakieś parametry np.auto_increment" , ..);
 
 	PRZYKŁAD -- create table pracownicy(id int auto_increment, imie varchar(20),primery key(id));
-desc "nazwa tabeli"; #pokazuje tabele z opisami tj. jak jest skąstruowana
-insert into "nazwa tabeli" valuse(null ,'Jan'); # dodajemy dane do tabeli
-select * from "nazwa tabeli" ; # pokazuje wszystkie dane z tabieli
-select * from "nazwa tabeli" where imie='Jan' and ... ; # pokazuje wszystkie dane z tabieli gdzie imie = Jan and 	inne parametry
-update "nazwa tabieli" set "dzial=2" where id=1; # zmienia w bazie parametr "dzial" gdzie ...
-select sum(zarobki) from "nazwa tabieli" # sumuje
-SELECT host, user, password from mysql.user; - zobaczymy sobie wszystkich urzytkowników i hasła
+desc "nazwa tabeli";
+	# pokazuje tabele z opisami tj. jak jest skąstruowana
+insert into "nazwa tabeli" valuse(null ,'Jan');
+	# dodajemy dane do tabeli
+select * from "nazwa tabeli" ; 
+	# pokazuje wszystkie dane z tabieli
+select * from "nazwa tabeli" where imie='Jan' and ... ; 
+	# pokazuje wszystkie dane z tabieli gdzie imie = Jan and 	inne parametry
+update "nazwa tabieli" set "dzial=2" where id=1;
+	# zmienia w bazie parametr "dzial" gdzie ...
+select sum(zarobki) from "nazwa tabieli"
+	# sumuje
+SELECT host, user, password from mysql.user; 
+	# zobaczymy sobie wszystkich urzytkowników i hasła
 
 
 

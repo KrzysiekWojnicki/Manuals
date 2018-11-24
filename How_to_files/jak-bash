@@ -20,7 +20,15 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
-
+tput - inicjalizuj terminal lub pytaj bazę terminfo
+	tput longname -pokarze pełną nazwe obecnego terminala
+	tput -T konsole longname -pełna zawa konsole
+	tput colors -liczba dostępnych kolorów
+	tput cols -liczba kolumn na dostępnym ekranie (wierszy)
+	tput lines -liczna lini (zanków w prawo)
+	tpu cup 20 30 -przesunie kursor na ekranie 20 wierszy i 30 znaków
+infocmp - compare or print out terminfo descriptions
+	infocmp konsole  -wyświeli liste możliwiści nazw terminala typu konsola
 scrot - screenshot
 dc - kalkulatror dowolnej precyzji (RPN -reverse polish notification). NIE jest zainstalowany
 	dc 3 4 +p -dodawanie

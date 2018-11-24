@@ -327,6 +327,29 @@
 	# pętla liczy do 10 i kończy prace , chyba że trap przechwyci sygnał , w tedy praca zostanie przewana wcześnieszym exit zdefiniowanym w trap
 	while (( licz < 10 )) ; do sleep 10 ; (( licz ++ )) ;  echo $licz ; done ; exit 0
 
+	# Dynamically display terminal window size with text centering
+	# mierzymy szerokość i wyskość ekaranu , dzielimy na dwa
+	# i tak mamy środek
+	# w tarp łapiemy sygnał SIGWINCH o zmianie wielkości ekranu
+	# nieskończona pętla zapobiega zakończeniu skryptu
+
+	redraw() {
+	local str width height length
+	
+	width=$(tput cols)
+	height=$(tput lines)
+	str="Width = $width Height = $height"
+	length=${#str}
+	clear
+	tput cup $((height / 2)) $(((width / 2) - (length / 2)))
+	echo "$str"
+	}
+	trap redraw WINCH
+	redraw
+	while true; do
+	:
+	done
+
 # DEBUGING
 ----------
 	# są trzy sposoby na debugowanie kodu bash
