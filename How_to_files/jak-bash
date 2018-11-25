@@ -20,6 +20,13 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+figlet - wieli baner z znaków ascii. NIE jest domyślnie zainstalowany
+	figlet -f digital NAPIS -wyświetli baner zapis w formacie digital
+	watch -n1 "date '+%D%n%T'|figlet -k"  -co sek. pokarze aktualny czas 
+		w postaci baneru ze znaków ascii
+dd - konwertuje i kopjuje pliki
+	dd if=plik_wejściowy of=plik_wyjściowy conv=ucase  -zmieni małe na wielkie litery w nowym pliku
+	???--- można konwertować pliki na wiele różnych sposobów , patrz MAN ---???
 tput - inicjalizuj terminal lub pytaj bazę terminfo
 	tput longname -pokarze pełną nazwe obecnego terminala
 	tput -T konsole longname -pełna zawa konsole
@@ -27,6 +34,7 @@ tput - inicjalizuj terminal lub pytaj bazę terminfo
 	tput cols -liczba kolumn na dostępnym ekranie (wierszy)
 	tput lines -liczna lini (zanków w prawo)
 	tpu cup 20 30 -przesunie kursor na ekranie 20 wierszy i 30 znaków
+	tput setaf 3 ; echo napis będzie kolorowy  -self explanatory
 infocmp - compare or print out terminfo descriptions
 	infocmp konsole  -wyświeli liste możliwiści nazw terminala typu konsola
 scrot - screenshot
@@ -123,6 +131,18 @@ readonly - wyświetli zmienne globalne tylko do odczytu tj.rzadna funkcja ich ni
 	-f --funkcje readonly
 logrotate - automaticlly purge messages
 netstat -połączenia sieciowe
+	-i -interfejsy sieciowe , bardzo ubogie info
+		ale -ie -daje te same info co ifconfig
+	-c -continuosly , co chwila wyświetla
+		lepiej : watch -n 1 netstat -t -co sek. update netstat tcp
+	-a -wszystkie połączenia
+	-n -bez sprawdzania hostname
+	-p -pokazuje PID i nazwe procesu , bardzo przydatne
+		Niektóre procesy mają uprawnienia root i bez sudo nie podejrzymy PID
+	-e -nazwa urzytkownika , -en -pokarze UID zamiast nazwy np; 1000 zamiast kw
+	-n -adresy numeryczne
+	-s -statystyki
+	-r -kernel routing info . to samo co polecenie route
 	-t -tcp
 	-u -udp
 	-g -all multicast network subscribet to this host
@@ -130,6 +150,11 @@ netstat -połączenia sieciowe
 	-tulpn
 arp -a -Adderss Resolution Protocol , wyświelta sieci IPv4 z pamięci kernela ,
 	flaga -a BDS style output format ,pokarze ipadres
+	jeżeli w cache nie ma informacji o innych urządzeniach w sieci należy puścić pinga do
+	szukanej maszyny , jeżeli odpowie info. o niej zostanie dodana do cache 
+	-n -pokarze ip ,zamist hostname
+	-a -inna forma danych :raspberrypi (172.16.15.254) at d4:ca:6d:0e:d6:19 [ether] on wlp2s0
+	arp -d HWADDR -usunie z cache entry o podanym HW address
 ssh -X ip_adres -połączenie z xserwerm na zdalnej maszynie , bez x tylko terminal
 	ssh root@adres_ip -- łączymy się z kontem root na maszynie
 	-p port -użyje wybranego portu , domyślnie 22

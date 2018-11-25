@@ -24,6 +24,9 @@
 	string=njknjvnjnv
 	echo "${string[0]}" : wyświetli zmienną jak tablice
 	echo "${string[1]}" : nie wyświetli bo zminna jako tablica ma tylko pierwszy index
+
+	read -p "wybierz 1-3 " wybór
+	# wypisze nam informavje i pobierze dane wpisana przez usera do zmiennej 'wybór'
 	
 # PRZEKAZYWANIE PARMETRÓW DO SKRYPTU
 ------------------------------------
@@ -424,7 +427,9 @@
 
 	#generowanie losowych stringów
 	head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '' ;
-	</dev/urandom tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c 13  ; echo '#ostatni znak jest zbędny , postawiłem go bo mi komaterz nie chciał się wykoanć
+	</dev/urandom tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c 13  ; echo '
+	'#ostatni znak jest zbędny , postawiłem go bo mi komaterz nie chciał się wykoanć
+
 	# to ta sama komenda co powyżej ale więcej znaków jest wliczonych do puli , i ma pomieszaną kolejność
 	' openssl rand -hex 12 ' #ostatni zank to tylko w celach odkomentownia
 	' openssl rand -base64 12 ' # dwa inne sposoby
@@ -436,3 +441,19 @@
 	echo $C $B $A $(B=sub;echo $C $B $A ;echo $(C=sub; echo $C $B $A))
 	# otrzymamy
 	shell sub shell sub sub shell
+
+# TPUT - WYŚWIETLANIE W TERMINALU
+---------------------------------
+	for i in {1..10} ;do tput setaf $i ; echo "ten kolor ma numer $i"; done
+	# wyświelą się odpowiednie kolory dla numerów tput . W tmux mam ich mniej
+
+	tput clear ;tput rev; echo "ten napis będzie miał odwrócone kolory";tput sgr0
+	# rev -to odwrócenie kolorów , sgr0 -koniec instrukcji tput rev
+
+	tput clear ; tput cup 3 15 ;tput setaf 2 ;echo "tytuł" ;tput sgr0
+	tput rev ;tput cup 4 17; echo "main menu" ; tput sgr0 ;
+	tput cup 5 15 ; echo nkn ; tput cup 6 15 ; echo dwa
+	# zaczątek do prostego manu 
+	# czyści ekran , rev -odwraca kolory , srtaf -ustwia kolor , sgr0 -koniec polecenia tput
+	# cup -ustawia kutsor
+
