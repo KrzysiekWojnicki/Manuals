@@ -35,6 +35,24 @@ tput - inicjalizuj terminal lub pytaj bazę terminfo
 	tput lines -liczna lini (zanków w prawo)
 	tpu cup 20 30 -przesunie kursor na ekranie 20 wierszy i 30 znaków
 	tput setaf 3 ; echo napis będzie kolorowy  -self explanatory
+	tput setab - kolor tła ,oczywiście z numerm
+	     setaf - kolor czcionki
+	     bold - pogrubiona
+	     dim - przyciemniona
+	     smul - podkreślenie
+	     rmul - koniec podkreślania
+	     rev - reverse 
+	     smso - standout , białe tło
+	     rmso - koniec standout
+	     sgr0 - reset attributes
+	     civis - niwidziwialny :) kursor
+	     cnorm - kuror na powrót widoczny
+	     dl 10 - skasuje 10 lini łącznie z tą na której jest kursor
+	     it - wewnętrzna wielkość tabulacji , jak spr. to miałem 8
+	     sc - save cursor position
+	     rc - Restore cursor to position of last `sc'
+	     smcup - Save screen contents
+	     rmcup - Restore screen contents
 infocmp - compare or print out terminfo descriptions
 	infocmp konsole  -wyświeli liste możliwiści nazw terminala typu konsola
 scrot - screenshot
@@ -48,6 +66,21 @@ mesg - kotrola przesyłania informacji do twojego terminala
 	bez parametrów wyświetla stan Y albo N
 printf - formatuje i wypisuje dane
 	printf "mój penis ma %d długości i jest %s " 20 olbrzymi
+		%d - Signed decimal integer , można też użyć %i
+		%s - String of characters
+		%f - float 
+		%.4f - kropka okrśla dokładność ,czyli 4 po przecinku
+		printf "%.*f" 5 3.1415926535897932 - jeżeli podam * zamiast liczby to pierwsza
+			z podanych dwuch w argumencie zostanie potraktowana jako wskaźnik ile 
+			miejsc po przecinku chce zobacztć , tu 5
+	printf "%s %s %s\n" "this is" "the printf" "command"  - %s określa argumet , tu 3 argumenty i 
+		utawienie kursora w nowej lini
+	printf "%20s %20s %30s\n" "this is" "the printf" "command" - między argumentami będzie 20 i 30
+		znakowa przerwa
+		%*s - potraktuje pierwszy z dwuch argumetów jako znacznik w miejscu * 
+	printf "\u2020" - \u unicode , wydrukuje znak †
+	wyswietlUnicode=$(printf "\u$unicode%.0s" `(seq 1 $nTimes)`; echo) - zmienna wyświetlająca $unicode
+		%.0s - precyzja , seq pokazało by znak i liczbe kolejna , precyjza chwyta tylko znak
 yes - domyślnie dodaje 'y' 
 	yes | komenda - jeżeli komenda posiada zapytanie to odrazu odpowie yes
 seq - sekfencja liczb
@@ -202,8 +235,16 @@ free - info o pamięci wykorzystanej w sys.
 	-s N -pokazuje co N sekund
 	-m mega bity
 strace - śledź wywołania systemowe i sygnały
-echo -e - uruchamia formatowanie tj; znaki \n \r itd . Uwaga muszą być w cudzysłowiu np; 'dupa\nupa\n'
+echo -e - uruchamia formatowanie tj; znaki \n \r itd . 
+	Uwaga muszą być w cudzysłowiu np; 'dupa\nupa\n'
 	echo * - wyświetli liste plików w lini
+	echo -e \\n{1..3} -wyświetli nam 1,2,3 w nowych liniach
+	-E	Disables the interpretation of these escape characters, even on systems where 
+		they are interpreted by default. Czyli jak "a \t b" to nie bedzie tabulacji
+	echo -e "\033[1mdupa\033[0m" - sekfencja znaków sterujących
+		\033[1m -początek , [0m -koniec . 1-pogrubienie ,0-normalny tekst
+		???--- dziłanie niektórych sekfencji zależy od rodzaju emulatora powłoki
+		lepiej urzywać tput ---???
 lastb - to co wyżej ale dla root-a
 du [plik] lub [katalog] - szacuje zużycie miejsca na dysku
 	-S -dla katalogów z uwzględnieniem roz. podkatalo.
@@ -446,6 +487,7 @@ touch -t - time stamp zmieniamy czas modyfikacji pliku rrrrmmddggmm
 	-m -tylko czas modyfikacji
 	-d -timestamp "rr/mm/dd gg,mm" -ustawia date
 	-c -jesli plik nie istnieje nie twórz go
+	touch file-{1..3}.txt -utworzymy pliki z trzema cyferkami
 batch - kolejkuje pliki , np; 
 	echo gzip jakiś_plki | batch - wykona polecenie gdy obciążenie systemu spadnie ,domyslnie 1.5
 	SPRAWDŹ MAN AT , BATCH 
@@ -823,6 +865,8 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 /dev/pts i /dev/tty - terminale
 /var - 	Pliki często ulegające zmianom (ang. variable files), takie jak: logi, bazy danych, tymczasowe pliki e-mail.
 /var/tmp - podobne do /tmp ale pliki są zachowywane po zamknięciu sytemu
+/var/log/apt/history.log - historia poleceń apt , w tym install , jak się przegepuje to można 
+	znaleść ostatnio instalowane , WAŻNE nie wskazuje zainstalownych zależnoci
 /var/log - logi
 /var/log/syslog - info o tym co się stalo w systemie
 /var/lib - info o stanie aplikacji
@@ -833,6 +877,13 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 
 8.ZMIENNE SYSTEMOWE
 -----------------
+	???--- dobrą praktyką jest podobno odwoływanie się
+	do zmiennych w sposób : "${zmienna}" ---???
+	txUnderline=$(tput smul)
+	echo "${txUnderline}Underlined Text"
+		-zamkniete polecenie tput w zmiennej
+		do której można się łatwo odwołać, bez zamknięcia
+		w klamry złapalibyśmy spacje chyba że tekst byłby w '"'
 $HOME - katalog domowy usera 
 $LANG - zmienn przchowyjąca kodowanie znaków np; utf-8
 $DISPLAY - nazwa x którego urzywasz

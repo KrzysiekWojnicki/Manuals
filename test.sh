@@ -1,42 +1,42 @@
 #!/bin/bash
 
-NORM=`tput sgr0`
-BOLD=`tput bold`
-REV=`tput smso`
-    
-# funkcja sprawdzająca 
-function SPR {
-if (($# == 0)); then
-	echo -e "nie podano żadnej opcji, spróbuj -h --hepl"
-elif ( ! getopts ":f:xh" opcja )
-	then echo "nieprawidłowa opcja funkcji $0 , spróbuj -h"
-	fi
-
-
-while getopts ":f:xh" opcja;
-do
-	case $opcja in
-		h) HELP ;;
-		f) echo wybrałeś -f z parametrem $OPTARG ;;
-		\?) echo nieprawidłowa opcja- $OPTARG ;; 
-		:) echo opcja -$OPTARG potrzebuje argumentu;;
-	esac
-done
-}
+	BOLD=$(tput bold)
+	NORM=$(tput sgr0)
+	REV=$(tput rev)
 
 # funkcja help
 function HELP {
-echo -e \\n"Help documentation for ${BOLD}${SCRIPT}.${NORM}"\\n
-echo -e "${REV}Basic usage:${NORM} ${BOLD}$SCRIPT file.ext${NORM}"\\n
+echo -e \\n"Help documentation for ${BOLD}$0.${NORM}"\\n
+echo -e "${REV}Basic usage:${NORM} ${BOLD}$0 [option]${NORM}"\\n
 echo "Command line switches are optional. The following switches are recognized."
-echo "${REV}-a${NORM}  --Sets the value for option ${BOLD}a${NORM}. Default is ${BOLD}A${NORM}."
-echo "${REV}-b${NORM}  --Sets the value for option ${BOLD}b${NORM}. Default is ${BOLD}B${NORM}."
-echo "${REV}-c${NORM}  --Sets the value for option ${BOLD}c${NORM}. Default is ${BOLD}C${NORM}."
-echo "${REV}-d${NORM}  --Sets the value for option ${BOLD}d${NORM}. Default is ${BOLD}D${NORM}."
+echo "${REV}-f${NORM}  --domyślna opcja ,tworzy plik"
+echo "${REV}-x${NORM}  --robi cuda , przyjmuje argumet w postaci striga"
 echo -e "${REV}-h${NORM}  --Displays this help message. No further functions are performed."\\n
-echo -e "Example: ${BOLD}$SCRIPT -a foo -b man -c chu -d bar file.ext${NORM}"\\n
+echo -e "Example: ${BOLD}$0 -h ; -f ; -x [parametr] ${NORM}"\\n
 exit 1
 }
+    
+# funkcja sprawdzająca 
+#function SPR {
+if (($# == 0)); then
+	echo -e "nie podano żadnej opcji, spróbuj ${BOLD}-h --hepl${NORM}"
+elif ( ! getopts ":xfh" opcja )
+	then echo -e "nieprawidłowa opcja funkcji ${BOLD}$0 ${NORM} ${BOLD}-h --hepl${NORM}" 
+	fi
+
+
+while getopts ":x:fh" opcja;
+	# x: -znaczy że opcja przyjmuje argumet
+do
+	case $opcja in
+		h) HELP ;;
+		x) echo wybrałeś f ;;
+		f) echo wybrałeś -x z parametrem $OPTARG ;;
+		\?) echo opcja${BOLD} -$OPTARG ${NORM}nie istnieje ..jeszcze :\) ,spróbuj${BOLD}-h --hepl${NORM};; 
+		:) echo opcja ${REV}-$OPTARG${NORM} potrzebuje argumentu;;
+	esac
+done
+#}
+
 
 # Właściwy Start Kodu
-SPR
