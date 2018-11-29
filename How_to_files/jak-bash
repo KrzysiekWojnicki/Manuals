@@ -235,7 +235,12 @@ free - info o pamięci wykorzystanej w sys.
 	-s N -pokazuje co N sekund
 	-m mega bity
 strace - śledź wywołania systemowe i sygnały
-echo -e - uruchamia formatowanie tj; znaki \n \r itd . 
+echo - wyświtla podany string , echo może być wbudowanym poleceniem ,albo 
+		/bin/echo -binarką , sprawdzisz : type echo
+		oczywiście można wybać . Echa mogą się różnić opcjami
+	-n - nie wypisuje kończącego znaku nowego wiersza, czyli
+		jak dalej polecimy read to prompt będzie za stringiem
+	-e - uruchamia formatowanie tj; znaki \n \r itd . 
 	Uwaga muszą być w cudzysłowiu np; 'dupa\nupa\n'
 	echo * - wyświetli liste plików w lini
 	echo -e \\n{1..3} -wyświetli nam 1,2,3 w nowych liniach

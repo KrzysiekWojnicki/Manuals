@@ -391,12 +391,14 @@
 	done
 
 	# getopts -pozwala urzywać opcji przy uruchamianiu skryptów
-	while getopts ":afzh" option;
+	while getopts ":abz:" option;
+		# z: - dwukropek po oznacza że fukcja przymuje argument
 	do
 		case $option in
 			a) echo otrzymałem -a ;;
 			b) echo otrzymałem -b ;;
-			
+			z) ..cośtam ;;
+			:) echo funkcja $OPTARG potrzebuje argumentu ;;
 			..itd
 			*) echo błędny argument -$OPTARG
 		esac

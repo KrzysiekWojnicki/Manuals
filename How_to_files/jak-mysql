@@ -1,39 +1,145 @@
+MariaDB [nauka]> select * from pracownicy;
++----+---------+----------+-------+---------+
+| id | imie    | nazwisko | dzial | zarobki |
++----+---------+----------+-------+---------+
+|  1 | jan     | nowak    |     1 |    2700 |
+|  2 | marian  | bobek    |     2 |    3000 |
+|  3 | staszek | koles    |     1 |    6000 |
++----+---------+----------+-------+---------+
+MariaDB [nauka]> select * from dzialy;                                                                                        
++-------+-----------+
+| numer | nazwa     |
++-------+-----------+
+|     1 | produkcja |
+|     2 | marketing |
++-------+-----------+
 
-mysql -u root -p
-	# odpalamy mysql u user p password , podajemy password.. , 
-	domyślnie w mysql konto root nie ma hasła , chyba że je ustawiliśmy :)
-create database "nazwa";
-	# tworzy baze
-show databases ; # pokazuje nam liste baz
-use "nazwa bazy";
-	# operujemy na konkretnej bazie
-show tables;
-	# pokazuje tabele (jak są)
-create table "nazwa tabeli"("nazwa pola" "rodzaj zmiennej" "jakieś parametry np.auto_increment" , ..);
+# INSTAL 
+---------
+	apt-get install mysql-server - dla fedory yum oczywiście
+	mysql-secure-installation - instalujemy ,przy okazji nadając mu hasło root
 
-	PRZYKŁAD -- create table pracownicy(id int auto_increment, imie varchar(20),primery key(id));
-desc "nazwa tabeli";
-	# pokazuje tabele z opisami tj. jak jest skąstruowana
-insert into "nazwa tabeli" valuse(null ,'Jan');
-	# dodajemy dane do tabeli
-select * from "nazwa tabeli" ; 
-	# pokazuje wszystkie dane z tabieli
-select * from "nazwa tabeli" where imie='Jan' and ... ; 
-	# pokazuje wszystkie dane z tabieli gdzie imie = Jan and 	inne parametry
-update "nazwa tabieli" set "dzial=2" where id=1;
-	# zmienia w bazie parametr "dzial" gdzie ...
-select sum(zarobki) from "nazwa tabieli"
-	# sumuje
-SELECT host, user, password from mysql.user; 
-	# zobaczymy sobie wszystkich urzytkowników i hasła
+# kompozytowy klucz
+------------------
+	kiedy łączymy 2 kolumny np; w tablicy pośredniczącej składającej się z 2 id
+	z różnych tablic . klucz kompozytowy to id z dwóch lub wielu kolumn
+	
+# ondelete , onupdate
+---------------------
+	restrict - domyślna opcja , nie pozwoli zmienić wartości pola foren key
+		jeśli jego rodzic primery key lub unique zmieni wartoś (onupdate)
+		lub zostanie usunięty (ondelete) 
+	cascade - ondelete zostanie skaskowany z rodzicem ,onupdate zostanie zmieniony
+		z rodzicem
+	set null - otrzyma wartość NULL przy zmienie stanu rodzica lub jego usunięciu
 
 
+# URUCHAMIANIE mysql
+--------------------
+	mysql -u root -p
+		- odpalamy mysql u user p password , podajemy password.. , 
+		domyślnie w mysql konto root nie ma hasła , chyba że je ustawiliśmy :)
+
+# SHOW podgląd
+--------------
+	show databases ;
+	- pokazuje nam liste baz
+	show tables;
+	- pokazuje tabele (jak są)
+
+# USE wybieranie bazy
+---------------------
+	use "nazwa bazy";
+	- operujemy na konkretnej bazie
+
+# DESCRYPTION
+-------------
+	desc pracownicy;
+	- pokazuje tabele pracownicy, z opisami tj. jak jest skąstruowana
+
+# CREATE
+--------
+	create table "nazwa tabeli"("nazwa pola" "rodzaj zmiennej" "jakieś parametry np.auto_increment" , ..);
+	- zwór jak pisć polecenie
+	create table pracownicy(id int auto_increment, imie varchar(20),primery key(id));
+	- tworzy tabele pracownicy z id i imieniem
+	create database "nazwa";
+	- tworzy baze
+
+# INSERT
+--------
+	insert into "nazwa tabeli" valuse(null ,'Jan');
+	- dodajemy dane do tabeli
+
+# SELECT
+--------
+	select * from "nazwa tabeli" ; 
+	- pokazuje wszystkie dane z tabieli
+ where
+       select * from "nazwa tabeli" where imie='Jan' and ... ; 
+       - pokazuje wszystkie dane z tabieli gdzie imie = Jan and 	inne parametry
+ podgląd pliku konfiguracyjnego
+       select host, user, password from mysql.user; 
+       - zobaczymy sobie wszystkich urzytkowników i hasła
+ sum()
+       select sum(zarobki) from pracownicy;
+       -sumuje wszystkie pola w kolumnie zarobki , w tabeli pracownicy
+ avg() - średnia
+	select avg(zarobki) from pracownicy;
+	- zlicza pola w kolumnie zarobki i wyciąga średnią
+count() - zlicza
+	select count(1) from pracownicy;
+	- zliczy ile jest pól w pierwszej kolumnie w tab. prac..
+		można też napisać * albo nazwe pola np; id
+	select imie ,nazwisko ,nazwa from pracownicy , dzialy where numer=dzial;
+	- wybieranie imienia i nazwisko z jednej tabeli , i nazwy z drugiej tabeli
+		numer z dziłu i nawaz z pracownicy musi się zgadzać aby wynik się
+		nie powtarzał
+like - wyszukuje wzorca
+	select imie from pracownicy where imie like '%r%';
+	- wyszuka w kolumnie imie te pola gdzie wystąpi 'r' w dowolnym miejscu
+		% - dzika karta ,jak * w bash
+between - pomiędzy ,określa przedził wartości
+	select * from pracownicy where zarobki between 3000 and 6000;
+	- wybierzemy tych którzy zarabiją w podanym przedziale
+and - logiczne i , patrz 
+	select * from pracownicy where zarobki between 3000 and 6000;
+or - logiczne lub
+	select * from pracownicy where id=1 or id=3;
+	-wybierzemy jedan lub drugi lub oba , jak istnieją
+in - zakres wartości
+	select * from pracownicy where id in (1,3);
+	-wynik ten co przy or
+	
+# SOURCE
+--------
+	source ~/plik.sql
+		- zaimportuje plik.sql
+
+# DELETE
+--------
+	delete from pracownicy where id=1;
+	- usuniemy z tab. prac.. wiersz gdzie id=1
+
+# UPDATE
+--------
+	update pracownicy set dzial=3 where id=1;
+	- w tab. prac.. zmienimy wartość pola dzil na 3 , tam gdzie id=1
 
 ZMIENNE W BAZIE
-int
-varchar(x) - 0-255
-datetime # m;y;d g;m;s
-date # sama data
-text
-
-
+---------------
+	char - niezapełnione wypełnia string spacjami . w ustwieniach jest opcja do wyświetlania
+		lub nie wyświetlania tych spacji . -ośmiobitowa wartość to max 255 characterów
+	int
+	varchar(x) - max 65535 bit ,ale niektóre charactry np;znaki chińskie mogą zajmować
+		3 bity sztuka co zmiejsza nam warość jaką możemy zapisać w varrchar
+	datetime -  m;y;d g;m;s
+	date - sama data
+	decimal - całkowite z przecinkiem ,decimal (5,2) czyli 999.99 -pięć liczb i 2 po przecinkuj
+	timestamp - 
+	tinytext - 255 bit
+	text - 65535 bit
+	mediumtext - 16 Milion bit
+	longtext - 4 Bilion bit
+	float - 4 bit , przechowuje duże liczby w notacji naukowej , ma ogrniczoną precyzje od ok 7 miejsc
+	duble - 8 bit , jak float ale z precyzją do ok 15 miejsc
