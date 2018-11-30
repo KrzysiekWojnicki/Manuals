@@ -1,11 +1,25 @@
+MariaDB [nauka]> select * from dni;
++----+--------------+
+| id | nazwa        |
++----+--------------+
+|  1 | sroda        |
+|  2 | czwartek     |
+|  3 | poniedzialek |
+|  4 | sobota       |
+|  5 | wtorek       |
+|  6 | niedziela    |
+|  7 | piatek       |
++----+--------------+
+
 MariaDB [nauka]> select * from pracownicy;
-+----+---------+----------+-------+---------+
-| id | imie    | nazwisko | dzial | zarobki |
-+----+---------+----------+-------+---------+
-|  1 | jan     | nowak    |     1 |    2700 |
-|  2 | marian  | bobek    |     2 |    3000 |
-|  3 | staszek | koles    |     1 |    6000 |
-+----+---------+----------+-------+---------+
++----+------+---------+----------+-------+---------+
+| id | szef | imie    | nazwisko | dzial | zarobki |
++----+------+---------+----------+-------+---------+
+|  1 |    0 | jan     | nowak    |     1 |    2700 |
+|  2 |    1 | marian  | bobek    |     2 |    3000 |
+|  3 |    2 | staszek | koles    |     1 |    6000 |
++----+------+---------+----------+-------+---------+
+
 MariaDB [nauka]> select * from dzialy;                                                                                        
 +-------+-----------+
 | numer | nazwa     |
@@ -16,8 +30,20 @@ MariaDB [nauka]> select * from dzialy;
 
 # INSTAL 
 ---------
-	apt-get install mysql-server - dla fedory yum oczywiście
-	mysql-secure-installation - instalujemy ,przy okazji nadając mu hasło root
+	apt-get install mysql-server 
+		- insalacja dla debian
+		można też zainstalować samego kilenta dla logowania się zdalnie do bazy
+	mysql_install_db
+		- skrypt króry tworzy domyślne foldery , powinien i tak automatycznie
+		się wykonać przy pierwszym uruchomienieu mysql-a
+	mysql-secure-installation 
+		- instalujemy ,przy okazji nadając mu hasło root
+
+	yum install -y mariadb-sercer 
+		- instalacja na frdorze
+	systemctl status mariadb 
+	- sprawdzamy czy jest wystartowny , jak nie to starujemy
+	- jak dłuższą chwile (miesiąc) nie bedziemy używać to można wogule disable
 
 # kompozytowy klucz
 ------------------
@@ -39,6 +65,9 @@ MariaDB [nauka]> select * from dzialy;
 	mysql -u root -p
 		- odpalamy mysql u user p password , podajemy password.. , 
 		domyślnie w mysql konto root nie ma hasła , chyba że je ustawiliśmy :)
+	-h -host name , domyślnie localhost
+	mysql -u kw -p baaaza 
+		- po podaniu hasła odrazu zalogujemy się do bazy baaaza
 
 # SHOW podgląd
 --------------
@@ -46,6 +75,8 @@ MariaDB [nauka]> select * from dzialy;
 	- pokazuje nam liste baz
 	show tables;
 	- pokazuje tabele (jak są)
+	show create table pracownicy;
+	- pokarze jak wyglądało polecenie create dla stworzenia tab.pracownicy
 
 # USE wybieranie bazy
 ---------------------
@@ -65,25 +96,69 @@ MariaDB [nauka]> select * from dzialy;
 	- tworzy tabele pracownicy z id i imieniem
 	create database "nazwa";
 	- tworzy baze
+	create table dzial1 as select * from pracownicy where dzial=1;
+	- utworzymy tab.dzial1 z tymi wierszami z tab.pracownicy którzy odpowiadaja
+	kryterją wyszukania zapytaniem select . tworzymy nową tabele
+view - tworzy widok tabeli
+	create view dzial2 as select id,imie,nazwisko from pracownicy;
+	- stwirzymy widok z warościami z zapytania select.
+	Widok jest sposobema na udostępnianie niektórych warotści z tabeli pracownicy
+	które jednicześnie edytowne są w widoku i tabeli z jakiej powstał ,
+	na tym przykładziem ktoś w tab.dzial2 (widoku) zmieni wartość pola imie
+	i też to samo pole w pracownicy ulegnie zmianie. 
+		update dzial2 set imie zygmunt where id=1;
+index -  przśpiesza zapytania
+	create index poZarobkach on pracownicy(zarobki);
+	- tworzymy index poZarobkach z kolumy zarobki tab,pracownicy.
+	create index po2kolumnach on pracownicy(imie,zarobki);
+	- taki index będzie działa sprawnie jeśli w zaptaniu select
+	najpierw wybierzemy imie a potem zarobki , kolejność ma znaczenie
+fulltext - index typu fulltext
+	create fulltext index poOpisie on tabelaZpolemOpisowym(opis);
+	- stworzy index fulltext-owy dla kolumny opis w tabeli...
+foreign key() references() - tworzenie klucza referencji
+	create zamowienia (id int not null auto_increment ,
+	klientId int ,  
+	produktId int ,
+	dataZamowienia datetime default current_timestamp,
+	primery key (id)
+	foreign key (klientId) references klienci(id),
+	foreign key (produktId) references produkty(id),
+	- podajemy jakie kolumy będą kluczmi referencyjnymi oraz gdzie będą się odwoływać
+	tu odwołują się do kolum id w tab. kienci , i produkty
+
+
+# EXPLAIN
+---------
+	explain select * from pracownicy\G;
+	- w formie kolumnowej (G) pokarze jaką metodą zostało zrealizowane zaptyanie
+	np; jeśli mamy indeks którejś z poruszanych kolumn to podejrzymy użycie tegoż
 
 # INSERT
 --------
 	insert into "nazwa tabeli" valuse(null ,'Jan');
 	- dodajemy dane do tabeli
+	insert into dni set id=2 , nazwa='czwartek';
+	- inny sposób , gdym miał id na auto_incerment to wstawił bym oczywiście null
+	insert into dni (nazwa ,id) values ("poniedzialek",3);
+	- jeszcze inny sposób , na wstawianie wartość 
 
 # SELECT
 --------
 	select * from "nazwa tabeli" ; 
 	- pokazuje wszystkie dane z tabieli
- where
+ where - klauzula co
        select * from "nazwa tabeli" where imie='Jan' and ... ; 
-       - pokazuje wszystkie dane z tabieli gdzie imie = Jan and 	inne parametry
- podgląd pliku konfiguracyjnego
+       - pokazuje wszystkie dane z tabieli gdzie imie = Jan and 
+       	inne parametry podgląd pliku konfiguracyjnego
        select host, user, password from mysql.user; 
        - zobaczymy sobie wszystkich urzytkowników i hasła
- sum()
+ sum() - suma
        select sum(zarobki) from pracownicy;
        -sumuje wszystkie pola w kolumnie zarobki , w tabeli pracownicy
+max() , min() - maksimum , minimum
+	select max(zarobki) from pracownicy;
+	- otrzymamy maksymalną warość w kolumnie zarobki 
  avg() - średnia
 	select avg(zarobki) from pracownicy;
 	- zlicza pola w kolumnie zarobki i wyciąga średnią
@@ -95,6 +170,14 @@ count() - zlicza
 	- wybieranie imienia i nazwisko z jednej tabeli , i nazwy z drugiej tabeli
 		numer z dziłu i nawaz z pracownicy musi się zgadzać aby wynik się
 		nie powtarzał
+	select imie ,count(imie) from pracownicy;
+	- podejrzymy jakie są imiona i ile jest każdego rodzaju
+having - kiedy argumet posiada podaną watość
+	select imie , count(imie) from pracownicy having count(imie) >= 2;
+	- pokarze tylko te imiona które powtarzają się 2 lub więcej razy
+lcase() , ucase() - małe i wielkie litery
+	select ucase(imie) from pracownicy;
+	- wybierze tylko imiona zapisane wielką literą
 like - wyszukuje wzorca
 	select imie from pracownicy where imie like '%r%';
 	- wyszuka w kolumnie imie te pola gdzie wystąpi 'r' w dowolnym miejscu
@@ -110,21 +193,130 @@ or - logiczne lub
 in - zakres wartości
 	select * from pracownicy where id in (1,3);
 	-wynik ten co przy or
+	select max(zarobki) from pracownicy where zarobki not in (select max(zarobki) from pracownicy);
+	- wybieramy drugą najwyższą wartość , która NIE W najwyższa watość . NIE JEST RÓWNE
+as - alias nazw
+	select imie as NAME from pracownicy ;
+	- wybierze kolumne imie i wyświetli ją jako NAME
+	select a.imie , b.nrZamowienia from pracownicy as a , zamowinia as b;
+	- taki myk żeby nie pisać całych nazw tabel przed '.'i tabelą
+round() - zaokrąla
+	select round(avg(zarobki),2) from pracownicy ;
+	- wyświeli średnią z kolumy zarobki zaokrągloną do 2 miejsc po przecinku
+group by - grupuje według podanego argumetu (domyślnie od początku , od a-z)
+	select nazwa , avg(zarobki) as srednia from pracownicy , dzialy where dzial=numer group by nazwa;
+	- wybierze nazwe z tab.dzialy oraz średnią z tab.prac. jako "średnia" 
+		i pogrupuje według danych z kolumny nazwa 
+concat - konkatenacja 
+	select concat(imie,' ',nazwisko) as ktos from pracownicy;
+	- wyświetlimy w jednej kolumnie nazwanej jako 'ktos' dane z dwuch kolumn rozdzielone spacją
+
+"loopback" powiązywanie tabeli smej ze sobą
+	select a.imie as imieSzefa , b.imie  from pracownicy a ,pracownicy b where a.szef=b.imie;
+	- po klauzuli from określiliśmy że mamy tabele pracownicy A i B , dzięki temu można
+	wybrać dwa razy tę samą kolumne z jednej tabeli , dla czytelności a.imie dosatło alias
+	'imieSzefa' , Prawde mówiąc to wynik tego zaptania jest dziwny ale generalnie chodzi o 
+	samą zasade tworzenia "loopback-a"
+field() - określamy pole i podajemy jego wartości
+	select * from dni order by field(id ,3,5,1,2,7,4,6); 
+	- porządkujemy według pola 'id' w podanej kolejności pul
+all - wszystkie
+	select * from pracownicy where zarobki>all (select avg(zarobki) from pracownicy where dzial=1);
+	- zapytanie zagnieżdżone , porówna do zarobków średniej wszystkich (all) z dziłu 1
+any - jakikolwiek
+	- jak wyżej ale można jakikolwiek wynik wybrać
+count() - liczy wiersze
+	select count(1) from pracownicy;
+	- policzy ile wierszy ma kolumna 1 w tab. pracownicy
+status - pokazuje informacje (status) naszej bazy
+	show table status\G;
+	-wielkie G zamieni zapisa liniowy na kolumnowy , to wygodniejsze bo linie mogą się nie zmieścić
+limit [nr] - ogranicza ilość wybranych danych
+	select * from pracownicy limit 2;
+	- losowo wybierze 2 wiersze ze wszystkich
+sql_no_cache - definiujemy w zaptaniu że nie chcemy przechowywać wyniku w pamięci cache
+	selece sql_no_cache count(1) from pracownicy where zarobki >3000 and zarobki<5000;
+	- chcemy jedno pole o wybranych właściwościach , i nie chcemy zapisać wyniku do pamięci cache
+match() against() - porównaj do
+	select id from tabelaZpolemOpisowym where match(opis) against('fragmet który szukam');
+	- wyszukam fragmet tekstu w polu opis , i uzyskam id jego wiersza
+order by - szereguj według
+	select * from pracownicy order by nazwisko;
+	- posegreguje alfabetycznie , domtślnie ASC -od początku
+	select * from pracownicy order by nazwisko desc;
+	- posegreguje od końca DESC
+disrinct - niepowtarzalne
+	select disrinct imie from pracownicy;
+	- imiona nie będą się powtarzać
+is , is not - jest , lub nie jest
+	select * from pracownicy where nazwisko is not null;
+	- zobaczymy wszystkie gdzie na pewno pole w kol.nazwisko jest pełne
+is not discint from - nie wiem jak tego urzyć , nie jest wyjątkiem od
+	- jest równe wartości lub oba są zerami
+'tytuł' -tak można dodać elegancki tytuł do naszego wyniku
+	select 'total:' ,sum(zarobki) from pracownicy;
+	- pokarze się dodatkowa kolumna zatytyłowana total
+join - inner , right ,left - łączy tablice 
+	select zamowienia.nrZamowienia , kienci.imie , produkty.nazwa
+	from zamowienia 
+	inner join produkty
+	on zamowienia.produktId = produkty.id
+	inner join klienci 
+	on zamowienia.kientId = klienci.id
+	order by zamowienia.nrZamowienia ;
+	- łączymy trzy tabele zamowienia , klienci , produkty
+	- do tab. zamowienia dołączamy produkty na kolumnie produktId
+		połączonej foreign key-em  z id w tab. klienci 
+	- to samo dla tabeli klienci połączonej na kol. foreign key kientId i id
+	- grupujemy po numerze zamówienia
+	- right lub left jojn wyglądał by tak że po 'on' te kol. z lewej lub prawej 
+		byłby na początku naszego wyniku zapytania
+	select a.imie b.nazwa from pracownicy a inner join dzialy b on (a.dzial = b.nazwa);
+	- zakładając że istnieje foreign key na kol. zazwa i dzial , można zrobić jojn 
+	(nałożyć na siebie dwie tabele w miejscju tego klucza)
+
+# ALTER
+-------
+add - 	alter table pracownicy add dyzur int;
+	- doda nową kolumne 'dyzur' typu int na końcu tab. pracownicy.
+after -	alter table pracownicy add dyzur int after nazwisko;
+	- dodamy nową kolumnie 'dyzur' typu int do tab.pracywnicy ,po kolunie nazwisko.
+change , modify - jedno z dwóch zależnie od bazy danych
+	alter table pracownicy change zarobki ZAROBKI varchar(50);
+	- zmienimy tytuł zarobki na ZAROBKI , trzeba podać typ zmiennej nowej kolumny
+	alter table pracownicy modify zarobki int(11); 
+	- zmienimy tylko typ zmiennych dla koluny zarobki na int
+drop column - usówanie kolumny
+	alter table pracownicy drop column zarobki;
+	- usuniemy kolumne zarobki
 	
 # SOURCE
 --------
 	source ~/plik.sql
 		- zaimportuje plik.sql
 
-# DELETE
---------
-	delete from pracownicy where id=1;
-	- usuniemy z tab. prac.. wiersz gdzie id=1
 
 # UPDATE
 --------
 	update pracownicy set dzial=3 where id=1;
 	- w tab. prac.. zmienimy wartość pola dzil na 3 , tam gdzie id=1
+
+# DELETE
+--------
+	delete from pracownicy where id=1;
+	- usuniemy z tab. prac.. wiersz gdzie id=1
+
+# DROP
+------
+	drop index poZarobkach on pracownicy;
+	- permanetnie usuniemy index poZarobkach razem z jego struktórą
+
+ZAPYTNIA ZAGNIEŻDŹONE
+----------------------
+	select * from pracownicy where zarobki>=(select avg(zarobki) from pracownicy);
+	- wybieramy większe lub równe od średniej , bezpośrednie porównanie nie zadziała
+	bo avg() jest funkcją grupującą , dlatego trzba porównać do wyniku zapytania
+	poprzez zagnieżdżenie zapytania select
 
 ZMIENNE W BAZIE
 ---------------

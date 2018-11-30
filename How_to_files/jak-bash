@@ -502,6 +502,7 @@ tee - czyta ze standarowego wyjcia i zapisuje do pliku np;
 whereis - lokalizuje pliki źródłowe i binarke progremu którego szukamy
 type - typ pliku , czy jest wbudowny czy zainstalowany 
 grep [co?] [gdzie?] - operator wyłuskiwania
+	grep slowo /kat/* - wyszuka slowo w katalogu
 	grep -n dupa plik.txt --pokarze na której lini w pliku jest dupa
 	-c --count policzy ilość wystąpień 
 grep -E 'ooo?' plik -szuka trzech liter "o" ale trzecia jest opcjonalna
