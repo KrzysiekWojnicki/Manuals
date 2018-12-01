@@ -1,3 +1,8 @@
+# PLIKI i USTAWIENIA
+--------------------
+	/etc/mysql/my.cfg
+	- plik konfiguracyjny dla mariaDb
+	 innoDB - silnik dla Mysql
 # INSTAL 
 ---------
 	apt-get install mysql-server 
@@ -38,6 +43,10 @@
 	-h -host name , domyślnie localhost
 	mysql -u kw -p baaaza 
 		- po podaniu hasła odrazu zalogujemy się do bazy baaaza
+# CHECK
+-------
+	check table pracownicy ;
+	- sprawdzimy czy tabela działa...
 
 # SHOW podgląd
 --------------
@@ -96,6 +105,11 @@ foreign key() references() - tworzenie klucza referencji
 	foreign key (produktId) references produkty(id),
 	- podajemy jakie kolumy będą kluczmi referencyjnymi oraz gdzie będą się odwoływać
 	tu odwołują się do kolum id w tab. kienci , i produkty
+like - stworzymy nową tabele o strukturze jak jakaś inna
+	create table nowa_tabela 
+	like nauka.pracownicy;
+	- trzeba podać też nazwe bazy z której pochodzi wzorcowa tab.
+		skopiujemy tylko struktóre tabeli
 
 
 # EXPLAIN
@@ -112,6 +126,12 @@ foreign key() references() - tworzenie klucza referencji
 	- inny sposób , gdym miał id na auto_incerment to wstawił bym oczywiście null
 	insert into dni (nazwa ,id) values ("poniedzialek",3);
 	- jeszcze inny sposób , na wstawianie wartość 
+	insert into select...
+	- załóżmy że stworzyliśmy nową pustą tabele , możemy ją zapełnić danymi
+		z zapytania select , np; wybrarliśmy jakieś informacje i chcemy je 
+		zarchiwizować w postani statycznej tabeli . taka tabel nie podlega
+		dynamiczmym zmianą , od taki jest view.
+		!!!--- ważne , nie można wpisywać concat() ani żadnego formatowania ---!!!
 
 # SELECT
 --------
@@ -173,20 +193,13 @@ as - alias nazw
 round() - zaokrąla
 	select round(avg(zarobki),2) from pracownicy ;
 	- wyświeli średnią z kolumy zarobki zaokrągloną do 2 miejsc po przecinku
-group by - grupuje według podanego argumetu (domyślnie od początku , od a-z)
-	select nazwa , avg(zarobki) as srednia from pracownicy , dzialy where dzial=numer group by nazwa;
-	- wybierze nazwe z tab.dzialy oraz średnią z tab.prac. jako "średnia" 
-		i pogrupuje według danych z kolumny nazwa 
+formar() - działa jak round , ale formatuje do setki np; 11,000,00 -w przypadku
+	format(sum(costam),2)
+	concat('$ ',format(sum(costam),2)) -otrzymamy $ 11,000,00
 concat - konkatenacja 
 	select concat(imie,' ',nazwisko) as ktos from pracownicy;
 	- wyświetlimy w jednej kolumnie nazwanej jako 'ktos' dane z dwuch kolumn rozdzielone spacją
 
-"loopback" powiązywanie tabeli smej ze sobą
-	select a.imie as imieSzefa , b.imie  from pracownicy a ,pracownicy b where a.szef=b.imie;
-	- po klauzuli from określiliśmy że mamy tabele pracownicy A i B , dzięki temu można
-	wybrać dwa razy tę samą kolumne z jednej tabeli , dla czytelności a.imie dosatło alias
-	'imieSzefa' , Prawde mówiąc to wynik tego zaptania jest dziwny ale generalnie chodzi o 
-	samą zasade tworzenia "loopback-a"
 field() - określamy pole i podajemy jego wartości
 	select * from dni order by field(id ,3,5,1,2,7,4,6); 
 	- porządkujemy według pola 'id' w podanej kolejności pul
@@ -215,6 +228,18 @@ order by - szereguj według
 	- posegreguje alfabetycznie , domtślnie ASC -od początku
 	select * from pracownicy order by nazwisko desc;
 	- posegreguje od końca DESC
+group by - grupuje  argumety (domyślnie od początku , od a-z) 
+		ale do pożądkowania alfabetycznego ,albo po określonym polu (patrz firld())
+		lepiej pisać 'order by' , zaś gropu by może być rowinięciem dla każdej
+		z wcześniej wskazenej kolumny
+	select nazwa , avg(zarobki) as srednia from pracownicy , dzialy where dzial=numer group by nazwa;
+	- wybierze nazwe z tab.dzialy oraz średnią z tab.prac. jako "średnia" 
+		i pogrupuje według danych z kolumny nazwa ,tworząc grupe dla każdej z nazw ,
+		dzięki temu zobaczymy średnią policzoną dla każdego wiersza z kol.nazwa
+	select nrZamowienia , sum(ilośćZamowionych) from zamowienia
+	 group by nrZamowienia order by sum(ilośćZamowionych);
+	- zapytanie zrealizujemy według grupowania po kol. nrZamowienia ,czyli każdy wiersz będzie
+		reprezentowany , i posortujemy od najmniejszej sumy z pola ilośćZamowionych.
 disrinct - niepowtarzalne
 	select disrinct imie from pracownicy;
 	- imiona nie będą się powtarzać
@@ -223,10 +248,10 @@ is , is not - jest , lub nie jest
 	- zobaczymy wszystkie gdzie na pewno pole w kol.nazwisko jest pełne
 is not discint from - nie wiem jak tego urzyć , nie jest wyjątkiem od
 	- jest równe wartości lub oba są zerami
-'tytuł' -tak można dodać elegancki tytuł do naszego wyniku
+'tytuł' - literał ,tak można dodać elegancki tytuł do naszego wyniku
 	select 'total:' ,sum(zarobki) from pracownicy;
 	- pokarze się dodatkowa kolumna zatytyłowana total
-join - inner , right ,left - łączy tablice 
+join - inner , right ,left - łączy tablice , słowo 'inner' jest opcjonalne , można je pominąć
 	select zamowienia.nrZamowienia , kienci.imie , produkty.nazwa
 	from zamowienia 
 	inner join produkty
@@ -239,11 +264,26 @@ join - inner , right ,left - łączy tablice
 		połączonej foreign key-em  z id w tab. klienci 
 	- to samo dla tabeli klienci połączonej na kol. foreign key kientId i id
 	- grupujemy po numerze zamówienia
-	- right lub left jojn wyglądał by tak że po 'on' te kol. z lewej lub prawej 
-		byłby na początku naszego wyniku zapytania
+	select r.klienciImie l.produktNr l.produktData
+	from produkty l
+	right join klienci r
+	on l.nrKlienta = r.nrKlienta
+	order by r.klienciImie ;
+	- łącząc w prawo wybierzemy wszystkich klientów nie zależnie od tego czy
+		zamówieli produkt czy nie
+	- łączenie w lewo dało by pryjorytet polom z tab.produkty i zobaczylibyśmy
+		tylko tych klientów którzy zamówili produkt
 	select a.imie b.nazwa from pracownicy a inner join dzialy b on (a.dzial = b.nazwa);
 	- zakładając że istnieje foreign key na kol. zazwa i dzial , można zrobić jojn 
 	(nałożyć na siebie dwie tabele w miejscju tego klucza)
+	select * from kienci , produkty where klienci.nrKlienta = produkty.nrKlienta;
+	- tzw. naturalny JOIN , tablele połączą się tam tylko gdzie pola nrKlienta są zgodne
+"loopback" powiązywanie tabeli smej ze sobą , inny rodzaj naturalnego JOIN-a
+	select a.imie as imieSzefa , b.imie  from pracownicy a ,pracownicy b where a.szef=b.imie;
+	- po klauzuli from określiliśmy że mamy tabele pracownicy A i B , dzięki temu można
+	wybrać dwa razy tę samą kolumne z jednej tabeli , dla czytelności a.imie dosatło alias
+	'imieSzefa' , Prawde mówiąc to wynik tego zaptania jest dziwny ale generalnie chodzi o 
+	samą zasade tworzenia "loopback-a"
 
 # ALTER
 -------
@@ -280,6 +320,79 @@ drop column - usówanie kolumny
 ------
 	drop index poZarobkach on pracownicy;
 	- permanetnie usuniemy index poZarobkach razem z jego struktórą
+
+# ZAPISYWANIE i CZYTANIE Z PLIKU
+--------------------------------
+	select * from pracownicy 
+	into outfile 'ścierzka_do_pliku.txt'
+	fields enclosed  by '"' 
+	terminated by ','
+	escaped by '\\'
+	lines terminated by '\r\n\';
+	- zapis do pliku , co zapiszemy (select) , gdzie , zamknięcie pól w " ,
+		rodzielenie pól , znak ucieczki przed pustym polem NULL 
+		zawijanie końca lini \r -powrót karetki \n-new line
+	load data
+	infile 'ścierzka_do_pliku.txt'
+	into table nauka.pracownicy
+	fields enclosed  by '"' 
+	terminated by ','
+	escaped by '\\'
+	lines terminated by '\r\n\';
+	- odczyt z pliku , trzeba wiedzieć jak został zapisany, zamknięcia pola
+		rozdzielone pola , znaki ucieczki przy polach NULL , znać jak zawinięte
+		zosrały linie
+# ZMIENNE
+---------
+	set @nazwaZmiennej := wartość
+	- podmieniając jaką warość w kilku różnych tabelach moge pisać zmienna 
+		zamiast za każdym razem powielać dane które niechcący moge przeinaczyć
+transaction - zapewnia bezpieczeństo wykonywanych wielu zapytań
+	start transaction;
+	update...
+	update...
+	delete...
+	commit;
+	- startujemy tranzakcje , piszemy nasze zapytania , kończymy commitem.
+		jeżeli jakieś zapytanie się nie powiedzie to żadne nie zostanie zrealizowne
+sql_safe_update - jeżeli baza jest domyślnie w trybie safe update to można ją wyłączyć i włączyć
+	przy tranzakcjach jeśli mamy problem
+	set sql_safe_update = 0 ;
+	- wyączamy
+	set sql_safe_update = 1 ;
+	- włączmy , wł,wył robimy przed i po tranzakcji
+
+# F.ARYTMETYCZNE
+----------------
+	update produkty
+	set cena = cena * 1.10
+	where nrProduktu > "";
+	- podnosimy cene o 1 i 0,10 czyli 10 % , dla fszystkich produktów
+		gdzie nrProduktu jest większe niż "nic" , gdyby typ zmiennej
+		był liczbą można by napisać 0
+# URZYTOKOWNICY
+--------------
+show grant ;
+	- pokaże moje uprwanienia
+show grant for TYUrzytkownik@localhost ;
+	- pokaże uprawnienia dla wybranego usera
+create user JaUrzytkownik identified by 'haslo1234';
+	- tworzy urzytkownika
+grant all on nauka.* to JaUrzytkownik ;
+	- wszystkie pozwolenia ale tylko w bazie nauka , za to w każdej jej tabeli
+grant select , insert , update on nauka.* to TYUrzytkownik;
+	- tylko select ,insert, update dla bazy nauka i wszystkich jego tabel
+revoke select , insert , from nauka.* to TYUrzytkownik;
+	- zabieramu urzytkownikowi możliwość update
+rename user JaUrzytkownik to bob;
+	- zmieniamy nazwe usera na bob
+set password = password('nowe_hasło');
+	- tak zmieniam dla siebie
+set password for JaUrzytkownik password('nowe_hasło');
+	-a tak dla wybranrgo usera
+drop user JaUrzytkownik; 
+	- usówanie usera
+execute - pozwolenie do uruchamiania skryptow sql
 
 ZAPYTNIA ZAGNIEŻDŹONE
 ----------------------
