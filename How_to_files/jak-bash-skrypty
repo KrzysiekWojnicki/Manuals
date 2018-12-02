@@ -250,6 +250,15 @@
 		echo "$n"
 		(( n++ ))
 	done
+
+	# poniższy kod przeliczy liczby szenastkowe zapisane w pliku hexList.txt
+	# :dopuki czyta z wejści , a wjeściem jest przekierowany plik
+	while read number
+	do
+		echo -n "The decimal value of $number(Hex)="
+		echo "obase=10; ibase=16; $number" | bc
+	done < hexList.txt
+
 # ?tip- zamiast wyświetlać echo cośtam , można porzytecznie wykonać jakieś polecenie x razy	
 # Kilka metod odczytywania plików:
 	while read p ;	do ; echo $p ; done < plik.txt

@@ -466,6 +466,10 @@ jobs - wyświetla zatrzymane procesy
 	powłoką w których pracują ---???
 disown %[number] - żaden terminal nie będzie właścicielem 
 	praca będzie trwać nadal po jego zamknięciu
+nohup - uruchamia polecenie niewrażliwe na zawieszenie wykonywania, z wyjściem skierowanym na non-tty
+	nohup bash sleep1.sh - uruchomi w forground skrypt , z & na końcu poleciał by w background
+	nohup bash -c 'mkdir myDir && ls'> output.txt - wykona dwa polecenia
+		i przy okazji wynik wrzyci do pliku
 trap --wyświelti wszystkie trap-y ustawine aktualnie
 	( trap słóży do chwytania sygnałów )
 kill -Term -przerwanie procesu (SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c 
@@ -505,22 +509,26 @@ grep [co?] [gdzie?] - operator wyłuskiwania
 	grep slowo /kat/* - wyszuka slowo w katalogu
 	grep -n dupa plik.txt --pokarze na której lini w pliku jest dupa
 	-c --count policzy ilość wystąpień 
-grep -E 'ooo?' plik -szuka trzech liter "o" ale trzecia jest opcjonalna
-grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?') przed , czyli samo polecenie grep też na się nie wyświetli
-grep [OPCJE] WZORZEC [PLIK...]
+	grep -E 'ooo?' plik -szuka trzech liter "o" ale trzecia jest opcjonalna
+	grep -E 'o{3}' plik -pokarze w pliku string gdzie są dokładnie 3 'o'
+	grep -E 'o{2,3}' plik -wybierze string gdzie 'o' występuje od 2 do 3 razy
+	grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?') 
+		przed , czyli samo polecenie grep też na się nie wyświetli
+	grep [OPCJE] WZORZEC [PLIK...]
 	-v odwrócenie wyszukania
 	-i rozróżnienie wielkości liter
 	-A1 również 1 lina po wyniku jest wyświetlana
 	-B1 jedna przed wynikiem
 	-C1 jedna po i przed 
-grep a$ plik -gdzie ostatnia "a" w stringu
-grep ^F plki - piewsza "F" w stringu
-grep '\bdupa\b' plik - znacznik \b to spacja , czyli szuka słowa "dupa" w stringu
-grep -w dupa plik - tak też szukamy słowa
+	grep a$ plik -gdzie ostatnia "a" w stringu
+	grep ^F plki - piewsza "F" w stringu
+	grep '\bdupa\b' plik - znacznik \b to spacja , czyli szuka słowa "dupa" w stringu
+	grep -w dupa plik - tak też szukamy słowa
 	!!!!--- Wszystkie wyrarzenia umieszczamy w cytatach aby nie kolidowały ze spacjalnymi znakami powłoki
 	jak np; $ ---!!!!
-grep -E 'o{3}' plik -pokarze w pliku string gdzie są dokładnie 3 'o'
-grep -E 'o{2,3}' plik -wybierze string gdzie 'o' występuje od 2 do 3 razy
+pgrep - podgląd lub sygnał procesu ,na podstawie nazwy albo atrybutu
+	-a -pokarze ID procesu i jego pełną komende
+		pgrep -a ping - pokarze dziłający w tle ping i jego ID
 cut - wycina kolumny z plików
 	cut -d: -f1,3 /etc/passwd | tail -2
 	otrzymamy	jan:510

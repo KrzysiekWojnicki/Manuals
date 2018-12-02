@@ -59,12 +59,15 @@ git branch -D {kasuje gałąź na której się jest}
 git branch -m <stara_nazwa> <nowa_nazwa> {komentrz zbendny}
 git branch -a { listuje wszystkie branch , nawet te remote}
 git branch --merged {listuje co zmerdżowaliśmy do gałęzi na której jesteśmy}
+	-v -ostetni zatwierdzony zestaw zmian (przed zmerdżowaniem)
 git checkout <plik> przywraca plik do stanu z przed modyfikacji , również przywraca skasowane}
 git checkout <nazwa> {przenosi na wybrany branch}
 git checkout -b <nazwa> {tworzy branch i przenosi na niego}
 git merge { lisuje }
-gir merge <nazwa_branch> {merdżuje brancze , musisz być na gałęzi do której
+git merge <nazwa_branch> {merdżuje brancze , musisz być na gałęzi do której
 	merdżujesz}
+git mergetool - graficzne narzędzie do maprawiania konfliktów merge
+	najpierw możesz też spr. git ststus który wskarze które pliki ,i gdzie w pliku jest konflikt merge
 git revert <commit_ID> { nadpisuje komita którego ID podaliśmy , nie kasuje go ale dopisuje przed komentarzem że jest to revert ,
 	tak się robi w przypadku gdy ktoś już nasze commity podrał do swojego repo . Jest to poniekąd anulowanie naszego commita
 	którego już nie możemy reset bez narusznia historii innich osób}

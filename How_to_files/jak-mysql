@@ -3,6 +3,46 @@
 	/etc/mysql/my.cfg
 	- plik konfiguracyjny dla mariaDb
 	 innoDB - silnik dla Mysql
+	 my.ini 
+	 - w sekcji binary login jest zaimplementowany log-bin
+	 log-bin=nazwa_loga  - w ten sposób uruchamianie tworzenia loga binarnego
+mysqlbinlog - program do odczytu logów binarnych
+	mysqlbinlog "ścieżka_do_pliku_binlog" - synatx
+	set global - ustawienia z mysql działają tylko do zaotrzymania usługi mysql
+		dobre do testowania , jednak trzeba zmienić mysql.d alby działałyna stałe
+	my.cnf - też zawiera pliki konfig i to co poniżej
+	 The MariaDB/MySQL tools read configuration files in the following order:
+	 1. "/etc/mysql/mariadb.cnf" (this file) to set global defaults,
+	 2. "/etc/mysql/conf.d/*.cnf" to set global options.
+	 3. "/etc/mysql/mariadb.conf.d/*.cnf" to set MariaDB-only options.
+	 4. "~/.my.cnf" to set user-specific options.
+
+# LOGI
+------
+	To enable error log add following
+
+		[mysqld_safe]
+		log_error=/var/log/mysql/mysql_error.log
+
+		[mysqld]
+		log_error=/var/log/mysql/mysql_error.log
+	To enable general query log add following
+
+		general_log_file        = /var/log/mysql/mysql.log
+		general_log             = 1
+	To enable Slow Query Log add following
+
+		log_slow_queries       = /var/log/mysql/mysql-slow.log
+		long_query_time = 2
+		log-queries-not-using-indexes
+		step3: save the file and restart mysql using following commands
+
+		service mysql restart
+	To enable logs at runtime, login to mysql client (mysql -u root -p ) and give:
+
+		SET GLOBAL general_log = 'ON';
+		SET GLOBAL slow_query_log = 'ON';
+
 # INSTAL 
 ---------
 	apt-get install mysql-server 
@@ -43,6 +83,15 @@
 	-h -host name , domyślnie localhost
 	mysql -u kw -p baaaza 
 		- po podaniu hasła odrazu zalogujemy się do bazy baaaza
+	mysql -e "select * from nauka.pracownicy" -u kw -p
+	- zapytamy z wiersza poleceń powłoki , i w niej otrzymamy odp.
+	- przekierowując do pliku robimy sobie backup
+	mysql -h localhost -u myname -ppassword mydb
+	- logowanie z określeniem hosta , domyślnie localhost
+	--protocol={TCP|SOCKET|PIPE|MEMORY}
+	- a tak możemy zmienić protokół połączenia
+		mysql --host=remote.example.com --port=13306
+
 # CHECK
 -------
 	check table pracownicy ;
@@ -56,6 +105,11 @@
 	- pokazuje tabele (jak są)
 	show create table pracownicy;
 	- pokarze jak wyglądało polecenie create dla stworzenia tab.pracownicy
+	show variables where variable_name like "%dir";
+	- pokarze wszystkie miejsca gdzie są zlokalizowne bazy
+	- zamisat dir możemy szukać oczywiście innych zmiennych np; server_id
+	SHOW [GLOBAL | SESSION] STATUS - pokarze status sesji lub globalnych ustawien
+	SHOW STATUS LIKE 'Key%'; - wybierzemy to czego szukamy (jest tego troche)
 
 # USE wybieranie bazy
 ---------------------
@@ -110,6 +164,14 @@ like - stworzymy nową tabele o strukturze jak jakaś inna
 	like nauka.pracownicy;
 	- trzeba podać też nazwe bazy z której pochodzi wzorcowa tab.
 		skopiujemy tylko struktóre tabeli
+regexp - wyrarzenia regularne
+	SELECT * FROM employee WHERE emp_name REGEXP "^b";
+	- ^ początek stinge , $ - koniec
+	- innym jest %
+event
+function
+procedure
+trigger
 
 
 # EXPLAIN
@@ -135,6 +197,8 @@ like - stworzymy nową tabele o strukturze jak jakaś inna
 
 # SELECT
 --------
+SELECT VERSION ();
+	- wersja mysql-q
 	select * from "nazwa tabeli" ; 
 	- pokazuje wszystkie dane z tabieli
  where - klauzula co
@@ -218,7 +282,7 @@ limit [nr] - ogranicza ilość wybranych danych
 	select * from pracownicy limit 2;
 	- losowo wybierze 2 wiersze ze wszystkich
 sql_no_cache - definiujemy w zaptaniu że nie chcemy przechowywać wyniku w pamięci cache
-	selece sql_no_cache count(1) from pracownicy where zarobki >3000 and zarobki<5000;
+	select sql_no_cache count(1) from pracownicy where zarobki >3000 and zarobki<5000;
 	- chcemy jedno pole o wybranych właściwościach , i nie chcemy zapisać wyniku do pamięci cache
 match() against() - porównaj do
 	select id from tabelaZpolemOpisowym where match(opis) against('fragmet który szukam');
@@ -240,9 +304,11 @@ group by - grupuje  argumety (domyślnie od początku , od a-z)
 	 group by nrZamowienia order by sum(ilośćZamowionych);
 	- zapytanie zrealizujemy według grupowania po kol. nrZamowienia ,czyli każdy wiersz będzie
 		reprezentowany , i posortujemy od najmniejszej sumy z pola ilośćZamowionych.
-disrinct - niepowtarzalne
-	select disrinct imie from pracownicy;
+distinct - niepowtarzalne
+	select distinct imie from pracownicy;
 	- imiona nie będą się powtarzać
+	SELECT DISTINCT t1.a FROM t1,t2 where t1.a=t2.a;
+	- inne niż
 is , is not - jest , lub nie jest
 	select * from pracownicy where nazwisko is not null;
 	- zobaczymy wszystkie gdzie na pewno pole w kol.nazwisko jest pełne
@@ -342,11 +408,24 @@ drop column - usówanie kolumny
 	- odczyt z pliku , trzeba wiedzieć jak został zapisany, zamknięcia pola
 		rozdzielone pola , znaki ucieczki przy polach NULL , znać jak zawinięte
 		zosrały linie
+
+# MYSQLDUMP
+-----------
+	mysqldump --all-databases > dump.sql
+	- zrobimy dumpa wszystkich baz , do pliku
+	mysqldump --databases nauka > dump.sql
+	- tylko baza nauka
+
 # ZMIENNE
 ---------
+LAST_INSERT_ID will return the last value assigned by Auto_increment 
+	and it is not required to specify the table name.
 	set @nazwaZmiennej := wartość
 	- podmieniając jaką warość w kilku różnych tabelach moge pisać zmienna 
 		zamiast za każdym razem powielać dane które niechcący moge przeinaczyć
+
+# TRANZAKCJA
+------------
 transaction - zapewnia bezpieczeństo wykonywanych wielu zapytań
 	start transaction;
 	update...
@@ -394,32 +473,56 @@ drop user JaUrzytkownik;
 	- usówanie usera
 execute - pozwolenie do uruchamiania skryptow sql
 
-ZAPYTNIA ZAGNIEŻDŹONE
+# ZAPYTNIA ZAGNIEŻDŹONE
 ----------------------
 	select * from pracownicy where zarobki>=(select avg(zarobki) from pracownicy);
 	- wybieramy większe lub równe od średniej , bezpośrednie porównanie nie zadziała
 	bo avg() jest funkcją grupującą , dlatego trzba porównać do wyniku zapytania
 	poprzez zagnieżdżenie zapytania select
 
-ZMIENNE W BAZIE
+# TYPY ZMIENNYCH
 ---------------
 	char - niezapełnione wypełnia string spacjami . w ustwieniach jest opcja do wyświetlania
 		lub nie wyświetlania tych spacji . -ośmiobitowa wartość to max 255 characterów
 	int
 	varchar(x) - max 65535 bit ,ale niektóre charactry np;znaki chińskie mogą zajmować
 		3 bity sztuka co zmiejsza nam warość jaką możemy zapisać w varrchar
-	datetime -  m;y;d g;m;s
+	datetime -  m;y;d g;m;s ,8bajt
+	char_lendth - długość liczona w znakach
+	lendth - długość liczona w bajtach , zazwyczaj 1 ale dla niekórych znaków unicode więcej
+	enum - is a string object used to specify set of predefined values and that can be used during table creation.
+		Create table size(name ENUM('Small', 'Medium','Large');
+	blob - binary large object , tintblob , blob , mediumblob ,longblob
+		- blob jest case-sensitiv , w przeciwieństwie do text
 	date - sama data
 	decimal - całkowite z przecinkiem ,decimal (5,2) czyli 999.99 -pięć liczb i 2 po przecinkuj
-	timestamp - 
+	timestamp - ma wartość 0 przy teorzeniu nowej tabeli
+		UPDATE CURRENT_TIMESTAMP modifier updates the timestamp field to  current 
+		time whenever there is a change in other fields of the table
+	curent_date - r,m,d
 	tinytext - 255 bit
 	text - 65535 bit
 	mediumtext - 16 Milion bit
 	longtext - 4 Bilion bit
 	float - 4 bit , przechowuje duże liczby w notacji naukowej , ma ogrniczoną precyzje od ok 7 miejsc
 	duble - 8 bit , jak float ale z precyzją do ok 15 miejsc
+	now - r.m.d.g.m.s.
 
-PRZYKŁADOWE TABLICE :
+# funkcje
+---------
+	DATEDIFF(A, B) – Determines the difference between two dates and it is commonly used to calculate age
+	now() - r.m.d.g.m.s.
+
+# MYISAM
+--------
+	isam - Indexed Sequential Access Method
+	Each MyISAM table is stored on disk in three formats:
+
+	The ‘.frm’ file stores the table definition
+	The data file has a ‘.MYD’ (MYData) extension
+	The index file has a ‘.MYI’ (MYIndex) extension
+
+# PRZYKŁADOWE TABLICE :
 ---------------------
 MariaDB [nauka]> select * from dni;
 +----+--------------+
