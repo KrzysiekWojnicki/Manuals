@@ -301,7 +301,6 @@ ifconfig -a -wszystkie infomacje o urządzeniach sieciowych i ich stanie
 	ifup , ifdown eth0 -tak też można wł/wył
 ip address - info o sieci , tak jak ifconfig
 lspci - listuje wszystkie podłączone urządzenia pci
-nestst - z sudo , statystyki o połączeniach sieciowych
 host - wyszukuje nazwy hostów , urzywając dns
 	/etc/hosts - lista hostów , ona jest zawsze przeszykiwana pierwsza przed zapytaniem dns
 	ale można zmienić to zachowanie edytując /etc/nsswitch.conf (name service switch)

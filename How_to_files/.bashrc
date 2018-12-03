@@ -1,5 +1,5 @@
 #jeśli istniej screenfetch to odpal
-if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
+if [ -f /usr/bin/screenfetch -a -f /usr/games/lolcat ]; then screenfetch | lolcat ; fi
 #domyślny edytor tekstu
 export EDITOR='vim'
 export VISUAL='vim'
@@ -92,7 +92,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias zt='sudo shutdown -t'
     alias t='tmux'
     alias apin='sudo apt-get install'
-    alias ac='apt-cache'
+    alias acache='apt-cache'
     alias m='mysql'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
@@ -109,6 +109,7 @@ fi
  alias ll='ls -l'
  alias la='ls -A'
  alias l='ls -CF'
+ alias lc='ls -l | lolcat'
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.

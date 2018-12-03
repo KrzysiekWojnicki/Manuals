@@ -13,6 +13,8 @@ iabbr cerate create
 
 : cmap Q q!
 : cmap nt NERDTree 
+: cmap ft filetype detect
+: autocmd filetype sh inoremap ;b #!/bin/bash<Enter>
 : autocmd filetype cpp inoremap ;b #include<Space><iostream><Enter><Enter>using<Space>namespace<Space>std;<esc>k0i
 : autocmd filetype cpp inoremap ;n #include<Space><iostream><Enter>using<Space>namespace<Space>std;<Enter>
 : autocmd filetype html inoremap ;D <!DOCTYPE HTML><Enter><html<Space>lang="pl"><Enter><head><Enter><Enter></head><Enter><body><Enter><Enter></body><Enter></html><esc>^6ki
