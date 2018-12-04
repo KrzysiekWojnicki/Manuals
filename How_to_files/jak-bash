@@ -191,6 +191,8 @@ arp -a -Adderss Resolution Protocol , wyświelta sieci IPv4 z pamięci kernela ,
 ssh -X ip_adres -połączenie z xserwerm na zdalnej maszynie , bez x tylko terminal
 	ssh root@adres_ip -- łączymy się z kontem root na maszynie
 	-p port -użyje wybranego portu , domyślnie 22
+	ssh-keygen - generuje klucze domyślnei rsa
+	-t rsa -definiujemy typ , w tym przypadku rsa , | ecdsa | ed25519 | rsa | rsa1
 nice - nadaje pryjorytet procesowi . -20 najwyższy , 19 najniższy
 	nice -10 cat > file --odpali z pry. 10
 	nice --10 cat > file --odpali z pry.-10
@@ -613,6 +615,7 @@ bzcat
 bzmore - podgląd gzip
 ln - tworzy hard link (ma taki sam inode , musi być na tym samym dysku)
 	-s --tworzy link symboliczny ,inny inode , dowolne miejsce nawet inna sieć
+	ln -s /path/to/file /path/to/symlink
 tar cvf archiwum.tar plik1 plik2 ... - tworzy archiwóm z podanych elemetów
 	-c tworzenie archiwum
 	-v tryb wypisywania danych diagnostycznych (podgląd)
