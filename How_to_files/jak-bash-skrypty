@@ -285,6 +285,16 @@
 	for item in * # we szystkim (wszystkie pliki w obecnym katalogu)
 	do if [ -d $item ] ; then echo $item ; fi done
 
+	J=$HOME/jail
+	mkdir -p $J
+	# tworzy zmieną z adresem naszego katalogu domowego 
+	# tworzymy katalog ze zmiennej ,i podkatalog jail -to jako część zad chroot
+	mkdir -p $J/{bin,lib64,lib}
+	# tworzymy inne podkatalogi
+	list="$(ldd /bin/ls | egrep -o '/lib.*\.[0-9]')"
+	for i in $list; do cp  -v "$i" "${J}${i}"; done
+	# zamykamy w zmiennej wszystkie wybrane biblioteki dla /bin/ls ,i kopjujemy po kolji do miejscs $J
+
 # SELECT LOOP
 -------------
 
