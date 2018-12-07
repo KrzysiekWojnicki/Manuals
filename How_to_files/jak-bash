@@ -20,6 +20,8 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+truncate - shrink or extend the size of a file to the specified size
+	truncate -s 100 plik.txt  -zmieni wielkość pliku do 100 byte
 figlet - wieli baner z znaków ascii. NIE jest domyślnie zainstalowany
 	figlet -f digital NAPIS -wyświetli baner zapis w formacie digital
 	watch -n1 "date '+%D%n%T'|figlet -k"  -co sek. pokarze aktualny czas 
@@ -545,6 +547,8 @@ comm - comparing streams (or files) , porównywarka
 				| dupa		 |
 	domyślnie wyświetla 3 koluny 
 	comm -13 - tylko 1 i 3 itd..
+diff - porównywanie plików
+	diff -y plik1 plik2 | less  -porównywanie side by side
 xxdiff - graficzny program do porównywania plików
 paste -d ":" plik plik2 - skleja wiersze z dwuch plików 
 	d -delimiter , bez nigo domyślnie jest \t (tabulacja)
