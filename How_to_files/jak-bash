@@ -450,6 +450,8 @@ ncal - wertylakny ,normalnie od poniedziałku
 reset - resertuje terminal
 ps - wyświetla statut procesu
 	-o pid,tname,time,cmd, - wyśietli podane kolumny
+	ps aux | grep tom - wyszuka procesy toma
+	ps -u tom
 at - kolejkuje sprawdza lub usówa zadania do późniejszego wykonania
 	at 9:30 PM Tue -albo- 22:30 10/21/2014 -albo- now + 30 minutes
 	Bardzo elastycznie podchodzi do czasu , pozostaje tylko podać zadanie
@@ -1026,7 +1028,8 @@ groupadd - dodaje grupe
 	-g GID -sami wybieramy GID
 groups - polecenie pokazujące grupy do których należy user
 groupmod - modyfikuje nazwe,id,passwd
-	usermod -a -G tennis,sports kw - dodaje urzytkownika kw do grup . -G -grupy ,-a append
+	groupmod -a -G tennis,sports kw - dodaje urzytkownika kw do grup . -G -grupy ,-a append
+	groupmod -n tenis Venus - zmieni nazwe grupy Venus na tenis
 groupdel - wiadomo . Dobrze jest przed skasowaniem spr. które pliki mają ID tej grupy
 	find / -group nazwa_grupy -print
 gpasswd - edycja /etc/group o /etc/gshadow - pliku z danymi kto jest adminem
