@@ -1,6 +1,0 @@
-czyszczenie logu sp.2 : cat /dev/null > logfile
-https://www.tutorialspoint.com/unix_commands/getent.htm
-truncate command in linux
-
-/etc/logrotate.d/ -ustawienia logrotate dla różnych servisów 
-https://www.youtube.com/watch?v=hGqjM9Wz-pU - w wolnej chwili

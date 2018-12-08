@@ -20,6 +20,8 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+truncate - shrink or extend the size of a file to the specified size
+	truncate -s 100 plik.txt  -zmieni wielkość pliku do 100 byte
 figlet - wieli baner z znaków ascii. NIE jest domyślnie zainstalowany
 	figlet -f digital NAPIS -wyświetli baner zapis w formacie digital
 	watch -n1 "date '+%D%n%T'|figlet -k"  -co sek. pokarze aktualny czas 
@@ -388,6 +390,9 @@ id - info o user i jego grupie ,albo id root - info o root
 cp [co?] [gdzie?] - copy
 cp -p - zachowuje arybuty domyślne takie jak właściciel i prawa dostępu
 	-i -kopjuje hierarchie katalogów rekursywnie ,zachowuje pozwolenia i linki (-R -p -d)
+	cp /bin/{bash , ls} /gdzieś_tam  - Copy /bin/bash and /bin/ls into location
+ldd - prints the shared objects (shared libraries) required by each program or shared object specified on the command line.
+	ldd /bin/ls  -pokarze wszystkei pliki zależne polecenia 'ls'
 	???--- Ciekawostka , jak plik można odczytać , to kopiując go bez opcji -p właścicielem staje się kopiujący ---???
 scp - secure copy ,scp kopiuje pliki między komputerami w sieci. 
 	Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację 
@@ -475,39 +480,13 @@ nohup - uruchamia polecenie niewrażliwe na zawieszenie wykonywania, z wyjściem
 		i przy okazji wynik wrzyci do pliku
 trap --wyświelti wszystkie trap-y ustawine aktualnie
 	( trap słóży do chwytania sygnałów )
-kill -Term -przerwanie procesu (SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c 
+kill -Term -wysyła sygnał do procesu(SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c . 
 	kill -l -lista sygnałów 
 	-Cont -wznowienie zatrzymanego procesu ( patrz MAN 7 signal)
 	-9 --sygnał kill , zabija proces i wyświetla killed
 	kill -[signal] %[number] - Send the signal [signal] to job number [number]
-locate - wyszukiwanie po indeksach, jak coś nie zostało zaindeksowane to nie znajdziemy
-diff -q plik1 plki2 - porównuje pliki 
-	q -informuje tylko że się różnią
-	c1 -wypisze jedną linie oprócz zmienionych (domyślnie 3 ,samo c)
-	y -side by side
-cmp - porównuje pliki bit po bicie
-sdiff - porównuje dwa pliki i tworzy trzeci plik zgodnie z instrukcjami
-man -k -wyszukuje podręcznik po słowach kluczowych
-info - coś jak man ale nie zawsze zawiera dokumentacje /usr/share/doc
-whatis - wyszukuje w MAN , np whatis ls --> ls(1)
-pv - (NIEMA TEGO DOMYŚLNIE , TRZEBA ZAINSTALOWAĆ) pasek postępu np; 
-	pv duzy_plik | gzip > duzy_plik.gz - podczas pakowania mamy podgląd co się święci
-stat jakiś_plki - pokazuje statystyki plilu , węzeł inode
-touch -t - time stamp zmieniamy czas modyfikacji pliku rrrrmmddggmm
-	-r - referens podajemy (plik1 plik2) - drugi plik zosatnie dotknięty pierwszym i oba będą miały taką samą date
-	-a -zmini tylko czas wej.
-	-m -tylko czas modyfikacji
-	-d -timestamp "rr/mm/dd gg,mm" -ustawia date
-	-c -jesli plik nie istnieje nie twórz go
-	touch file-{1..3}.txt -utworzymy pliki z trzema cyferkami
-batch - kolejkuje pliki , np; 
-	echo gzip jakiś_plki | batch - wykona polecenie gdy obciążenie systemu spadnie ,domyslnie 1.5
-	SPRAWDŹ MAN AT , BATCH 
-tee - czyta ze standarowego wyjcia i zapisuje do pliku np;
-	$ cat czytyaj.txt | tee temp.txt
-	-a -append dopisuje zamiast natpisywać
-whereis - lokalizuje pliki źródłowe i binarke progremu którego szukamy
-type - typ pliku , czy jest wbudowny czy zainstalowany 
+killall - kill processes by name
+	killall jav
 grep [co?] [gdzie?] - operator wyłuskiwania
 	grep slowo /kat/* - wyszuka slowo w katalogu
 	grep -n dupa plik.txt --pokarze na której lini w pliku jest dupa
@@ -568,6 +547,8 @@ comm - comparing streams (or files) , porównywarka
 				| dupa		 |
 	domyślnie wyświetla 3 koluny 
 	comm -13 - tylko 1 i 3 itd..
+diff - porównywanie plików
+	diff -y plik1 plik2 | less  -porównywanie side by side
 xxdiff - graficzny program do porównywania plików
 paste -d ":" plik plik2 - skleja wiersze z dwuch plików 
 	d -delimiter , bez nigo domyślnie jest \t (tabulacja)
