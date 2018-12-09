@@ -412,6 +412,7 @@
 	# getopts -pozwala urzywać opcji przy uruchamianiu skryptów
 	while getopts ":abz:" option;
 		# z: - dwukropek po oznacza że fukcja przymuje argument
+		# : -na początku włącza "silent error reporting mode" ,getop			nie zwraca rerrora
 	do
 		case $option in
 			a) echo otrzymałem -a ;;
@@ -439,11 +440,15 @@
 		      case $opcja in
 		                h) echo -e "help\nf -tworzenie pliku\nh -help";;
 		                 f) echo $OPTARG ;;
-		                  \?) echo nieprawidłowa op -$OPTARG ;;
+		                  \?) echo nieprawidłowa op -$OPTARG 
+				  exit 1 ;;
+				  # wyjście zapobierzy przetwarzaniu dalszego kodu
 		                   :) echo opcja -$OPTARG potrzebuje argumentu;;
 		            esac
 		   done
 		   fi
+shift $(expr $OPTIND - 1) 
+# to samo co shift 3 , przesówa $1 na pole 4 czyli po maszych 3 flagach
 			   
 
 # GENEROWANIE LICZB LOSOWYCH

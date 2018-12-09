@@ -5,7 +5,7 @@ echo $r
 case $r in 
 	0)  l=A.. ;;
 	1)  l=B.. ;;
-	*) echo niewyobrarzalny errrorrr;;
+	*) echo niewyobrażalny errrorrr;;
 esac
 echo $l
 echo ---------

@@ -21,7 +21,7 @@ exit 1
 if (($# == 0)); then
 	echo -e "nie podano żadnej opcji, spróbuj ${BOLD}-h --hepl${NORM}"
 elif ( ! getopts ":xfh" opcja )
-	then echo -e "nieprawidłowa opcja funkcji ${BOLD}$0 ${NORM} ${BOLD}-h --hepl${NORM}" 
+	then echo -e "nieprawidłowa opcja funkcji ${BOLD}$0 ${NORM} spróbuj ${BOLD} -h --hepl${NORM}" 
 	fi
 
 
@@ -30,13 +30,14 @@ while getopts ":x:fh" opcja;
 do
 	case $opcja in
 		h) HELP ;;
-		x) echo wybrałeś f ;;
-		f) echo wybrałeś -x z parametrem $OPTARG ;;
-		\?) echo opcja${BOLD} -$OPTARG ${NORM}nie istnieje ..jeszcze :\) ,spróbuj${BOLD}-h --hepl${NORM};; 
-		:) echo opcja ${REV}-$OPTARG${NORM} potrzebuje argumentu;;
+		f) echo wybrałeś f ;;
+		x) echo wybrałeś -x z parametrem $OPTARG ;;
+		\?) echo opcja${BOLD} -$OPTARG ${NORM}nie istnieje ..jeszcze :\) ,spróbuj${BOLD} -h --hepl${NORM}
+			exit 1;;
+		:) echo opcja ${BOLD}-$OPTARG${NORM} potrzebuje argumentu;;
 	esac
 done
-#}
+shift $(expr $OPTIND - 1) 
+# to samo co shift 3 , przesówa $1 na pole 4 czyli po maszych 3 flagach
 
 
-# Właściwy Start Kodu
