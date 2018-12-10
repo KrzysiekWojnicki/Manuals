@@ -1,0 +1,155 @@
+[1.2]
+	3. Bind - Berkeley Internet Name Domain (server dns), A -IPv4 IP address, AAAA -IPv6 IP address, CNAME -Canonical name record (Alias)
+	, SRV -Service record ,MX -Email server host names ,SOA -Authoritative information about a DNS zone
+	4.server srv2.avantis.pl jest serverem autorytatynym , nie posiada ANSWER SECTION , innymi słowy to master który przechwuje
+	orginalne odresy . Z kolei srv2mp.avantis.pl to slave który automatyczne updejtuje kopie domen.
+	5.port 25 to port na Simple Mail Transfer Protocol (SMTP) , server nie obsługuje maili co uniemożliwia połączenie
+	na porcie ssh 22 można się logować
+	6.ping wysyła paczki Internet Control Message Protocol (ICMP) echo , i oczekuje odpowiedzi . server master może mieć
+	firewall blokująca icmp ,albo icmp może być poprostu wyłączony na serverku
+	co zapobiega ataką na server . można też zapingować maszyna "ping of death"
+	7. 995 – POP3s , 22 – SSH , 143 – IMAP ,53 – DNS , 20-ftp(transfer) 21-ftp(przesył danych) ,80-http ,443-https
+	8. sudo traceroute -T 212.77.98.9 -flaga "T" pomija firewall nałożone na porty udp i icmp , domyślnie
+	ta opcja działa na porcie 80 ale można wybtać inny np: -p 25
+	9. lokalnie mapujemy adresy w /etc/hosts a na serwerze dns w /etc/resolv.conf
+	10.zdjęcie pt; odp_10
+	11. unknown host -error generowany gdy docelowy komputer albo server nie odpowiada . Może to wskazywać że nazwa hosta
+	podan przez urzytkownika nie istniej albo jest nizgodna z rekordami DNS . Błąd pojawić się może ze względu na
+	ustwienia servera , niedostępność , albo niepoprawną nazwe
+	host unreachable -rerror może wystąpić gdy pakiet nie przejdzie przez zdalną brame z powodu błędu w route-ingu
+	Natomiast taki błąd w subnet-cie może być wywołany przez nie otrzymanie ARP request (Address Resolution Protocol)
+	dla końcowego urządzenia . Bez arp request echo icmp nie może być wysłane .
+
+[1.5]
+	1.1.1 - total used free shared buff/cache available
+	Mem: 15G 1,6G 12G 713M 1,6G 12G
+	Swap: 15G 0B 15G
+	1.1.2 - 11:06:27 up 3:15, 10 users, load average: 0,18, 0,27, 0,27
+	1.1.3 - lsof | wc -l , u mnie 88834
+	1.1.4 - cpu u mnie ok 20 według htop , na serverze srv2mp ok~ 50 %
+	A najwięcej pamięci żre : "1662 krzysie+ 20 0 1447944 399388 320692 S 22,2 2,4 58:18.42 rambox"
+	1.2.1 - start systemu 2018-07-31 19:28
+	1.2.2 - w -userzy zalogowani , lsof | grep log
+	1.2.3 - mpadmin space 1.8g cpu -5.0 mem 11.9 8477:45 java
+	2.1 - du -sh /mnt/ --->15G /mnt/
+	2.2 - 602M /usr/local/logs/mpservices/comm
+	2.3 - > /log -wyczyszcze loga
+	2.4 - kompresja pliku - logrotate . 
+	można też zrobić wiecj miejsca na dysku: sudo apt-get autoremove -czyszczenie z niepotzrebnych paczek
+	ewentualnie: sudo apt-get autoclean -czyszczenie z nieaktualnych paczek
+	można też zrbić syboliczny dla pliku log na inny (luźniejszy) dysk :
+	ln -s /usr/local/logs/plik.log /ścieżka_do_wolnej_przestrzeni
+	nawiększy log : du -a /usr/local/logs/ | sort -n -r | head -n 1 | grep -E 'log\b'
+	3. SVN , Forbidden You don't have permission to access /repos/DNIU on this server. Apache/2.4.18 (Ubuntu) Server at svn.avantis.pl Port 443
+
+
+[1.7]
+	3. VirtualHost - to rodzaj hostowania na virtualnej infrastrukturze serverów , komputerów , pamięci ,usług .
+	dedykowany może być osobom prywatnym albo organizacjom . Wirtualny host to także zdalne urządzenie
+	które pozwala urzytkownikowy na hosting danych albo usług.
+	Platforma Vhostingowa może być urzywana przez różnych urzytkowników albo dedykowana stronom www
+	albo aplikacjom . Dostawca fizycznego servera zapewnia kontyngent zasobów dla każdego zarejestrowango
+	kienta , który może być skalowalny w zależności od potrzeb.
+	ProxyPass - dyrektywa mapująca ruch lokalnego URL-a na zdalny URL (server)
+	ProxyPass /mirror/foo/ http://backend.example.com/
+	mod_jk - moduł apacha do komunikacji kotenera tomcat z serverm web .
+	dostępność hosta allow deny - zezwala , lub blokuje ruch od hostów lub daemonów
+	odpowiednie instrukcje zapisać można w hosts.allow lub deny
+
+[2.1] Messaging Platform
+	
+	1.
+	Secondary platform jest zabezpieczeniem w wypadku gdyby primaty z jakiegoś powodu nie odpowieadł
+	2.
+	MySql , MP Config Pump , który kolejkuje sobie wszystkie
+	 zadania krórych nie można w tej chwili wykonać , a w razie potrzeby przesyła je na platforme konkuręcji ktora zajmuje
+	 się realizacją.
+	3.
+	Przed restartem - informujemy o konieczności : restartu Sebastian SK. Kasperek ,Piotr PS. Skonieczny ,Michał MB. Bogusz ,Mikolaj Klimek
+	Pierwsze - zatrzymanie usług na srvmp , DC/OS , zatrzymanie MP
+	Drugie - uruchamianie MP, uruchamianie usług, restartowanie tomcat-ów , restert secondary , mobistat ,RBSS
+	Trzecie - czyszczenie : Zweryfikować wszystkie chcecki w nagiosie , Zweryfikować nie podniesione usługi ,
+		Pamiętać o wysłaniu powiadomienia o zakończeniu awarii
+	Cztery - weryfikacja usług :Nie wszystkie usługi podczas restartu mogły się prawidłowo podnieść. 
+		Aby namierzyć takie aplikacje mamy parę metod weryfikacji :
+			Wchodzimy do konsoli jmx mp.core.MPCoreService i pod metodą listActivatedNotRegisteredServices() wykonujemy invoke.
+			Sprawdzamy w mpconsole jakie aplikacje na samym dole są wylistowane i mają koło siebie pole deactivate.
+			Sprawdzamy w mpconsole jakie aplikacje mają obok siebie ludzika o kolorze czerwonym bądź białym.
+			Sprawdzamy w nagiosie check activated_not_registered.
+			Sprawdzamy w panelu https://deploy.dcos.aws.avantis.pl czy są jakieś usługi o statusie innym niż Running.
+			Sprawdzamy w nagiosie check marathon_apps. 
+		!!!--- Staramy się także doprowadzić, aby wszystkie checki nagiosowe znalazły się w stanie ok. 
+		Niedziałanie jakiejś strony www, przykładowo może być spowodowane błędami na usłudze znajdującej się na tomcacie, 
+		która nie może się prawidłowo podłączyć do backendu. Rozwiązaniem takiego przypadku może być najpierw zrestartowanie backendu, 
+		a potem ponowny restart tomcata, na którym znajduje się usługa. ---!!!
+
+	4.
+	jak padnie baza to MPCore nie wstanie (baza mysql) 
+	5. 
+	tocat i jmx dziłają na porcie 8080
+	6.
+	cd /usr/local/logs/mpcore/
+	7.
+	service-id -	101218
+	service-description - Bramka do testow
+	project-develope - Dawid Owczarczyk
+
+[2.4] Routing
+		Wiadomość weszła 
+		2018-12-07 15:56:33,199 | INFO  | RMI TCP Connection(8405)-10.168.202.75 | mp.service.Messaging                     | 44    | [] | Message delivered: id=33271160287, payload=TextSMS{sender='48606932401', recipient='7055', sendDate=Fri Dec 07 15:56:33 CET 2018, externalSendDate=null, deliveryDate=null, validityDate=null, payloadType=TEXT_SMS, operator=POLAND_ERA, masterOperator=POLAND_ERA, mobileTerminated=false, payloadDirection=IN, text='PZU', dataCodingScheme=3, partsNumber=1}, role=REQUEST
+
+		2018-12-07 15:56:33,439 | INFO  | RMI TCP Connection(8405)-10.168.202.75 | service.edw.EdwContextExtension          | 43    | [] | [EDW] Message delivered and processed by service so creating EdwEvent, messageID=33271160287, payload=TextSMS{sender='48606932401', recipient='7055', sendDate=Fri Dec 07 15:56:33 CET 2018, externalSendDate=null, deliveryDate=null, validityDate=null, payloadType=TEXT_SMS, operator=POLAND_ERA, masterOperator=POLAND_ERA, mobileTerminated=false, payloadDirection=IN, text='PZU', dataCodingScheme=3, partsNumber=1}
+
+	wiadomość wyszła - POLAND_ERA
+	przeszła przez usługe - mps-pinapplegroup
+	t-mobile - routing - usługa 	-	nr.telefonu  -  routing - status - traść - id 
+	26006   110233  mps-pinapplegroup       48531162757     7055    200     pzu     33270793022     07-DEC-18 01.48.48.317000 PM
+
+	testowanie routingu 
+		26006   110185  mps-gratka-prod 48531162757     70908   200     grill   33271396183     07-DEC-18 05.11.39.579000 PM
+		26006   110185  mps-gratka-prod 48531162757     70908   200     orlen   33271405391     07-DEC-18 05.15.13.192000 PM
+		26006   110185  mps-gratka-prod 48531162757     70908   200     netto   33271410119     07-DEC-18 05.15.49.261000 PM
+		26006   110185  mps-gratka-prod 48531162757     70908   200     shell   33271421614     07-DEC-18 05.16.58.859000 PM
+		26006   110185  mps-gratka-prod 48531162757     70908   200     ruch    33271424491     07-DEC-18 05.17.16.801000 PM
+
+		26002   3       tmobile-sms-gateway     70908   48696367096     200     110185  33271497220     07-DEC-18 05.37.00.173000 PM
+		napisałem sobie smsa :D
+[2.5] 
+	
+Zapoznać się z zwartością MPS.MPSML_SERVICES oraz wskazać:
+W którym conteinerze znajduje się mps-gratka-prod
+	ODP: null - czyli pierwszy 130001
+Gdzie przekazywane są wiadomości dla mps-dialcom24
+	ODP: bean class="pl.avantis.mpsml.protocol.impl.EndpointDestination">
+					<constructor-arg index="0" value="https://secure.przelewy24.pl/cf/avantis_soap.php"/>
+								</bean>
+Na jaki adres komunikuje się partner mps-mediacontact
+	ODP: 4217b2ed245dbcacd65b3b017a14b67d
+Z użyciem filtru:
+project = HL and summary ~ "fatalService" AND summary ~ mps ORDER BY updated DESC
+Należy
+
+wybrać jednej z ostatnich Helpline np. [arh+] [fatalService] 110104 mps-eurocast
+zweryfikować w logach co było przyczyną awarii
+[user@dniu]$ pwd
+/mnt/logs
+jak przebiegała komunikacja
+wskazać błędy w logach
+	ODP:
+	2018-11-01 01:33:22,117 | ERROR | mps-eurocast                             | 113   | [33181121947] | Error dispatching outgoing message
+	# błąd znaleźony w logu 
+	2018-11-01 01:35:27,517 DEBUG [HTTPSender] [] Enter:  HTTPSender::invoke
+	2018-11-01 01:35:27,559 DEBUG [HTTPSender] [] java.net.ConnectException: Połączenie odrzucone (Connection refused)
+	2018-11-01 01:35:27,560 ERROR [MPSv2OutgoingAdapter] [] Unexpected error while sending message, rethrown as Processing exceptionAxisFault
+	 faultCode: {http://schemas.xmlsoap.org/soap/envelope/}Server.userException
+	  faultSubcode:
+	   faultString: java.net.ConnectException: Połączenie odrzucone (Connection refused)
+	    faultActor:
+	     faultNode:
+	      faultDetail:
+	              {http://xml.apache.org/axis/}stackTrace:java.net.ConnectException: Połączenie odrzucone (Connection refused)
+		              at java.net.PlainSocketImpl.socketConnect(Native Method)
+			              at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:344)
+
+	# błąd z loga adaptera
+		/mnt/logs/srv2mp/2018-11-01/mpservices_comm_mpsml-adapters.log.2018-11-01.bz2

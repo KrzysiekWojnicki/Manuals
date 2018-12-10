@@ -1,0 +1,31 @@
+
+	3.pierwsze - informujemy o konieczności restartu Sebastian SK. Kasperek ,Piotr PS. Skonieczny ,Michał MB. Bogusz ,Mikolaj Klimek
+	 drugie - wyłączenie wszystkich usług do niego podpiętych. Czyli zatrzymanie wszystkich usług, które są mpserwisami 
+		 na hostach srvmp oraz DC/OS. Po zatrzymaniu tych usług należy zrestartować samo MP.
+		 Logujemy się na na hosty srv1mp oraz srv2mp i przechodzimy na użytkownika mpdevelop. Następnie wykonujemy 
+		 poniższe polecenia aby zatrzymać wszystkie działające tam usługi.
+			/usr/local/mpservices/maintenance/mp_apps.sh stop
+		Czekamy na komunikat "All JAVA processes were stopped", który świadczy, że wszystkie usługi odpalone z użytkownika mpdevelop zostały zatrzymane.
+		Jeżeli z jakiegoś powodu skrypt nie zadziałał, można ręcznie zatrzymać usługi za pomocą poniższego polecenia.
+			killall java & sleep 20s && killall -9 java
+		(Najpierw każemy się ładnie wyłączyć wszystkim usługom, a po odczekaniu 20 sekund, wymuszamy zatrzymanie tych, które jeszcze działają.)
+	trzecie - Logujemy się na host dniu i przechodzimy na użytkownika mpdevelop. Następnie wykonujemy poniższe polecenia 
+		aby zatrzymać wszystkie działające tam usługi
+		/home/mpdevelop/DNIU/mpr/restart-mesos-aws-apps.py -l -s 0
+		Po wywołaniu powyższego polecenia pokaże się pełna lista usług, które zostaną zeskalowane do 0. 
+		Należy potwierdzić operację, po czym na ekranie będą pokazywać się kolejno skalowane aplikacje.
+		Po wykonaniu tej czynności w katalogu, w którym wykonywaliśmy skrypt zostanie utworzony plik 
+		restart-mesos-aws-yyyy-mm-dd_hh-mm z bieżącymi ustawieniami liczby instancji dla poszczególnych aplikacji. 
+		Będzie on wykorzystywany przy uruchamianiu usług na DC/OS.
+	cztery - zatrzymanie MP . Logujemy się na host thunder i przechodzimy na użytkownika mpadmin. 
+		Następnie wykonujemy poniższe polecenia aby zatrzymać działającą tam usługę.
+			/usr/local/mpcore/bin/mp.sh stop
+		Czekamy 30-60s, jeżeli MP dalej działa wykonujemy polecenie.
+			/usr/local/mpcore/bin/mp.sh stop force
+		Jeżeli z jakiegoś powodu MP nie może być zatrzymane poprzez skrypt to wykonujemy polecenia.
+			killall java & sleep 45s && killall -9 java
+	pięć - Uruchamianie MP . Logujemy się na host thunder i przechodzimy na użytkownika mpadmin. Następnie wykonujemy poniższe polecenia aby uruchomić MP.
+			/usr/local/mpcore/bin/mp.sh start
+		Czekamy aż skrypt zakończy działanie. Następnie weryfikujemy czy wszystko wstało poprawnie. 
+		W tym celu należy sprawdzić czy w logach MP pojawił się odpowiedni wpis.
+

@@ -1,0 +1,12 @@
+mp.service.Messaging 
+core.process.MessageClassFilter
+datatransfer.out.SMSBinaryCommand
+datatransfer.out.SMSWapPushCommand
+datatransfer.out.MMSCommand 
+datatransfer.out.GatewayDeliveryAckCommand
+atatransfer.out.UserDeliveryAckCommand
+mps-pinapplegroup
+pl.avantis.mpsml.protocol.impl.RestDestination
+mps-pinapplegroup 
+service.edw.EdwContextExtension 
+
