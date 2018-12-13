@@ -20,6 +20,7 @@ SPIS TREŚCI:
 
 1.POLECENIA
 --------
+lsusb - listuje urządzenia usb
 truncate - shrink or extend the size of a file to the specified size
 	truncate -s 100 plik.txt  -zmieni wielkość pliku do 100 byte
 figlet - wieli baner z znaków ascii. NIE jest domyślnie zainstalowany

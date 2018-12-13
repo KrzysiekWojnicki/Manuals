@@ -466,6 +466,7 @@ shift $(expr $OPTIND - 1)
 	#generowanie losowych stringów
 	head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '' ;
 	</dev/urandom tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c 13  ; echo '    '
+	';
 	#ostatni znak jest zbędny , postawiłem go bo mi komaterz nie chciał się wykoanć
 
 	# to ta sama komenda co powyżej ale więcej znaków jest wliczonych do puli , i ma pomieszaną kolejność

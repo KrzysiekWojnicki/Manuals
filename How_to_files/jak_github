@@ -61,6 +61,7 @@ git branch -a { listuje wszystkie branch , nawet te remote}
 git branch --merged {listuje co zmerdżowaliśmy do gałęzi na której jesteśmy}
 	-v -ostetni zatwierdzony zestaw zmian (przed zmerdżowaniem)
 git checkout <plik> przywraca plik do stanu z przed modyfikacji , również przywraca skasowane}
+git checkout . -przywróci wszystkie skasowane 
 git checkout <nazwa> {przenosi na wybrany branch}
 git checkout -b <nazwa> {tworzy branch i przenosi na niego}
 git merge { lisuje }

@@ -1,0 +1,36 @@
+https://projects.services.avantis.pl/secure/Dashboard.jspa
+https://mail.google.com/mail/#inbox
+https://digitalvirgoteam.slack.com/threads/team/UEHQJ48CA/
+
+# TUNELE IP
+-----------
+	-jest kilka tuneli dla bezpieczeństwa w razie problemów z płynnością 54.171.102.133 primey 54.171.234.183 backup
+	- hosty subneta widoczne u partnera będą widoczne w tunelu o PEER IP 54.171.102.133 chyba że tunel ten nie działa
+	 , jeżeli tunel będzie leżał to ruch zostanie przekierowany na router z sieci sąsiedniej --warto sparwdzić gdzie jest odpalona usługa 
+	 , i następnie zajrzeć do opisu tunelu albo podać oba adresy IP za którymi widoczny może być nasz ruch. 
+	-w spisie tuneli , sekcji monitoringo orion wybieramy partnera
+	 , w opise tego ip acl po naszej stronie jest adres na jaki dana usługa się łączy
+	 , a po stronie klineta z jakiego adresu usługa kienta łączy się do naszej
+
+	https://wikis.avantis.pl/pages/viewpage.action?pageId=1000005206312 - info dodatkowe
+
+# DOCER - [1.4] Virtualization - DC/OS
+--------------------------------------
+	- w razie problemów z deploy-em aplikacji (kontener się nie uruchamia)
+	 , Logujemy się na aktywny serwer master. Ustalamy który serwer jest aktywny (jest leaderem) pukając w endpoint /v2/lead
+	 , należy dostać się na master server 
+	 	$ curl http://master1.tst.dcos.avantis.pl:8080/v2/leader
+		{"leader":"192.168.251.12:8080"}
+		$ ssh -l username 192.168.251.12
+	 , i uruchamiamy polecenie 
+	 	$ sudo /usr/bin/journalctl -u dcos-marathon.service -b -f | grep -v GET
+	   i ponownie uruchamiamy proces deploymentu bacznie wypatrując w logach przyczyny.
+
+# PLATFORMA WIADOMOŚCI (messaging platform)
+-------------------------------------------
+	n1.mpcore.mp.avantis.pl - węzel centralny 
+	thunder
+	mysql.kr-coreapp.avantis.pl - Mysql dla secondary
+	n2.mpcore.mp.avantis.pl - węzel secondary
+	kr-coreapp
+
