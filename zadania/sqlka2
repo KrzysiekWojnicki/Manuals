@@ -1,0 +1,79 @@
+select stats.operator, sum (stats.payed) as payed, sum (stats.notpayed) as notpayed,
+round ((sum (stats.payed) * 100) / (sum (stats.payed) + sum (stats.notpayed)), 1) as percent
+from (select root.operator,
+case root.key when 'PAYED' then 1 else 0 end as payed,
+case root.key when 'PAYED' then 0 else 1 end as notpayed
+from (select /*+ USE_INVISIBLE_INDEXES */ o.operator, s.key,
+case (select (to_char (sys_extract_utc (systimestamp), 'HH24') - (to_char (current_timestamp, 'HH24'))) from dual)
+when 2 then to_char (o.create_date + 2 / 24, 'DD.MM.YYYY HH24:MI:SS')
+else to_char (o.create_date + 1 / 24, 'DD.MM.YYYY HH24:MI:SS') end as created_date
+from directpay.orders o
+join directpay.order_status s on o.status = s.value
+where operator like 'POLAND_ORANGE'
+and s.key in ('REJECTED', 'LOCKED', 'CANCELED', 'PAYED')
+and o.create_date >= sysdate - 3 / 24
+and o.direct_billing = 1
+and o.msisdn != '48999999999') root
+where to_date (root.created_date, 'DD.MM.YYYY HH24:MI:SS') >=
+sysdate - .5 / 24) stats
+group by stats.operator
+union
+select stats.operator, sum (stats.payed) as payed, sum (stats.notpayed) as notpayed,
+round ((sum (stats.payed) * 100) / (sum (stats.payed) + sum (stats.notpayed)), 1) as percent
+from (select root.operator,
+case root.key when 'PAYED' then 1 else 0 end as payed,
+case root.key when 'PAYED' then 0 else 1 end as notpayed
+from (select /*+ USE_INVISIBLE_INDEXES */ o.operator, s.key,
+case (select (to_char (sys_extract_utc (systimestamp), 'HH24') - (to_char (current_timestamp, 'HH24'))) from dual)
+when 2 then to_char (o.create_date + 2 / 24, 'DD.MM.YYYY HH24:MI:SS')
+else to_char (o.create_date + 1 / 24, 'DD.MM.YYYY HH24:MI:SS') end as created_date
+from directpay.orders o
+join directpay.order_status s on o.status = s.value
+where operator like 'POLAND_ERA'
+and s.key in ('REJECTED', 'LOCKED', 'CANCELED', 'PAYED')
+and o.create_date >= sysdate - 3 / 24
+and o.direct_billing = 1
+and o.msisdn != '48999999999'
+and rwd_status not in ('DB_LOCK', 'DB_LOCK_TMOBILE')) root
+where to_date (root.created_date, 'DD.MM.YYYY HH24:MI:SS') >= sysdate - .5 / 24) stats
+group by stats.operator
+union
+select stats.operator, sum (stats.payed) as payed, sum (stats.notpayed) as notpayed,
+round ((sum (stats.payed) * 100) / (sum (stats.payed) + sum (stats.notpayed)), 1) as percent
+from (select root.operator,
+case root.key when 'PAYED' then 1 else 0 end as payed,
+case root.key when 'PAYED' then 0 else 1 end as notpayed
+from (select /*+ USE_INVISIBLE_INDEXES */ o.operator, s.key,
+case (select (to_char (sys_extract_utc (systimestamp), 'HH24') - (to_char (current_timestamp, 'HH24'))) from dual)
+when 2 then to_char (o.create_date + 2 / 24, 'DD.MM.YYYY HH24:MI:SS')
+else to_char (o.create_date + 1 / 24, 'DD.MM.YYYY HH24:MI:SS') end as created_date
+from directpay.orders o
+join directpay.order_status s on o.status = s.value
+where operator like 'POLAND_PLUS'
+and s.key in ('REJECTED', 'LOCKED', 'CANCELED', 'PAYED')
+and o.create_date >= sysdate - 3 / 24
+and o.direct_billing = 1
+and o.msisdn != '48999999999') root
+where to_date (root.created_date, 'DD.MM.YYYY HH24:MI:SS') >= sysdate - .5 / 24) stats
+group by stats.operator
+union
+
+  select stats.operator, sum (stats.payed) as payed, sum (stats.notpayed) as notpayed,
+  round ((sum (stats.payed) * 100) / (sum (stats.payed) + sum (stats.notpayed)), 1)
+  as percent
+  from (select root.operator,
+  case root.key when 'PAYED' then 1 else 0 end as payed,
+  case root.key when 'PAYED' then 0 else 1 end as notpayed
+  from (select /*+ USE_INVISIBLE_INDEXES */ o.operator, s.key,
+  case (select (to_char (sys_extract_utc (systimestamp), 'HH24') - (to_char (current_timestamp, 'HH24'))) from dual)
+  when 2 then to_char (o.create_date + 2 / 24, 'DD.MM.YYYY HH24:MI:SS')
+  else to_char (o.create_date + 1 / 24, 'DD.MM.YYYY HH24:MI:SS') end as created_date
+  from directpay.orders o
+  join directpay.order_status s on o.status = s.value
+  where operator like 'POLAND_P4'
+  and s.key in ('REJECTED', 'LOCKED', 'CANCELED', 'PAYED')
+  and o.create_date >= sysdate - 3 / 24
+  and o.direct_billing = 1
+  and o.msisdn != '48999999999') root
+  where to_date (root.created_date, 'DD.MM.YYYY HH24:MI:SS') >= sysdate - .5 / 24) stats
+  group by stats.operator;
