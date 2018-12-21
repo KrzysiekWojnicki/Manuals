@@ -34,7 +34,7 @@
 	2.1 - du -sh /mnt/ --->15G /mnt/
 	2.2 - 602M /usr/local/logs/mpservices/comm
 	2.3 - > /log -wyczyszcze loga
-	2.4 - kompresja pliku - logrotate . 
+	2.4 - kompresja pliku - logrotate .
 	można też zrobić wiecj miejsca na dysku: sudo apt-get autoremove -czyszczenie z niepotzrebnych paczek
 	ewentualnie: sudo apt-get autoclean -czyszczenie z nieaktualnych paczek
 	można też zrbić syboliczny dla pliku log na inny (luźniejszy) dysk :
@@ -57,7 +57,7 @@
 	odpowiednie instrukcje zapisać można w hosts.allow lub deny
 
 [2.1] Messaging Platform
-	
+
 	1.
 	Secondary platform jest zabezpieczeniem w wypadku gdyby primaty z jakiegoś powodu nie odpowieadł
 	2.
@@ -70,22 +70,22 @@
 	Drugie - uruchamianie MP, uruchamianie usług, restartowanie tomcat-ów , restert secondary , mobistat ,RBSS
 	Trzecie - czyszczenie : Zweryfikować wszystkie chcecki w nagiosie , Zweryfikować nie podniesione usługi ,
 		Pamiętać o wysłaniu powiadomienia o zakończeniu awarii
-	Cztery - weryfikacja usług :Nie wszystkie usługi podczas restartu mogły się prawidłowo podnieść. 
+	Cztery - weryfikacja usług :Nie wszystkie usługi podczas restartu mogły się prawidłowo podnieść.
 		Aby namierzyć takie aplikacje mamy parę metod weryfikacji :
 			Wchodzimy do konsoli jmx mp.core.MPCoreService i pod metodą listActivatedNotRegisteredServices() wykonujemy invoke.
 			Sprawdzamy w mpconsole jakie aplikacje na samym dole są wylistowane i mają koło siebie pole deactivate.
 			Sprawdzamy w mpconsole jakie aplikacje mają obok siebie ludzika o kolorze czerwonym bądź białym.
 			Sprawdzamy w nagiosie check activated_not_registered.
 			Sprawdzamy w panelu https://deploy.dcos.aws.avantis.pl czy są jakieś usługi o statusie innym niż Running.
-			Sprawdzamy w nagiosie check marathon_apps. 
-		!!!--- Staramy się także doprowadzić, aby wszystkie checki nagiosowe znalazły się w stanie ok. 
-		Niedziałanie jakiejś strony www, przykładowo może być spowodowane błędami na usłudze znajdującej się na tomcacie, 
-		która nie może się prawidłowo podłączyć do backendu. Rozwiązaniem takiego przypadku może być najpierw zrestartowanie backendu, 
+			Sprawdzamy w nagiosie check marathon_apps.
+		!!!--- Staramy się także doprowadzić, aby wszystkie checki nagiosowe znalazły się w stanie ok.
+		Niedziałanie jakiejś strony www, przykładowo może być spowodowane błędami na usłudze znajdującej się na tomcacie,
+		która nie może się prawidłowo podłączyć do backendu. Rozwiązaniem takiego przypadku może być najpierw zrestartowanie backendu,
 		a potem ponowny restart tomcata, na którym znajduje się usługa. ---!!!
 
 	4.
-	jak padnie baza to MPCore nie wstanie (baza mysql) 
-	5. 
+	jak padnie baza to MPCore nie wstanie (baza mysql)
+	5.
 	tocat i jmx dziłają na porcie 8080
 	6.
 	cd /usr/local/logs/mpcore/
@@ -95,17 +95,17 @@
 	project-develope - Dawid Owczarczyk
 
 [2.4] Routing
-		Wiadomość weszła 
+		Wiadomość weszła
 		2018-12-07 15:56:33,199 | INFO  | RMI TCP Connection(8405)-10.168.202.75 | mp.service.Messaging                     | 44    | [] | Message delivered: id=33271160287, payload=TextSMS{sender='48606932401', recipient='7055', sendDate=Fri Dec 07 15:56:33 CET 2018, externalSendDate=null, deliveryDate=null, validityDate=null, payloadType=TEXT_SMS, operator=POLAND_ERA, masterOperator=POLAND_ERA, mobileTerminated=false, payloadDirection=IN, text='PZU', dataCodingScheme=3, partsNumber=1}, role=REQUEST
 
 		2018-12-07 15:56:33,439 | INFO  | RMI TCP Connection(8405)-10.168.202.75 | service.edw.EdwContextExtension          | 43    | [] | [EDW] Message delivered and processed by service so creating EdwEvent, messageID=33271160287, payload=TextSMS{sender='48606932401', recipient='7055', sendDate=Fri Dec 07 15:56:33 CET 2018, externalSendDate=null, deliveryDate=null, validityDate=null, payloadType=TEXT_SMS, operator=POLAND_ERA, masterOperator=POLAND_ERA, mobileTerminated=false, payloadDirection=IN, text='PZU', dataCodingScheme=3, partsNumber=1}
 
 	wiadomość wyszła - POLAND_ERA
 	przeszła przez usługe - mps-pinapplegroup
-	t-mobile - routing - usługa 	-	nr.telefonu  -  routing - status - traść - id 
+	t-mobile - routing - usługa 	-	nr.telefonu  -  routing - status - traść - id
 	26006   110233  mps-pinapplegroup       48531162757     7055    200     pzu     33270793022     07-DEC-18 01.48.48.317000 PM
 
-	testowanie routingu 
+	testowanie routingu
 		26006   110185  mps-gratka-prod 48531162757     70908   200     grill   33271396183     07-DEC-18 05.11.39.579000 PM
 		26006   110185  mps-gratka-prod 48531162757     70908   200     orlen   33271405391     07-DEC-18 05.15.13.192000 PM
 		26006   110185  mps-gratka-prod 48531162757     70908   200     netto   33271410119     07-DEC-18 05.15.49.261000 PM
@@ -114,8 +114,8 @@
 
 		26002   3       tmobile-sms-gateway     70908   48696367096     200     110185  33271497220     07-DEC-18 05.37.00.173000 PM
 		napisałem sobie smsa :D
-[2.5] 
-	
+[2.5]
+
 Zapoznać się z zwartością MPS.MPSML_SERVICES oraz wskazać:
 W którym conteinerze znajduje się mps-gratka-prod
 	ODP: null - czyli pierwszy 130001
@@ -137,7 +137,7 @@ jak przebiegała komunikacja
 wskazać błędy w logach
 	ODP:
 	2018-11-01 01:33:22,117 | ERROR | mps-eurocast                             | 113   | [33181121947] | Error dispatching outgoing message
-	# błąd znaleźony w logu 
+	# błąd znaleźony w logu
 	2018-11-01 01:35:27,517 DEBUG [HTTPSender] [] Enter:  HTTPSender::invoke
 	2018-11-01 01:35:27,559 DEBUG [HTTPSender] [] java.net.ConnectException: Połączenie odrzucone (Connection refused)
 	2018-11-01 01:35:27,560 ERROR [MPSv2OutgoingAdapter] [] Unexpected error while sending message, rethrown as Processing exceptionAxisFault
@@ -153,3 +153,242 @@ wskazać błędy w logach
 
 	# błąd z loga adaptera
 		/mnt/logs/srv2mp/2018-11-01/mpservices_comm_mpsml-adapters.log.2018-11-01.bz2
+
+[4.3]
+
+
+Dzień dobry,
+otrzymujemy błąd przy próbie komunikacji z państwa serwerem , przy wywołaniu adresu http://www.mojesmsy.pl/avantis-sms.php zwaca nam błąd 404
+
+URL:http://www.mojesmsy.pl/avantis-sms.php
+Data wysyłki: [dd-mm-yyyy hh:mm]
+Opis Problemu: brak komunikacji z serwerem, błąd 404
+
+Prosiłbym o analize problemu po państwa stronie.
+Pozdrawiam K.W. D.V.
+Dzień dobry,
+mamy problem z brakiem bilowań po [rejestracji/subskrypcji]. Poniżej załączam szczegółowe informacje.
+
+LA: BADOO
+Data wysyłki: [dd-mm-yyyy hh:mm]
+Przykład z logu: xxxxxx
+Opis Problemu: brak bilowań
+
+Prosiłbym o analize po państwa stronie.
+Pozdrawiam K.W. D.V.
+Dzień Dobry,
+Przesyłam zgodnie z proźbą ,z rozmowy telefonicznej ,przysyłam sczegułowe informacje o awarii.
+
+2012-10-09 13:13:13 - 2012-10-09 13:20:29 - rozwiązywanie problemów z aplikają Java na hoście
+2012-10-09 14:55:26 - 2012-10-09 15:15:30 - reboot kernela na kolorowym hoście
+
+Data wysyłki: [dd-mm-yyyy hh:mm]
+
+Dziękuje za cierpliwość i życze miłego dnia.
+Pozdrawiam K.W. D.V.
+
+Technical Contact
+Email:support@t-mobile.pl
+crm-2081
+LVL3 - Support TMobile
+Kontakt telefoniczny należy wykorzystać w momencie niedostępności Panelu Klienta
+Kontak mailowy używamy wyłącznie w momencie nie działania panelu i niemożliwości dodzwonienia się - operator nie przyjmuje oficjalnie zgłoszeń mailowy.
+
+serwis tvp
+CRM-3264 wykorzystujemy w przypadku nie działania API TVP
+support_online@tvp.pl
+
+CRM-428
+Mediaplazza [MPS]
+
+Dzień dobry,
+zaobserwowalismy że nie dziala u was serwer, pukamy na adres http://www.mojesmsy.pl/avantis-sms.php i zwracacie nam blod 404.
+Prosimy o naprawę tej sytuacji.
+
+----POP
+Dzień dobry,
+otrzymujemy błąd przy próbie komunikacji z państwa serwerem , przy wywołaniu adresu http://www.mojesmsy.pl/avantis-sms.php zwaca nam błąd 404
+
+URL:http://www.mojesmsy.pl/avantis-sms.php
+Data wysyłki: [dd-mm-yyyy hh:mm]
+Opis Problemu: brak komunikacji z serwerem, błąd 404
+
+Prosiłbym o analize problemu po państwa stronie.
+Pozdrawiam K.W. D.V.
+
+---------------------------------
+
+Cześć,
+nie wyszła wysyłka subskrypcji BADOO, proszę o podanie przyczyny i naprawe problemu, proszę o jak najszybszy kontakt.
+Chę przypomnieć że ten problem wystąpił już wielokrotnie i może to być ten sam powód co w zesły poniedziałek.
+
+-----POP
+Dzień dobry,
+mamy problem z brakiem bilowań po [rejestracji/subskrypcji]. Poniżej załączam szczegółowe informacje.
+
+LA: BADOO
+Data wysyłki: [dd-mm-yyyy hh:mm]
+Przykład z logu: xxxxxx
+Opis Problemu: brak bilowań
+
+Prosiłbym o analize po państwa stronie.
+Pozdrawiam K.W. D.V.
+
+------------------------------------
+
+
+
+Witam,
+
+Przepraszam za tak późną odpowiedź, ale tak jak w rozmowie telefonicznej zawieruszył się email.
+Ramy czasowe awarii to :
+
+2012-10-09 13:13:13 - 2012-10-09 13:20:29 < - pierwszy etap
+2012-10-09 14:55:26 - 2012-10-09 15:15:30 < - drugi etap
+
+W pierwszym etapie były problemy z javą na hoście zaś w drugim poleciał kernel panic na korowym hoście.
+
+
+----ODP
+Dzień Dobry,
+Przesyłam zgodnie z proźbą ,z rozmowy telefonicznej ,przysyłam sczegułowe informacje o awarii.
+
+2012-10-09 13:13:13 - 2012-10-09 13:20:29 - rozwiązywanie problemów z aplikają Java na hoście
+2012-10-09 14:55:26 - 2012-10-09 15:15:30 - reboot kernela na kolorowym hoście
+
+Data wysyłki: [dd-mm-yyyy hh:mm]
+
+Dziękuje za cierpliwość i życze miłego dnia.
+Pozdrawiam K.W. D.V.
+
+[5.4]
+
+	2.  partnerzy DP HA powinni być informowani o awarii
+		istnieje problem u jednego z operatorów lub całego serwisu (brak liczby zbilowanych)
+		istnieje problem dla konkretnego MSISDNa (brak zbilowania dla danego serwisu o określonym czasie)
+
+[5.2]
+A. Dla serwisu VIP 60798 należy wyciągnąć z DB
+	1 ID Serwisu (MTSP.SERVICE)
+	2 ID Serwisu dla każdego operatora (MTSP.SERVICE_OPERATOR)
+	3 ID Ostatnich 6 subskrypcji (MTSP.SUBSCRIPRION_OPERATOR)
+	4 Treść ostatnich 6 subskrypcji (MTSP.SMS)
+	5 Ilość rejestracji, per dzień, w rozłożeniu na Source (MTSP.SUBSCRIBER)
+	6 Ilość bilowań w ostatniej subskrypcji (SQL Bilowania po subskrypcji)
+	7 Porównać ostatnie 2 bilowania po subskrypcji, z uwzględnieniem tydzień do tygodnia
+B. Dla serwisu PRE 60798 należy wyciągnąć z DB
+	1 Ilość bilowań po rejestracji, per dzień, per status (wynik powinien zawierać również nazwę serwisu oraz LA) (MTSP.BILLED_MSISDN)
+	2 Odnaleźć opiekuna biznesowego (MTSP.SERVICE, MTSP.SERVICE_BUSINESS_OWNER, CP_CMS.BUSINESS_OWNERS)
+C. Z każdej Polskiej bramki MT wyciągnąć XML ładującego kontent dla serwisu PRE
+
+
+----ODO
+||Operator_prefix||
+|T-mobile (SC)|
+|Plus|782424565|141,44 zł|
+|Orange|519762823|158,77 zł|
+|Play|531162757|110,41 zł|
+|Heyah|880372096|108,56 zł|
+|Virgin Mobile|736003642|59,06 zł|
+
+1. select id ,name from MTSP.service where name = 'VIP_60798' ;
+2. select operator_prefix from MTSP.service_operator where service_id = '10254' ;
+3. select * from MTSP.service a join mtsp.service_operator b on a.id = b.service_id
+                    join MTSP.subscription_operator c on c.service_operator_id = b.id
+                    where name = 'VIP_60798'
+                    and rownum < 6 ;
+4. select d.text , c.send_date
+from MTSP.service a join mtsp.service_operator b on a.id = b.service_id
+                    join MTSP.subscription_operator c on c.service_operator_id = b.id
+                    join MTSP.sms d on c.id = d.subscr_oper_id
+                    where name = 'VIP_60798'
+                    and rownum < 6 ORDER BY c.send_date DESC;
+5.select trunc (c.update_date ,'day') as data , count(c.msisdn) as rejestracje, c.source , a.name
+                    from MTSP.service a
+                    join MTSP.service_operator b on a.id = b.service_id
+                    join MTSP.subscriber c on b.id = c.service_oper_id
+                    where name in 'VIP_60798'
+                    and status = 'REGISTERED'
+                    and c.update_date < TO_DATE('2018-12-15', 'YYYY-MM-DD')
+                    group by trunc (c.update_date ,'day') , c.source   , a.name
+                    order by data desc;
+6.
+7.
+
+ID: 3874037
+Address: http://msgw-ws.centertel.pl:8180/services/msgw
+Encoding: UTF-8
+Content-Type: text/xml
+Headers: {SOAPAction=["http://msgw-ws.centertel.pl/GetDeliveryStatus"], Accept=[*/*]}
+Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><GetDeliveryStatus xmlns="http://msgw-ws.centertel.pl"><providerId>AVANTIS</providerId><providerPass
+word>G8VrjpRH</providerPassword><LA>60798</LA><serviceId>PRE</serviceId><deliveryDateFrom>2018-12-20T00:01:13.254+01:00</deliveryDateFrom><deliveryDateTo>2018-12-21T00:00:13.254+01:00</deliv
+eryDateTo><reportDateFrom>2018-12-20T23:57:47.395+01:00</reportDateFrom><reportDateTo>2018-12-21T00:00:13.254+01:00</reportDateTo><transactionId>25715426560</transactionId></GetDeliveryStatu
+s></soap:Body></soap:Envelope>
+
+ID: 50707
+Address: http://ipsec.plusgsm.pl/MTManagerWeb/services/MTManagerWS
+Encoding: UTF-8
+Http-Method: POST
+Content-Type: text/xml
+Headers: {Accept=[*/*], Authorization=[Basic d3NQTVRNX0FWQU5USVM6MUAzYUFAQU5JUw==], SOAPAction=["requestSMSDelivery"]}
+Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><requestSMSDelivery xmlns="http://manager.mt.polkomtel"
+xmlns:ns2="http://model.common.mt.polkomtel"><serviceMsisdn>60798</serviceMsisdn><serviceName>PRE</serviceName>
+<msisdns><ns2:items>48663268082</ns2:items></msisdns><messages><ns2:items>Zamowienie Premium Czlonkostwa dokonane pomyslnie.
+W razie problemu prosze pisac na info@erodate.pl. Zyczymy milych doswiadczen oraz intrygujacych przygod!</ns2:items></messages>
+<additionalParams><ns2:properties><ns2:name>START_TIME</ns2:name><ns2:value>20181221141116</ns2:value></ns2:properties><ns2:properties>
+<ns2:name>TIME_LIMIT</ns2:name><ns2:value>21600</ns2:value></ns2:properties></additionalParams></requestSMSDelivery></soap:Body></soap:Envelope>
+
+ID: 1094
+Address: https://content.t-mobile.pl/b2b/documentUpload
+Encoding: UTF-8
+Content-Type: text/xml
+Headers: {SOAPAction=[""], Authorization=[Basic QVZBTlRJUzo1MDQyMDg5Nzg=], Accept=[*/*]}
+Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><uploadDocument xmlns="B2BManagerBean" xmlns:ns2="java:language_builtins.lang"><string>NULL</string>
+<strings><ns2:string>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;article id="INFO-19273ecc8c3d4749ae663038039a749f"&gt;
+    &lt;metadata&gt;
+        &lt;source&gt;Avantis_dotcom21122018&lt;/source&gt;
+        &lt;validFrom&gt;2018-12-21T01:08:25.326+01:00&lt;/validFrom&gt;
+        &lt;validTo&gt;2018-12-21T09:08:25.326+01:00&lt;/validTo&gt;
+    &lt;/metadata&gt;
+    &lt;title&gt;dotcom21122018&lt;/title&gt;
+    &lt;abstract&gt;DOTCOM TEST&lt;/abstract&gt;
+    &lt;sms&gt;
+        &lt;content&gt;DOTCOM TEST&lt;/content&gt;
+    &lt;/sms&gt;
+&lt;/article&gt;
+</ns2:string></strings><booleanVal>true</booleanVal></uploadDocument></soap:Body></soap:Envelope>
+
+ID: 938
+Address: http://195.69.126.64:80/P4SmsMTConsole/services
+Encoding: UTF-8
+Content-Type: text/xml
+Headers: {SOAPAction=[""], Authorization=[Basic YXY6QXZhbnQyMDE4Iw==], Accept=[*/*]}
+Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><SaveSmsRequest xmlns="http://vamm.drq.pl/vasp/schemas"><Sms><VasId>W7SV6</VasId><SendDate>2018-12-21 08:00:00</SendDate><Active>true</Active><SmsType>text</SmsType><Text>Jesli zainstalowane programy lub firmware są nieaktualne tworzą okazję dla włamywaczy dlatego przeprowadzaj aktualizacje</Text></Sms></SaveSmsRequest></soap:Body></soap:Envelope>
+
+
+## select service_id from MTSP.service_operator where gateway_service_name = 'VIP' and rbss_la = '60798';
+##
+## select service_id from MTSP.service_operator;
+##
+## select * from MTSP.sma where rownum < 6 ORDER BY id DESC;
+
+select distinct msisdn from MTSP.service a
+                    join MTSP.service_operator b on a.id = b.service_id
+                    join MTSP.subscriber c on b.id = c.service_oper_id
+                    where name = 'VIP_60798'
+										and status = 'REGISTERED'
+                    and rownum < 600 ;
+
+										SELECT
+    trunc (d.billed_date, 'day') as data, sum(d.status) , d.sub_operator_id
+FROM MTSP.service a
+join MTSP.service_operator b on a.id = b.service_id
+join MTSP.subscription_operator c on b.id = c.service_operator_id
+join MTSP.billed_msisdn d on c.id = d.sub_operator_id
+where d.billed_date < TO_DATE('2018-12-20', 'YYYY-MM-DD')
+--- and rownum < 100
+and d.status = '20'
+and name in 'VIP_60798'
+group by d.status , sub_operator_id ,trunc (d.billed_date, 'day')
+order by data desc ;

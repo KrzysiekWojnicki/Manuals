@@ -1,0 +1,27 @@
+tworzenie working copy
+	svn checkout/co URL PATH
+	checkout albo co
+add
+	svn add dupa
+	dodamy plik dupa
+komitowanie
+	svn commit -m "log messages"
+	svn commit -m 'dodanie pliku dupa' dupa
+delete
+	svn delete dupa
+status
+	svn status ścieżka_do_pliku
+	 It displays whether the working copy is modified, or its been added/deleted, or file is not under revision control, etc.
+diff
+	 svn diff filename
+	SVN diff displays the differences between your working copy and the copy in the SVN repository.
+	 svn -r R1:R2 diff filename
+	The above example compares the filename@R1 and filename@R2.
+log
+	svn log ścieżka_do_pliku
+	The following displays all the commits made on thegeekstuff file
+move - przemianuj nazwe pliku lub directory
+	svn move stara_nazwa nowa_nazwa
+update - svn update command brings changes from the repository into your working copy.
+	svn update ścieżka_do_pliku
+
