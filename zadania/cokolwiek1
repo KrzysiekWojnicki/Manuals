@@ -1,0 +1,180 @@
+1. Jakim skryptem i z jakiego hosta odpalamy billing
+2. Jaki jest aktualnie największy billing ID i jak to sprawdzić
+3. Gdzie na bazie znajduje się konfiguracja billingu
+
+1 ./billing_start.sh $BILLING_ID - po uprzednim updejcie svn na choście dniu
+  skrypt odpalamy z mpdevelop
+
+2  w bazie RBSS jest id billing
+
+3 /usr/local/services/billing/rbss-billing/classes/billingContext.xml ?
+
+
+-----------------
+
+2019-01-02 08:43:02,540 ERROR [RMI TCP Connection(922)-10.168.202.75] [SMPPGateway] [33331700830] Irrecoverable error when sending message, discarding...
+2019-01-02 08:43:02,540 WARN  [RMI TCP Connection(922)-10.168.202.75] [MpService] [] [33331700830] Payload discarded: TextSMS{sender='7350', recipient='48698613867', sendDate=Wed Jan 02 08:36:06 CET 2019, externalSendDate=null, deliveryDate=null, validityDate=Wed Jan 02 0
+8:39:51 CET 2019, payloadType=TEXT_SMS, operator=POLAND_ERA, masterOperator=POLAND_ERA, mobileTerminated=false, payloadDirection=OUT, text='DANE OSOBOWE: Informacje dotyczace przetwarzania danych osobowych Uczestnikow Serwisu zostaly zamieszczone w Regulaminie Serwisu dos
+tepnym na stronie sms.tvp.pl', dataCodingScheme=0, partsNumber=1}
+
+
+2019-01-02 08:42:55,497 ERROR [RMI TCP Connection(929)-10.168.202.75] [SMPPGateway] [33331700827] Irrecoverable error when sending message, discarding...
+2019-01-02 08:42:55,497 WARN  [RMI TCP Connection(929)-10.168.202.75] [MpService] [] [33331700827] Payload discarded: TextSMS{sender='7350', recipient='48698613867', sendDate=Wed Jan 02 08:36:06 CET 2019, externalSendDate=null, deliveryDate=null, validityDate=Wed Jan 02 08:39:51 CET 2019, payloadType=TEXT_SMS, operator=POLAND_ERA, masterOperator=POLAND_ERA, mobileTerminated=false, payloadDirection=OUT, text='SYLWESTER Z TVP to loteria dla osob pelnoletnich. Organizator: Gratifica Sp. z o.o. Regulamin: sms.tvp.pl. Koszt SMS to 3,69 PLN z VAT.', dataCodingScheme=0, partsNumber=1}
+
+33331700827	110358	19/01/02 08:36:06,545000000	7350	48698613867	26002	SYLWESTER Z TVP to loteria dla osob pelnoletnich. Organizator: Gratifica Sp. z o.o. Regulamin: sms.tvp.pl. Koszt SMS to 3,69 PLN z VAT.
+
+
+2019-01-02 08:42:55,498 ERROR [RMI TCP Connection(935)-10.168.202.75] [SMPPGateway] [33331701383] Irrecoverable error when sending message, discarding...
+2019-01-02 08:42:55,498 WARN  [RMI TCP Connection(935)-10.168.202.75] [MpService] [] [33331701383] Payload discarded: TextSMS{sender='7350', recipient='48604789593', sendDate=Wed Jan 02 08:36:34 CET 2019, externalSendDate=null, deliveryDate=null, validityDate=Wed Jan 02 08:40:20 CET 2019, payloadType=TEXT_SMS, operator=POLAND_ERA, masterOperator=POLAND_ERA, mobileTerminated=false, payloadDirection=OUT, text='DANE OSOBOWE: Informacje dotyczace przetwarzania danych osobowych Uczestnikow Serwisu zostaly zamieszczone w Regulaminie Serwisu dostepnym na stronie sms.tvp.pl', dataCodingScheme=0, partsNumber=1}
+
+
+
+----
+Restart usługi na bo-app
+rstart BO-mps-plus-engine2-outgoing
+{code}
+Current Status:	  OK   (for 0d 1h 29m 50s)
+Status Information:	Plik istnieje. 1 procesów uruchomionych z argumentem: mps-plus-mo-retransmitter.pl
+Performance Data:
+Current Attempt:	1/3  (HARD state)
+Last Check Time:	2019-01-02 11:33:39
+Check Type:	ACTIVE
+Check Latency / Duration:	0.044 / 0.119 seconds
+Next Scheduled Check:  	2019-01-02 11:38:39
+Last State Change:	2019-01-02 10:08:39
+Last Notification:	N/A (notification 0)
+Is This Service Flapping?	N/A
+In Scheduled Downtime?	  NO
+Last Update:	2019-01-02 11:38:16  ( 0d 0h 0m 13s ago)
+{code}
+restart BO-mps-plus-mt-retransmiter
+{code}
+Current Status:	  OK   (for 0d 0h 24m 5s)
+Status Information:	Ilość kolejki MT BO: 0
+Performance Data:	value=0
+Current Attempt:	1/3  (HARD state)
+Last Check Time:	2019-01-02 11:30:48
+Check Type:	ACTIVE
+Check Latency / Duration:	0.130 / 0.729 seconds
+Next Scheduled Check:  	2019-01-02 11:35:48
+Last State Change:	2019-01-02 11:10:48
+Last Notification:	N/A (notification 0)
+Is This Service Flapping?	N/A
+In Scheduled Downtime?	  NO
+Last Update:	2019-01-02 11:34:31  ( 0d 0h 0m 22s ago)
+{code}
+restart BO-mps-plus-mo-retransmiter
+{code}
+Current Status:	  OK   (for 0d 1h 31m 16s)
+Status Information:	Plik istnieje. 1 procesów uruchomionych z argumentem: mps-plus-mo-retransmitter.pl
+Performance Data:
+Current Attempt:	1/3  (HARD state)
+Last Check Time:	2019-01-02 11:38:39
+Check Type:	ACTIVE
+Check Latency / Duration:	0.058 / 0.033 seconds
+Next Scheduled Check:  	2019-01-02 11:43:39
+Last State Change:	2019-01-02 10:08:39
+Last Notification:	N/A (notification 0)
+Is This Service Flapping?	N/A
+In Scheduled Downtime?	  NO
+Last Update:	2019-01-02 11:39:46  ( 0d 0h 0m 9s ago)
+{code}
+
+
+
+-------
+Deatywacja routingi
+*brak routingu*
+
+Archiwizacja usługi
+{code}
+./s3_expired_mover.sh orange-wednesdays-core
+### Downloading JSON ... downloaded
+### Downloading artifact from Nexus ... downloaded
+upload: ./orange-wednesdays-core-2019-01-02.tar.gz to s3://dv-is-expired/dcos/JAVA_SERVICE/orange-wednesdays-core-2019-01-02.tar.gz
+### Aplikacja zarchiwizowana w:
+s3://dv-is-expired/dcos/JAVA_SERVICE/orange-wednesdays-core-2019-01-02.tar.gz
+{code}
+*Aplikacja nie używa zasobów GFS*
+Zatrzymanie Usługi na *DC/OS*
+DRI : DV @mmewald
+
+
+data wygaśnięcia usługi: 2018-12-06
+data zatrzymania usługi: 2019-01-02
+wykonane czynności:
+
+usunięcie routingów IN/OUT serwisu: *Nie było routingów* (spr. na wiki)
+??The query was executed but the result is empty.??
+archiwizacja usługi:
+{code}
+./s3_expired_mover.sh orange-wednesdays-core
+### Downloading JSON ... downloaded
+### Downloading artifact from Nexus ... downloaded
+upload: ./orange-wednesdays-core-2019-01-02.tar.gz to s3://dv-is-expired/dcos/JAVA_SERVICE/orange-wednesdays-core-2019-01-02.tar.gz
+### Aplikacja zarchiwizowana w:
+s3://dv-is-expired/dcos/JAVA_SERVICE/orange-wednesdays-core-2019-01-02.tar.gz
+{code}
+odmontowanie zasobów GFS: *Aplikacja nie używa zasobów GFS*
+zatrzymanie usługi: DONE (DC/OS)
+dezaktywacja usługi: DONE (MPconsole)
+poinformowanie Analityka (opcjonalne): Nie potrzebne
+poinformowanie DBA (opcjonalne): Nie potrzebne
+aktualizacja CRM (opcjonalne): Nie potrzebne
+
+
+
+-----------
+
+19/01/02 15:07:47,561000000	1	21	21	8208	tmobile-sk-gateway-bo
+19/01/02 14:38:19,630000000	1	113	111	8208	tmobile-sk-gateway-bo
+19/01/02 14:33:22,529000000	2	0	0	8208	tmobile-sk-gateway-bo
+19/01/02 14:32:45,752000000	3	80	80	8208	tmobile-sk-gateway-bo
+19/01/02 14:29:15,716000000	1	74	75	8208	tmobile-sk-gateway-bo
+19/01/02 14:27:22,679000000	1	36	42	8208	tmobile-sk-gateway-bo
+19/01/02 14:25:45,582000000	2	148	158	8208	tmobile-sk-gateway-bo
+19/01/02 14:21:48,342000000	1	85	87	8208	tmobile-sk-gateway-bo
+19/01/02 14:20:41,030000000	2	0	0	8208	tmobile-sk-gateway-bo
+19/01/02 14:20:03,340000000	3	65	66	8208	tmobile-sk-gateway-bo
+
+
+2019-01-02 15:28:45,205 ERROR [RMI TCP Connection(521)-10.168.202.75] [MpService] [] [33332951980] Payload processing error : TextSMS{sender='7802', recipient='421911708228', sendDate=Wed Jan 02 15:26:37 CET 2019, externalSendDate=null, deliveryDate=null, validityDate=nul
+l, payloadType=TEXT_SMS, operator=SLOVAK_REPUBLIC_EUROTEL_GSM, masterOperator=SLOVAK_REPUBLIC_EUROTEL_GSM, mobileTerminated=false, payloadDirection=INTERNAL, text='Pristup k sluzbe WEEZCHAT bol predlzeny. Viac info: 02/65413561', dataCodingScheme=0, partsNumber=1}
+org.springframework.remoting.RemoteAccessException: Could not access remote service at [{http://www.xtcplus.com/soap/schemas/services/v80/Xaction80Stateless.wsdl}pl.avantis.charging.xtc.ws.Xaction80StatelessPortType]; nested exception is com.sun.xml.internal.ws.client.Cli
+entTransportException: HTTP transport error: java.net.ConnectException: Connection timed out (Connection timed out)
+
+
+
+--------------
+
+Dzień dobry ,
+Nasz monitoring wykrywa błąd związany z nieprawidłową wartością kwoty vat za płatności Direcpay , błąd wynika z faktu
+niedokładnego zaokrąglania kwoty brutto .
+Brutto to 2,829 pln, po zaokrągleniu do dwóch miejsc po przecinku daje 2,83 pln a nie 2,82, a co za tym idzie vat wynosi 0,53 pln , a nie 0,52 .
+Uprzejmie prosimy korektę w celu prawidłowego obliczania wyniku .
+
+Pozdrawiam,
+
+IT Operator
+Maintenance Division
+IT and Operations Department
+M: +48 503 208 168
+T: +48 22 312 1111
+e-mail: helpline@digitalvirgo.pl
+Digital Virgo S.A.
+ul. Inflancka 4, 00-189 Warszawa
+
+----------------------
+mt-service-proxy-Chomikuj.log -
+2019-01-03 09:01:46,824 | INFO  | mt-service-proxy-Chomikuj      | [33334794305][160028]        | message delivered: pl.avantis.mp.payload.ObjectPayload [supportsAccounting=true, supportsAcknowledge=true, sender=null, recipient=null, sendDate=Thu Jan 03 09:01:46 CET 2019, externalSendDate=null, deliveryDate=null, validityDate=null, payloadDirection=INTERNAL, payloadType=OBJECT_PAYLOAD, extendedType=null]
+2019-01-03 09:01:46,825 | INFO  | mt-service-proxy-Chomikuj      | [33334794305][160028]        | payload delivered: BillingPackage{partner=PartnerDTO{name='Chomikuj', login='Chomikuj', password='78cho98!?MT', partnerEmail='premium@chomikuj.pl', avantisEmail='sebastian.betkowski@avantis.pl', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160028, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, msisdnPack=BilledMsisdnPackDTO]status=[20]subscriptionId=[212964969][26001][MANIAC][null][Thu Jan 03 09:01:46 CET 2019][[BilledMsisdnDTO[48661483937][170213988979]]][null][null]}, notificationSignature=Chomikuj_6XruLM}
+2019-01-03 09:01:47,133 | INFO  | mt-service-proxy-Chomikuj      | [33334794305][160028]        | Successful processing message completed in 309 ms.
+2019-01-03 09:01:53,781 | INFO  | mt-service-proxy-Chomikuj      | [33334794463][160028]        | message delivered: pl.avantis.mp.payload.ObjectPayload [supportsAccounting=true, supportsAcknowledge=true, sender=null, recipient=null, sendDate=Thu Jan 03 09:01:53 CET 2019, externalSendDate=null, deliveryDate=null, validityDate=null, payloadDirection=INTERNAL, payloadType=OBJECT_PAYLOAD, extendedType=null]
+2019-01-03 09:01:53,782 | INFO  | mt-service-proxy-Chomikuj      | [33334794463][160028]        | payload delivered: BillingPackage{partner=PartnerDTO{name='Chomikuj', login='Chomikuj', password='78cho98!?MT', partnerEmail='premium@chomikuj.pl', avantisEmail='sebastian.betkowski@avantis.pl', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160028, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, msisdnPack=BilledMsisdnPackDTO]status=[20]subscriptionId=[212964969][26001][MANIAC][null][Thu Jan 03 09:01:53 CET 2019][[BilledMsisdnDTO[48695115433][170213989086]]][null][null]}, notificationSignature=Chomikuj_6XruLM}
+2019-01-03 09:01:54,244 | INFO  | mt-service-proxy-Chomikuj      | [33334794463][160028]        | Successful processing message completed in 463 ms.
+
+
+w log bing-gateway -
+2019-01-03 09:00:05,946 | INFO  | NotificationServiceImpl        | http-8080-3 | Received deactivateSubscription Event{subscriberId=5601, subscriber='48505325879', requestId=1546502405733}}
+
+2019-01-03 09:00:25,805 | INFO  | NotificationServiceImpl        | http-8080-1 | Received deactivateSubscription Event{subscriberId=4771, subscriber='48505038933', requestId=1546502425638}}

@@ -313,8 +313,21 @@ from MTSP.service a join mtsp.service_operator b on a.id = b.service_id
                     group by trunc (c.update_date ,'day') , c.source   , a.name
                     order by data desc;
 6.
+select * from (
+			select a.name , trunc(c.billed_date , 'day') as data_ost_sub ,count(c.msisdn) as ilość_bilowań
+					from MTSP.service a
+					join MTSP.service_operator b on b.service_id = a.id
+					join MTSP.billed_msisdn c on c.service_oper_id = b.id
+					where name in 'VIP_60798'
+					group by trunc (c.billed_date ,'day') , a.name
+					order by data_ost_sub desc ) where rownum <=1 ;
 7.
+2.2
+	CP_CMS.BUSINESS_OWNERS -
+	MTSP.SERVICE_BUSINESS_OWNER -
+	MTSP.SERVICE -
 
+3.1
 ID: 3874037
 Address: http://msgw-ws.centertel.pl:8180/services/msgw
 Encoding: UTF-8
@@ -324,6 +337,8 @@ Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><
 word>G8VrjpRH</providerPassword><LA>60798</LA><serviceId>PRE</serviceId><deliveryDateFrom>2018-12-20T00:01:13.254+01:00</deliveryDateFrom><deliveryDateTo>2018-12-21T00:00:13.254+01:00</deliv
 eryDateTo><reportDateFrom>2018-12-20T23:57:47.395+01:00</reportDateFrom><reportDateTo>2018-12-21T00:00:13.254+01:00</reportDateTo><transactionId>25715426560</transactionId></GetDeliveryStatu
 s></soap:Body></soap:Envelope>
+
+
 
 ID: 50707
 Address: http://ipsec.plusgsm.pl/MTManagerWeb/services/MTManagerWS
@@ -367,28 +382,140 @@ Headers: {SOAPAction=[""], Authorization=[Basic YXY6QXZhbnQyMDE4Iw==], Accept=[*
 Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><SaveSmsRequest xmlns="http://vamm.drq.pl/vasp/schemas"><Sms><VasId>W7SV6</VasId><SendDate>2018-12-21 08:00:00</SendDate><Active>true</Active><SmsType>text</SmsType><Text>Jesli zainstalowane programy lub firmware są nieaktualne tworzą okazję dla włamywaczy dlatego przeprowadzaj aktualizacje</Text></Sms></SaveSmsRequest></soap:Body></soap:Envelope>
 
 
-## select service_id from MTSP.service_operator where gateway_service_name = 'VIP' and rbss_la = '60798';
-##
-## select service_id from MTSP.service_operator;
-##
-## select * from MTSP.sma where rownum < 6 ORDER BY id DESC;
+##########na 7 , 2.1 , 2.2
+-- raport bilowań z 2 ostatnich tygodni
+select serop.gateway_service_name, serop.operator_la, count(bm.msisdn) as bilowania, bm.status, trunc(sop.scheduled_to, 'IW')as week
+from mtsp.service_operator serop, mtsp.service s , mtsp.subscription sub, mtsp.subscription_operator sop , mtsp.billed_msisdn bm
+where s.id = serop.service_id
+and s.name like 'VIP%'
+and serop.gateway_service_name not like '%SMS%'
+and sub.id = sop.subscription_id
+and serop.id = sop.service_operator_id
+and bm.sub_operator_id = sop.id
+and serop.operator_la = '60798'
+and bm.status = 20
+and sop.scheduled_to BETWEEN sysdate-19 AND sysdate-5       /*aktualny początek i koniec tygodnia*/
+group by  trunc(sop.scheduled_to, 'IW'), serop.gateway_service_name, serop.operator_la, bm.status
+order by trunc(sop.scheduled_to, 'IW') desc
 
-select distinct msisdn from MTSP.service a
-                    join MTSP.service_operator b on a.id = b.service_id
-                    join MTSP.subscriber c on b.id = c.service_oper_id
-                    where name = 'VIP_60798'
-										and status = 'REGISTERED'
-                    and rownum < 600 ;
+--Ilość bilowań po rejestracji, per dzień, per status  (nazwe serwisu oraz LA) (MTSP.BILLED_MSISDN)
+select bm.billed_date, serop.gateway_service_name, serop.operator_la, serop.operator_prefix, bm.msisdn, bm.status
+from mtsp.service_operator serop, mtsp.service s, mtsp.billed_msisdn bm
+where s.id = serop.service_id
+and serop.gateway_service_name like '%PRE%'
+and serop.operator_la = 60798
+and bm.status = 20
+--and serop.operator_prefix = '26002'
+and bm.billed_date >= sysdate-2
+and bm.service_oper_id = serop.id
+--group by bm.billed_date, serop.gateway_service_name, serop.operator_la, serop.operator_prefix, bm.status
+order by bm.billed_date;
 
-										SELECT
-    trunc (d.billed_date, 'day') as data, sum(d.status) , d.sub_operator_id
-FROM MTSP.service a
-join MTSP.service_operator b on a.id = b.service_id
-join MTSP.subscription_operator c on b.id = c.service_operator_id
-join MTSP.billed_msisdn d on c.id = d.sub_operator_id
-where d.billed_date < TO_DATE('2018-12-20', 'YYYY-MM-DD')
---- and rownum < 100
-and d.status = '20'
-and name in 'VIP_60798'
-group by d.status , sub_operator_id ,trunc (d.billed_date, 'day')
-order by data desc ;
+--Ilość bilowań po rejestracji, per itp itd + business_owner
+select bm.billed_date, serop.gateway_service_name, serop.operator_la, serop.operator_prefix, bm.msisdn, bm.status, cp.name
+from mtsp.service_operator serop, mtsp.service s, mtsp.billed_msisdn bm, MTSP.SERVICE_BUSINESS_OWNER bo,
+CP_CMS.BUSINESS_OWNERS cp
+where s.id = serop.service_id
+and bo.BUSINESS_OWNER_ID = cp.BUSINESS_OWNER_ID
+and serop.gateway_service_name like '%PRE%'
+and serop.operator_la = 60798
+and bm.status = 20
+and bm.billed_date >= sysdate-2
+and bm.service_oper_id = serop.id
+order by bm.billed_date;
+
+#######################
+
+
+
+[5.14] SAP Report Platform
+
+	1. w jaki sposób jest sprawdzane działanie wysyłania raportu mailowego
+	2. Wklej logi z wysyłania maila
+
+	1.Check sprawdza czy w ciągu ostatniego dnia zostały zaciągnięte dane do schematu SAPAD na którym bazuje raport
+		Check pobiera wiadomości z x ostatnich minut (parametr lastMinute) z poczty o loginie (email) i haśle (password).
+		Skrzynka ta musi być założona na mail.avantis.pl. Następnie sprawdzane są wszystkie kryteria, jakie muszą być spełnione dla maila.
+		Jeśli przynajmniej jeden mail spełnia te kryteria check zwraca OK.
+		Kryteria są podawane w parametrach subject , text, attachment, sender. Na końcu wiadomości starsze niż 24 są usuwane
+
+	2. 	Dec 27 14:30:27 mail smtpd[3156]: smtp-in: Accepted message 8857e7bb on session ab250a039c4dccc4: from=<no-reply-sap@avantis.pl>, to=<sap_monitoring@digitalvirgo.pl>, size=918, ndest=1, proto=ESMTP
+		Dec 27 14:30:27 mail smtpd[3156]: smtp-in: Closing session ab250a039c4dccc4
+		Dec 27 14:30:27 mail smtpd[3156]: smtp-out: Connecting to tls://52.30.236.147:25 (ec2-52-30-236-147.eu-west-1.compute.amazonaws.com) on session ab250a0ccbdebaa8...
+		Dec 27 14:30:27 mail smtpd[3156]: smtp-out: Connected on session ab250a0ccbdebaa8
+		Dec 27 14:30:27 mail smtpd[3156]: smtp-out: Started TLS on session ab250a0ccbdebaa8: version=TLSv1.2, cipher=ECDHE-RSA-AES256-GCM-SHA384, bits=256
+		Dec 27 14:30:27 mail smtpd[3156]: smtp-out: Server certificate verification succeeded on session ab250a0ccbdebaa8
+		Dec 27 14:30:27 mail smtpd[3156]: relay: Ok for 8857e7bb0d1320f9: session=ab250a0ccbdebaa8, from=<no-reply-sap@avantis.pl>, to=<sap_monitoring@digitalvirgo.pl>,
+		rcpt=<->, source=10.168.202.220, relay=52.30.236.147 (ec2-52-30-236-147.eu-west-1.compute.amazonaws.com), delay=0s, stat=250 Ok 01020167efdbeec1-9f665630-bb37-4049-9dee-b83914d872f8-000000
+
+
+[5.7] Czater
+
+rejestracja
+{code}
+018-12-28 08:39:02,566 | INFO  | InternalServiceHelperImpl | RMI TCP Connection(68473)-10.168.202.143 | Changing registration status to 'REGISTERED' for serviceMsisdn=[60255] , serviceName=[CZATER] , msisdn=[48782424565]
+2018-12-28 08:39:02,566 | INFO  | InternalServiceHelperImpl | RMI TCP Connection(68473)-10.168.202.143 | Returning SubscriberStatusRequest{msisdn='48782424565', updateDate=Fri Dec 28 08:39:02 CET 2018, status=10, operator=26001, serviceName='CZATER', largeAccount='60255', cause='null', properties={source=SMS}}
+{code}
+nick
+{code}
+2018-12-28 08:43:57,211 INFO  [Old I/O client worker ([id: 0xe8a08013, 0.0.0.0/0.0.0.0:34186 => smsc_plus11/212.2.118.11:9971])] [CIMDFrameDecoder] [] Raw frame being read: 20:130     021:80750       023:48782424565 060:181228084357        033:Marian123   052:0   030:0   026:260011602123519     028:+48601000321        58 on channel: [id: 0xe8a08013, 0.0.0.0/0.0.0.0:34186 => smsc_plus11/212.2.118.11:9971]
+2018-12-28 08:43:57,212 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Looking for a message with a key: 48782424565_null_181228084357
+2018-12-28 08:43:57,217 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents before CIMD special characters conversion: Marian123
+2018-12-28 08:43:57,217 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents after CIMD special characters conversion: Marian123
+{code}
+płeć
+{code}
+2018-12-28 08:43:58,650 INFO  [RMI TCP Connection(943)-10.168.202.75] [CIMDFrameEncoder] [33319186352] Raw frame being sent: 03:083     021:48782424565 033:MARIAN123.4, prosimy podaj swoja plec - jesli jestes dziewczyna odpisz w SMSie: K, jesli jestes chlopakiem odpisz: M.        on channel: [id: 0xe8a08013, 0.0.0.0/0.0.0.0:34186 => smsc_plus11/212.2.118.11:9971]
+2018-12-28 08:43:58,804 INFO  [Old I/O client worker ([id: 0xe8a08013, 0.0.0.0/0.0.0.0:34186 => smsc_plus11/212.2.118.11:9971])] [CIMDFrameDecoder] [] Raw frame being read: 53:083     021:48782424565 060:181228084405        A9 on channel: [id: 0xe8a08013, 0.0.0.0/0.0.0.0:34186 => smsc_plus11/212.2.118.11:9971]
+2018-12-28 08:44:13,492 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Looking for a message with a key: 48782424565_null_181228084413
+2018-12-28 08:44:13,497 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents before CIMD special characters conversion: M
+2018-12-28 08:44:13,497 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents after CIMD special characters conversion: M
+{code}
+wiek
+{code}
+2018-12-28 08:44:37,083 INFO  [upstream-traffic-executor-6] [CIMDGateway] [] Looking for a message with a key: 48782424565_null_181228084437
+2018-12-28 08:44:37,087 INFO  [upstream-traffic-executor-6] [CIMDGateway] [] Text SMS contents before CIMD special characters conversion: 66
+2018-12-28 08:44:37,088 INFO  [upstream-traffic-executor-6] [CIMDGateway] [] Text SMS contents after CIMD special characters conversion: 66
+{cpde}
+lista kontaktów
+{code}
+2018-12-28 08:44:57,198 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Looking for a message with a key: 48782424565_null_181228084457
+2018-12-28 08:44:57,203 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents before CIMD special characters conversion: Lista
+2018-12-28 08:44:57,203 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents after CIMD special characters conversion: Lista
+{code}
+wybrany
+{code}
+2018-12-28 08:45:33,624 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Looking for a message with a key: 48782424565_null_181228084533
+2018-12-28 08:45:33,629 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents before CIMD special characters conversion: 4
+2018-12-28 08:45:33,629 INFO  [upstream-traffic-executor-5] [CIMDGateway] [] Text SMS contents after CIMD special characters conversion: 4
+{code}
+ustanowienie wspunegi czatu
+{code}
+2018-12-28 10:03:15,944 INFO  [RMI TCP Connection(956)-10.168.202.75] [Messaging] [] Message delivered: id=33319308269, payload=TextSMS{sender='80750', recipient='48782424565', sendDate=Fri Dec 28 10:03:15 CET 2018, externalSendDate=null, deliveryDate=null, validityDate=n
+ull, payloadType=TEXT_SMS, operator=POLAND_PLUS, masterOperator=POLAND_PLUS, mobileTerminated=false, payloadDirection=OUT, text='Zrezygnowales z udzialu w serwisie! Jesli chcesz ponownie wejsc do zabawy - wyslij SMS o tresci CZAT pod numer 80750.', dataCodingScheme=0, par
+tsNumber=1}, role=REQUEST
+{code}
+zakończenie subskrypcji
+{code}
+2018-12-28 10:03:15,950 INFO  [RMI TCP Connection(956)-10.168.202.75] [CIMDFrameEncoder] [33319308269] Raw frame being sent: 03:239     021:48782424565 033:Zrezygnowales z udzialu w serwisie! Jesli chcesz ponownie wejsc do zabawy - wyslij SMS o tresci CZAT pod numer 80750
+.        on channel: [id: 0xe8a08013, 0.0.0.0/0.0.0.0:34186 => smsc_plus11/212.2.118.11:9971]
+{code}
+
+[4.6] Zapoznanie się z narzędziami DNIU
+
+Czym jest DBSessionMonitor oraz do czego służy
+	- Aplikacja służy do ustalania jakie sesje są ustanowione na bazie danych Oracle
+Gdzie graficznie można odnaleźć historię MSISDN
+	- w DB oracle
+Z jakiego narzędzia wysyłane są tzw Bulki
+	- bulkman
+Gdzie znajduje się lista IPSec
+ 	- na orionie
+Czego należy użyć aby zweryfikować do jakiego operatora należy MSISDN
+	- na hoście dniu jest polecenie "siec"
+Czym jest logmover
+	- Logmover jest to skrypt do szybkiego i sprawnego przenoszenia logów z hosta produkcyjnego na hosta DNIU (mpdevelop:host ~/logmover/)
+restart-mesos-apps.py
+	- skonteneryzowane usługi restrtujemy przez dc/os
+Omówienie logfind
+	- szukanie logów

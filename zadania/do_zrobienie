@@ -7,18 +7,24 @@ poczytać ; https://wikis.services.avantis.pl/pages/viewpage.action?pageId=10815
 
 https://www.tutorialspoint.com/unix_commands/getent.htm
 
-/etc/logrotate.d/ -ustawienia logrotate dla różnych servisów 
+/etc/logrotate.d/ -ustawienia logrotate dla różnych servisów
 https://www.youtube.com/watch?v=hGqjM9Wz-pU - w wolnej chwili
 
 opera
 getent
 
 skryptus :
-	1.numery la 
+	1.numery la
 	2.komenda ./routing_IN_tester.sh 71050 text-sms
-	3.pętal ile jest numrów 
+	3.pętal ile jest numrów
 	4.zczytanie wybranych lini outputów
 	5.dopisywnie ich do pliku z raportem
 
 spr. w skrypcie na routing in jak numer zmienie
 spr. w skrypcie na out jak podmienićtekst wiadomości z id_usługi na customową
+
+szkolenie z nagiosa
+
+jak parsować xml w bash
+
+zabrać linuch mag 
