@@ -1,0 +1,60 @@
+Dzień dobry,
+zaobserwowalismy że nie dziala u was serwer, pukamy na adres http://www.mojesmsy.pl/avantis-sms.php i zwracacie nam blod 404.
+Prosimy o naprawę tej sytuacji.
+
+----POP
+Dzień dobry,
+otrzymujemy błąd przy próbie komunikacji z państwa serwerem , przy wywołaniu adresu http://www.mojesmsy.pl/avantis-sms.php zwaca nam błąd 404
+
+URL:http://www.mojesmsy.pl/avantis-sms.php 
+Data wysyłki: [dd-mm-yyyy hh:mm]
+Opis Problemu: brak komunikacji z serwerem, błąd 404
+
+Prosiłbym o analize problemu po państwa stronie.
+Pozdrawiam K.W. D.V.
+
+---------------------------------
+
+Cześć,
+nie wyszła wysyłka subskrypcji BADOO, proszę o podanie przyczyny i naprawe problemu, proszę o jak najszybszy kontakt.
+Chę przypomnieć że ten problem wystąpił już wielokrotnie i może to być ten sam powód co w zesły poniedziałek.
+
+-----POP
+Dzień dobry,
+mamy problem z brakiem bilowań po [rejestracji/subskrypcji]. Poniżej załączam szczegółowe informacje.
+
+LA: BADOO
+Data wysyłki: [dd-mm-yyyy hh:mm]
+Przykład z logu: xxxxxx
+Opis Problemu: brak bilowań
+
+Prosiłbym o analize po państwa stronie.
+Pozdrawiam K.W. D.V.
+
+------------------------------------
+
+
+
+Witam,
+
+Przepraszam za tak późną odpowiedź, ale tak jak w rozmowie telefonicznej zawieruszył się email.
+Ramy czasowe awarii to :
+
+2012-10-09 13:13:13 - 2012-10-09 13:20:29 < - pierwszy etap
+2012-10-09 14:55:26 - 2012-10-09 15:15:30 < - drugi etap
+
+W pierwszym etapie były problemy z javą na hoście zaś w drugim poleciał kernel panic na korowym hoście.
+
+
+----ODP
+Dzień Dobry,
+Przesyłam zgodnie z proźbą ,z rozmowy telefonicznej ,przysyłam sczegułowe informacje o awarii.
+
+2012-10-09 13:13:13 - 2012-10-09 13:20:29 - rozwiązywanie problemów z aplikają Java na hoście
+2012-10-09 14:55:26 - 2012-10-09 15:15:30 - reboot kernela na kolorowym hoście
+
+Data wysyłki: [dd-mm-yyyy hh:mm]
+
+Dziękuje za cierpliwość i życze miłego dnia.
+Pozdrawiam K.W. D.V.
+
