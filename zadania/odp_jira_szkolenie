@@ -519,3 +519,58 @@ restart-mesos-apps.py
 	- skonteneryzowane usługi restrtujemy przez dc/os
 Omówienie logfind
 	- szukanie logów
+
+
+[3.2] ARH+
+
+Odpowiedzieć na pytania:
+11 Jakie jest okno dla monitoringu [arh+] [HighQueue] 120064 lp-MovilWave-120064
+12 Jakie warunki muszą być spełnione, aby wpadł
+121 [arh+] 2203 plus-sms-2400 monitorowanie ruchu - alert techniczny - M2LA
+122 [arh+] 101201 smsparking-proxy exceeded
+13 Jaki musi być LVL błędów aby pojawił się alert z fatalService
+2 Wskazać zapytanie do DB oraz wyciągnąć eventy dla
+21 LVL 2
+22 Treść błędu: NO ROUTING RULES
+23 Usługa: mps-sybase2
+
+ 1.1 Na usludze wystepuje kolejka powyzej 3 tys i utrzymuje sie od 15 min.
+ 	having max(ev.creationDate.time)-min(ev.creationDate.time) > 900000 and count(*) >= 5
+ 1.2.1    <value><![CDATA[
+    insert into plussms2400M2LA
+    select ev.sentMessagesNum as sentMessagesNum
+    from StateEvent.win:time_batch(60 min) as ev
+    where owner.serviceID = 2203 and
+    pl.avantis.arhplus.util.Time.currentHour() between 9 and 22
+         ]]></value>
+    <value><![CDATA[
+    insert into plussms2400M2LAsum
+    select sum(ev.sentMessagesNum) as sent
+    from plussms2400M2LA.win:time_batch(5 min) as ev
+    where ev.sentMessagesNum is not null
+    having sum(ev.sentMessagesNum) < 1050
+    ]]></value>
+	1.2.2 <value><![CDATA[
+insert into smsparking_c1
+select ev.owner.serviceID as serviceid, ev.owner.serviceName as name, ev.creationDate as crdate, ev.eventDescription as descr, count(*)
+from StateEvent.win:time_batch(7 min) as ev
+where ev.owner.serviceID = 101201 and
+        ev.eventLevel.levelID >= 2 and
+        ev.eventDescription is not null and
+        ( ev.eventDescription like '%stopBilling failed%' or
+        ev.eventDescription like '%billParking failed%' or
+        ev.eventDescription like '%StartParking failed%' or
+        ev.eventDescription like '%StopParking failed%')
+having max(ev.creationDate.time) - min(ev.creationDate.time) > 300000
+order by ev.creationDate
+                ]]></value>
+1.3	ev.eventLevel.levelID = 3
+2.1 select e.creation_time as time, e.queue_size as queue, e.delivered_messages_num as delivered, e.sent_messages_num as sent, e.service_id, s.name, e.mpevent_level as "level", e.mpevent_desc as description
+from mp.mpservice s, mp.mpevent e where
+e.service_id=s.service_id and
+--e.service_id = 101201 and
+s.name like '%mps-sybase2%' and
+e.mpevent_level = 2 and
+e.mpevent_desc LIKE '%NO ROUTING RULES%' and
+e.creation_time >= sysdate-1/24
+order by e.creation_time desc;

@@ -178,3 +178,78 @@ w log bing-gateway -
 2019-01-03 09:00:05,946 | INFO  | NotificationServiceImpl        | http-8080-3 | Received deactivateSubscription Event{subscriberId=5601, subscriber='48505325879', requestId=1546502405733}}
 
 2019-01-03 09:00:25,805 | INFO  | NotificationServiceImpl        | http-8080-1 | Received deactivateSubscription Event{subscriberId=4771, subscriber='48505038933', requestId=1546502425638}}
+
+---------------
+
+||Operator||Numer||Kwota||
+|T-mobile (SC)|606932401|222,84 zł|
+|Plus|782424565|131,99 zł|
+|Orange|519762823|114,45 zł|
+|Play|531162757|133,52 zł|
+|Heyah|880372096|100,55 zł|
+|Virgin Mobile|736003642|56,06 zł|
+
+
+nowe hasło skycash ymva3hfMtVrF , pin 4862
+stare z33z2fkv8o 7750
+
+-------------------
+
+2019-01-04 02:14:00,148 | INFO  | avantis.tvchat.ConsoleStarter            | Running...
+2019-01-04 02:14:10,623 | DEBUG | avantis.tvchat.MPService                 | Performing ping...
+2019-01-04 02:14:10,626 | INFO  | avantis.tvchat.MPService                 | [100754]Periodic alive information sent successfully.
+2019-01-04 02:14:20,154 | INFO  | avantis.tvchat.ConsoleStarter            | Running...
+2019-01-04 02:14:40,157 | INFO  | avantis.tvchat.ConsoleStarter            | Running...
+
+2019-01-04 00:02:10,623 | DEBUG | avantis.tvchat.MPService                 | Performing ping...
+2019-01-04 00:02:10,627 | INFO  | avantis.tvchat.MPService                 | [100754]Periodic alive information sent successfully.
+2019-01-04 00:02:18,882 | INFO  | avantis.tvchat.ConsoleStarter            | Running...
+2019-01-04 00:02:21,910 | INFO  | subrenderer.tvn.StaticTvnSubrenderer     | file [501.txt] read completed
+2019-01-04 00:02:22,201 | INFO  | impl.service.TeletextServiceImpl         | renderPages (address=502, la=7255)
+
+2019-01-04 01:56:55 213.180.136.60 - HTTP 10.168.2.33 80 GET /tvn page=504&tv=tvn 200 318 2076 0 HTTP/1.1 "Go-http-client/1.1" "-" "-" "-" 0 215563 - - 10.168.249.27 tvchatapi.digitalvirgo.p
+l 213.180.136.60 - default GET /tvn?page=504&tv=tvn HTTP/1.1
+2019-01-04 02:13:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2493 - - 10.168.249.27 tvchatapi.digitalvirgo.p
+l 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:18:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2866 - - 10.168.249.27 tvchatapi.digitalvirgo.p
+l 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:23:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2281 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:28:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2714 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:33:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2677 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 03:08:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2720 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+
+-----
+
+/mnt/logs/current_NS_logs/nsawsa/tvchatapi_digitalvirgo_pl/tvchatapi_digitalvirgo_pl_'`date +%Y-%m-%d`'.log
+
+2019-01-04 01:56:55 213.180.136.60 - HTTP 10.168.2.33 80 GET /tvn page=504&tv=tvn 200 318 2076 0 HTTP/1.1 "Go-http-client/1.1" "-" "-" "-" 0 215563 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 213.180.136.60 - default GET /tvn?page=504&tv=tvn HTTP/1.1
+2019-01-04 02:13:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2493 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+
+2019-01-04 01:56:55 213.180.136.60 - HTTP 10.168.2.33 80 GET /tvn page=504&tv=tvn 200 318 2076 0 HTTP/1.1 "Go-http-client/1.1" "-" "-" "-" 0 215563 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 213.180.136.60 - default GET /tvn?page=504&tv=tvn HTTP/1.1
+2019-01-04 02:13:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2493 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:18:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2866 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:23:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2281 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:28:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2714 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 02:33:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2677 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 03:08:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2720 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 03:13:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2754 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 03:33:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2617 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 03:38:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2734 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 03:43:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2768 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 03:58:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2434 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:03:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2658 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:13:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2610 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:23:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2337 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:28:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2568 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:33:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 3615 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:38:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2727 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:43:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2386 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 04:58:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2674 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 05:33:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2441 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 05:53:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2495 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 06:08:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2527 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 06:33:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2589 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 06:48:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2440 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+2019-01-04 06:50:04 213.180.136.60 - HTTP 10.168.2.33 80 GET /tvn page=501&tv=tvn7 200 319 2147 0 HTTP/1.1 "Go-http-client/1.1" "-" "-" "-" 0 3021 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 213.180.136.60 - default GET /tvn?page=501&tv=tvn7 HTTP/1.1
+
+2019-01-04 06:53:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2654 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
