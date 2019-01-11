@@ -67,7 +67,7 @@ where msisdn = '48889221118'
 order by billed_date desc
 
 =======================================================================
---mpeventy dla konkretnej usługi
+--mpeventy dla konkretnej usługi , pokarze też error mesage
 select e.creation_time as time, e.queue_size as queue, e.delivered_messages_num as delivered, e.sent_messages_num as sent, e.service_id, s.name, e.mpevent_level as "level", e.mpevent_desc as description
 from mp.mpservice s, mp.mpevent e where
 e.service_id=s.service_id and
@@ -453,3 +453,107 @@ and sop.scheduled_to > to_date('17-08-2015 00:00:00','dd-mm-yyyy hh24:mi:ss')
 and sop.scheduled_to < to_date('17-08-2015 23:59:00','dd-mm-yyyy hh24:mi:ss')
 --group by serop.gateway_service_name
 order by serop.gateway_service_name;
+
+
+-----------
+--pojedynczy numer lub grupa
+-- historia bilowan numeru
+select b.msisdn, so.operator_prefix PREFIX, b.billed_date, b.status,
+b.price_net, so.gateway_service_name SN, so.operator_content_code SC,
+(case when b.sub_operator_id is not null then 'SUBSKR.' else 'REJ.' end) RODZAJ,
+nvl(b.sub_operator_id, '0') "ID_SUB"
+from mtsp.billed_msisdn b
+left join MTSP.service_operator so on b.service_oper_id = so.id
+where b.msisdn = '48783973443'
+order by b.billed_date asc;
+
+-- JIRA historia bilowan numeru
+select '||', 'MSISDN', '||', 'PREFIX', '||', 'DATA BILOWANIA', '||', 'STATUS',
+'||', 'CENA', '||', 'NAZWA S.', '||', 'KOD S.', '||', 'RODZAJ', '||', 'ID SUBSKR.', '||'
+from dual
+union
+select '|', b.msisdn, '|', to_char(so.operator_prefix), '|', to_char(b.billed_date),
+'|', to_char(b.status), '|', to_char(b.price_net), '|', nvl(so.gateway_service_name, 'brak'), '|', nvl(so.operator_content_code, 'brak'),
+'|', (case when b.sub_operator_id is not null then 'SUBSKR.' else 'REJ.' end) RODZAJ,
+'|', to_char(nvl(b.sub_operator_id, '0')) "ID_SUB", '|'
+from mtsp.billed_msisdn b
+left join mtsp.service_operator so on b.service_oper_id = so.id
+where b.msisdn = '48501096007'
+order by 6 desc;
+
+
+-- historia rejestracji, wyrejestrowań numeru z serwisów
+select distinct n.msisdn, so.operator_prefix PREFIX, n.update_date, n.status, so.gateway_service_name SN, se.name
+from mtsp.subscriber n, mtsp.service_operator so, mtsp.service se,
+(select s.msisdn as nr, s.service_oper_id as sid, max(s.update_date) as da from mtsp.subscriber s
+group by s.msisdn, s.service_oper_id) t1
+where n.msisdn = t1.nr
+and so.service_id = se.id
+and n.service_oper_id = so.id
+and n.msisdn in  ('48783973443')
+and n.update_date >= to_date('2017-01-01', 'yyyy-mm-dd')
+order by n.update_date asc;
+
+-- JIRA historia rejestracji, wyrejestrowań numeru z serwisów
+select '||', 'MSISDN', '||', 'PREFIX', '||', 'DATA', '||', 'STATUS', '||',
+'NAZWA S.', '||', 'KOD S.', '||'
+from dual
+union
+select '|', n.msisdn, '|', to_char(so.operator_prefix), '|',
+to_char(n.update_date), '|', n.status, '|', so.gateway_service_name, '|', se.name, '|'
+from mtsp.subscriber n, mtsp.service_operator so, mtsp.service se,
+(select s.msisdn as nr, s.service_oper_id as sid, max(s.update_date) as da from mtsp.subscriber s
+group by s.msisdn, s.service_oper_id) t1
+where n.msisdn = t1.nr
+and so.service_id = se.id
+and n.service_oper_id = so.id
+and n.msisdn in  ('48517408372')
+--and n.update_date >= to_date('201-01-01', 'yyyy-mm-dd')
+order by 6 desc;
+
+--------------------
+-- SMSy
+select sr.transaction_id, arr.recipient_id, sr.send_time,
+nvl(to_char(sr.user_delivery_time), 'brak') USER_DELIVERY_TIME, sr.sender, sr.recipient, sr.operator_id, nvl(sr.text, 'brak tekstu') TEXT, ar.owner_id
+from mp.sms_record sr
+left join mp.accounting_record ar on sr.transaction_id = ar.transaction_id
+left join mp.acknowledge_record arr on sr.transaction_id = arr.accounting_transaction_id
+where sr.send_time >= to_date('02-01-2019 10:30:00','dd-mm-yyyy hh24:mi:ss')
+--where sr.send_time >= sysdate-2/24
+--and sr.send_time < sysdate-2/24
+--and sr.send_time <=  to_date('21-07-2016 12:57:32','dd-mm-yyyy hh24:mi:ss')
+--and ar.transaction_id = '31537258393'
+--and sr.recipient = '92555'
+--and regexp_like (sr.text, '^smw', 'i')
+--and ar.owner_id = 101215
+--and sr.sender = '48609617347'--in ('7455', '7555', '7936')
+and (sr.sender = '48575884632' or sr.recipient = '48575884632')
+--and (sr.sender in ('4917683675538', '491743143100', '491738197869', '4917684236374') or sr.recipient in ('4917683675538', '491743143100', '491738197869', '4917684236374'))
+--and ar.owner_id = 100279
+--and (ar.owner_id = 100279 or arr.recipient_id = 100279)
+order by sr.send_time asc;
+
+
+
+select *
+from mtsubscriber.request_logs mtl
+where
+mtl.msisdn = '48601732662'
+--and mtl.service_name = 'CHAT_60955'
+--mtl.transaction_id = '95eb4950-9359-4fc7-8438-97094789d204'
+order by mtl.create_date desc;
+
+-------
+
+--sprawdza ostanie wpadające wiadomości
+select distinct do.msisdn, do.operator, do.direct_billing ,do.status, ds.key, do.order_rejected_error_message,
+do.transaction_id,do.update_date ,do.create_date, do.order_description, do.product_name
+from directpay.orders do
+left join directpay.order_status ds on do.status = ds.value
+where operator in ('POLAND_ERA')
+and do.msisdn !='48999999999'
+and direct_billing = 1
+and status != '3'
+and status != '2'
+and do.update_date >= sysdate -3/24
+order by do.create_date desc;

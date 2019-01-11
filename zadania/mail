@@ -1,0 +1,249 @@
+Dzień dobry,
+
+Podczas próby aktywacji subskrypcji: GRYZONE oraz MP3ZONE dla numerów
+48502159110 system ccgw zwraca kod błędu 361 - Cannot activate subscription, na tym numerze są regularnie testowane subskrypcje i nie ma problemów z aktywacjami serwisów. Prośba o weryfikację i naprawę oraz podania przyczyny błędu.
+Ten sam problem występuje również dla numeru 48504254705.
+
+MP3ZONE Wysłane:
+2019-01-08 09:30:28,544
+Address: https://ccgw.orange.pl/2.1/subscription
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+ <soap:Body>
+   <subscription-subscribe-request xmlns="https://ccgw.orange.pl/api/2.1">
+     <timestamp>1546936228</timestamp>
+     <provider-id>Digital_Virgo</provider-id>
+     <provider-pass>Ufo8chue</provider-pass>
+     <sale-provider-id>DIGITAL GLOBAL PASS</sale-provider-id>
+     <transaction-id>33346649418</transaction-id>
+     <subscriber>48502159110</subscriber>
+     <authentication-method>Internet</authentication-method>
+     <authorization-type>token</authorization-type>
+     <content-info>
+       <content-name>MP3ZONE INFO: 501305733  reklamacje@justpay.pl</content-name>
+       <content-type>MUZYKA</content-type>
+       <rating-level>99999</rating-level>
+       <adult-flag>true</adult-flag>
+       <subscription-model>BUY</subscription-model>
+       <sale-model>kiosk</sale-model>
+       <price>
+         <amount>28.45</amount>
+         <taxed-amount>34.99</taxed-amount>
+         <currency>PLN</currency>
+       </price>
+     </content-info>
+     <parameters>
+       <assent-for-activation>true</assent-for-activation>
+     </parameters>
+     <authorization-result>
+       <type>token</type>
+       <value>222937</value>
+     </authorization-result>
+     <vas-signature>0BF2F26360CC9712FD16A0CD6432E6981C3DFCA4E64D3258151D0298C7119F2A</vas-signature>
+   </subscription-subscribe-request>
+   <
+/soap:Body>
+   </soap:Envelope>
+
+MP3ZONE Odebrane:
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+      <v21:subscription-subscribe-response xmlns:v21="https://ccgw.orange.pl/api/2.1">
+        <v21:status>
+          <v21:success>false</v21:success>
+          <v21:error-code>361</v21:error-code>
+              <v21:error-param>Cannot activate subscription</v21:error-param>
+            </v21:status>
+            <v21:vas-signature>D23404FBA0CC68C5E74CF9D72EBD240A1CE4294A4265430D25E11F54A074462E</v21:vas-signature>
+          </v21:subscription-subscribe-response>
+          </soap:Body>
+          </soap:Envelope>
+
+GRYZONE Wysłane:
+2019-01-08 09:12:28,456
+Address: https://ccgw.orange.pl/2.1/subscription
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<subscription-subscribe-request xmlns="https://ccgw.orange.pl/api/2.1">
+			<timestamp>1546935148</timestamp>
+			<provider-id>Digital_Virgo</provider-id>
+			<provider-pass>Ufo8chue</provider-pass>
+			<sale-provider-id>DIGITAL GLOBAL PASS</sale-provider-id>
+			<transaction-id>33346624462</transaction-id>
+			<subscriber>48502159110</subscriber>
+			<authentication-method>Internet</authentication-method>
+			<authorization-type>token</authorization-type>
+			<content-info>
+				<content-name>GRYZONE INFO: 501305733  reklamacje@justpay.pl</content-name>
+				<content-type>GRY ONLINE</content-type>
+				<rating-level>99999</rating-level>
+				<adult-flag>true</adult-flag>
+				<subscription-model>BUY</subscription-model>
+				<sale-model>kiosk</sale-model>
+				<price>
+					<amount>28.45</amount>
+					<taxed-amount>34.99</taxed-amount>
+					<currency>PLN</currency>
+				</price>
+			</content-info>
+			<parameters>
+				<assent-for-activation>true</assent-for-activation>
+			</parameters>
+			<authorization-result>
+				<type>token</type>
+				<value>003057</value>
+			</authorization-result>
+			<vas-signature>44F53892BBB1D54BC0639D014193DB658FE11112D11EAE4D8D315DFE89B59AAC</vas-signature>
+		</subscription-subscribe-reque
+st>
+	</soap:Body>
+</soap:Envelope>
+
+GRYZONE Odebrane:
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<v21:subscription-subscribe-response xmlns:v21="https://ccgw.orange.pl/api/2.1">
+			<v21:status>
+				<v21:success>false</v21:success>
+				<v21:error-code>361</v21:error-code>
+						<v21:error-param>Cannot activate subscription</v21:error-param>
+					</v21:status>
+					<v21:vas-signature>D23404FBA0CC68C5E74CF9D72EBD240A1CE4294A4265430D25E11F54A074462E</v21:vas-signature>
+				</v21:subscription-subscribe-response>
+				</soap:Body>
+				</soap:Envelope>
+
+
+
+Pozdrawiam,
+Krzysztof Wojnicki
+
+IT Operator
+Maintenance Division
+
+Dzień dobry,
+
+Podczas próby aktywacji subskrypcji: GRYZONE oraz MP3ZONE dla numerów
+48502159110 system ccgw zwraca kod błędu 361 - Cannot activate subscription, na tym numerze są regularnie testowane subskrypcje i nie ma problemów z aktywacjami serwisów. Prośba o weryfikację i naprawę oraz podania przyczyny błędu.
+Ten sam problem występuje również dla numeru 48504254705.
+
+MP3ZONE Wysłane:
+2019-01-08 09:30:28,544
+Address: https://ccgw.orange.pl/2.1/subscription
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+ <soap:Body>
+   <subscription-subscribe-request xmlns="https://ccgw.orange.pl/api/2.1">
+     <timestamp>1546936228</timestamp>
+     <provider-id>Digital_Virgo</provider-id>
+     <provider-pass>Ufo8chue</provider-pass>
+     <sale-provider-id>DIGITAL GLOBAL PASS</sale-provider-id>
+     <transaction-id>33346649418</transaction-id>
+     <subscriber>48502159110</subscriber>
+     <authentication-method>Internet</authentication-method>
+     <authorization-type>token</authorization-type>
+     <content-info>
+       <content-name>MP3ZONE INFO: 501305733  reklamacje@justpay.pl</content-name>
+       <content-type>MUZYKA</content-type>
+       <rating-level>99999</rating-level>
+       <adult-flag>true</adult-flag>
+       <subscription-model>BUY</subscription-model>
+       <sale-model>kiosk</sale-model>
+       <price>
+         <amount>28.45</amount>
+         <taxed-amount>34.99</taxed-amount>
+         <currency>PLN</currency>
+       </price>
+     </content-info>
+     <parameters>
+       <assent-for-activation>true</assent-for-activation>
+     </parameters>
+     <authorization-result>
+       <type>token</type>
+       <value>222937</value>
+     </authorization-result>
+     <vas-signature>0BF2F26360CC9712FD16A0CD6432E6981C3DFCA4E64D3258151D0298C7119F2A</vas-signature>
+   </subscription-subscribe-request>
+   <
+/soap:Body>
+   </soap:Envelope>
+
+MP3ZONE Odebrane:
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+      <v21:subscription-subscribe-response xmlns:v21="https://ccgw.orange.pl/api/2.1">
+        <v21:status>
+          <v21:success>false</v21:success>
+          <v21:error-code>361</v21:error-code>
+              <v21:error-param>Cannot activate subscription</v21:error-param>
+            </v21:status>
+            <v21:vas-signature>D23404FBA0CC68C5E74CF9D72EBD240A1CE4294A4265430D25E11F54A074462E</v21:vas-signature>
+          </v21:subscription-subscribe-response>
+          </soap:Body>
+          </soap:Envelope>
+
+GRYZONE Wysłane:
+2019-01-08 09:12:28,456
+Address: https://ccgw.orange.pl/2.1/subscription
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<subscription-subscribe-request xmlns="https://ccgw.orange.pl/api/2.1">
+			<timestamp>1546935148</timestamp>
+			<provider-id>Digital_Virgo</provider-id>
+			<provider-pass>Ufo8chue</provider-pass>
+			<sale-provider-id>DIGITAL GLOBAL PASS</sale-provider-id>
+			<transaction-id>33346624462</transaction-id>
+			<subscriber>48502159110</subscriber>
+			<authentication-method>Internet</authentication-method>
+			<authorization-type>token</authorization-type>
+			<content-info>
+				<content-name>GRYZONE INFO: 501305733  reklamacje@justpay.pl</content-name>
+				<content-type>GRY ONLINE</content-type>
+				<rating-level>99999</rating-level>
+				<adult-flag>true</adult-flag>
+				<subscription-model>BUY</subscription-model>
+				<sale-model>kiosk</sale-model>
+				<price>
+					<amount>28.45</amount>
+					<taxed-amount>34.99</taxed-amount>
+					<currency>PLN</currency>
+				</price>
+			</content-info>
+			<parameters>
+				<assent-for-activation>true</assent-for-activation>
+			</parameters>
+			<authorization-result>
+				<type>token</type>
+				<value>003057</value>
+			</authorization-result>
+			<vas-signature>44F53892BBB1D54BC0639D014193DB658FE11112D11EAE4D8D315DFE89B59AAC</vas-signature>
+		</subscription-subscribe-reque
+st>
+	</soap:Body>
+</soap:Envelope>
+
+GRYZONE Odebrane:
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<v21:subscription-subscribe-response xmlns:v21="https://ccgw.orange.pl/api/2.1">
+			<v21:status>
+				<v21:success>false</v21:success>
+				<v21:error-code>361</v21:error-code>
+						<v21:error-param>Cannot activate subscription</v21:error-param>
+					</v21:status>
+					<v21:vas-signature>D23404FBA0CC68C5E74CF9D72EBD240A1CE4294A4265430D25E11F54A074462E</v21:vas-signature>
+				</v21:subscription-subscribe-response>
+				</soap:Body>
+				</soap:Envelope>
+
+
+
+Pozdrawiam,
+Krzysztof Wojnicki
+
+IT Operator
+Maintenance Division
+IT and Operations Department
+M: +48 503 208 168
+T: +48 22 312 1111
+e-mail: helpline@digitalvirgo.pl
+Digital Virgo S.A.
+ul. Inflancka 4, 00-189 Warszawa

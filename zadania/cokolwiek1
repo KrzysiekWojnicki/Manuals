@@ -253,3 +253,333 @@ l 91.121.51.82 - default GET /test/ HTTP/1.1
 2019-01-04 06:50:04 213.180.136.60 - HTTP 10.168.2.33 80 GET /tvn page=501&tv=tvn7 200 319 2147 0 HTTP/1.1 "Go-http-client/1.1" "-" "-" "-" 0 3021 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 213.180.136.60 - default GET /tvn?page=501&tv=tvn7 HTTP/1.1
 
 2019-01-04 06:53:22 91.121.51.82 - HTTP 10.168.2.33 80 GET /test/ - 200 137 227 0 HTTP/1.1 "Opera/9.51 (X11; Linux i686; U; en)" "-" "-" "-" 0 2654 - - 10.168.249.27 tvchatapi.digitalvirgo.pl 91.121.51.82 - default GET /test/ HTTP/1.1
+
+
+--------
+48502377828	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 07:33:22,227000000	19/01/05 04:46:03,835000000		TipAndDonation.com
+48502377828	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 07:30:22,231000000	19/01/05 04:41:29,385000000		TipAndDonation.com
+48502377828	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 06:42:22,199000000	19/01/05 03:53:42,078000000		TipAndDonation.com
+48502377828	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 06:36:22,223000000	19/01/05 03:49:11,756000000		TipAndDonation.com
+48502377828	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 06:33:22,192000000	19/01/05 03:45:43,136000000		TipAndDonation.com
+48502377828	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 06:30:22,187000000	19/01/05 03:40:34,499000000		TipAndDonation.com
+48507147603	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 06:09:22,202000000	19/01/05 03:20:58,137000000		TipAndDonation.com
+48502377828	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 05:54:22,205000000	19/01/05 03:06:25,606000000		TipAndDonation.com
+48516604169	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 04:18:22,221000000	19/01/05 01:29:19,189000000		TipAndDonation.com
+48508050520	POLAND_ORANGE		REJECTED	orange billing error: errorCode: 219, errorMessage: Invalid value of taxed amount in comparison to vat on product | 		19/01/08 04:09:22,230000000	19/01/05 01:20:21,781000000 	TipAndDonation.com
+
+
+
+------
+kto ?
+w jakiej spr.
+Obserwujemy problem z połączeniem do bramek smsc na wszystkich naszych LA.
+Łączymy się na adres 83.220.97.34 31110 Podczas próby połączenia obserwujemy błąd przekroczenia czasu oczekiwania na połączenie, łączymy się poprzez tunel:
+co nie działania
+Problem występuje między innymi przy próbie wysłania wiadomości na LA
+7055
+7136
+72052
+7255
+82002
+92598
+oraz na pozostałe LA, które obsługujemy, przy próbie połączenia na adres 83.220.97.34:31110 otrzymujemy timeout.
+Peer #1
+DV
+54.171.102.133
+TMobile
+83.220.126.243
+
+Peer #2
+DV
+54.171.234.183
+TMobile
+83.220.126.243
+
+co nie działania
+pilne
+
+2019-01-07 12:04:25,547 | INFO  | mt-service-proxy-Netspace    | [[33344349828][160112]       ] | payload delivered: SubscriberPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, subscriber=SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'}, notificationSignature=Netspace_Sn7WFV}
+2019-01-07 12:04:25,548 | INFO  | SubscriberNotifierImpl       | [[33344349828][160112]       ] | Trying to dispatch [SubscriberPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, subscriber=SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'}, notificationSignature=Netspace_Sn7WFV}]
+2019-01-07 12:04:25,552 | INFO  | SubscriberNotifierImpl       | [[33344349828][160112]       ] | Dispatching package to partner [Netspace] to URI=[mpservice://100892], login=[null], password=[null], package=[SubscriberPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, subscriber=SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'}, notificationSignature=Netspace_Sn7WFV}]
+2019-01-07 12:04:25,552 | INFO  | MTSPMPServiceImpl            | [[33344349828][160112]       ] | Sending in object payload: SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'} to 100 892
+2019-01-07 12:04:25,556 | INFO  | EventStorageServiceImpl      | [[33344349828][160112]       ] | store in database: SubscriberNotificationEvent{eventType=SUBSCRIBER_NOTIFICATION, eventParameters={transactionId=33344349828, partnerName=Netspace, addressOut=mpservice://100892, msisdn=48500635392, operatorCode=26003, serviceName=date30_80460, date=Mon Jan 07 12:04:25 CET 2019, subscriberStatus=10, lastTransactionId=197dc9c128564d869caea1286eda8e20, source=WEB, layoutId=74f50cdee9367181e053b0cba80a9310}, eventDate=Mon Jan 07 12:04:25 CET 2019, status=OK}
+2019-01-07 12:04:25,556 | DEBUG | EventStorageServiceImpl      | [[33344349828][160112]       ] | key=[msisdn], value=[48500635392]
+2019-01-07 12:04:25,570 | INFO  | mt-service-proxy-Netspace    | [[33344349829][160112]       ] | payload delivered: SubscriberPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, subscriber=SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'}, notificationSignature=Netspace_aPuY55}
+2019-01-07 12:04:25,572 | INFO  | SubscriberNotifierImpl       | [[33344349829][160112]       ] | Trying to dispatch [SubscriberPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, subscriber=SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'}, notificationSignature=Netspace_aPuY55}]
+2019-01-07 12:04:25,575 | INFO  | SubscriberNotifierImpl       | [[33344349829][160112]       ] | Dispatching package to partner [Netspace] to URI=[https://www.datezone.com/platnosci/digital_virgo.php], login=[null], password=[null], package=[SubscriberPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, subscriber=SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'}, notificationSignature=Netspace_aPuY55}]
+2019-01-07 12:04:25,613 | DEBUG | content                      | [[33344349829][160112]       ] | >> "<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subscriber><msisdn>48500635392</msisdn><operator>26003</operator><serviceName>date30_80460</serviceName><status>10</status><updateDate>2019-01-07T12:04:25</updateDate><source>WEB</source><lastTransactionId>197dc9c128564d869caea1286eda8e20</lastTransactionId><layoutId>74f50cdee9367181e053b0cba80a9310</layoutId></subscriber>"
+2019-01-07 12:04:27,467 | INFO  | SubscriberNotifierImpl       | [[33344349829][160112]       ] | Dispatch response=[200] for object: [SubscriberDTO{msisdn='48500635392', oldMsisdn=null, updateDate=Mon Jan 07 12:04:25 CET 2019, status=10, operator=26003, serviceName='date30_80460', parameter='null', source='WEB', subscriberId=666381607, promoSessionId=null, serviceType=null, activationDate=null, lastTransactionId='197dc9c128564d869caea1286eda8e20', customerBrandType='null', layoutId='74f50cdee9367181e053b0cba80a9310'}] to [Netspace]
+2019-01-07 12:04:27,467 | INFO  | EventStorageServiceImpl      | [[33344349829][160112]       ] | store in database: SubscriberNotificationEvent{eventType=SUBSCRIBER_NOTIFICATION, eventParameters={transactionId=33344349829, partnerName=Netspace, addressOut=https://www.datezone.com/platnosci/digital_virgo.php, msisdn=48500635392, operatorCode=26003, serviceName=date30_80460, date=Mon Jan 07 12:04:25 CET 2019, subscriberStatus=10, lastTransactionId=197dc9c128564d869caea1286eda8e20, source=WEB, layoutId=74f50cdee9367181e053b0cba80a9310}, eventDate=Mon Jan 07 12:04:27 CET 2019, status=OK}
+2019-01-07 12:04:27,467 | DEBUG | EventStorageServiceImpl      | [[33344349829][160112]       ] | key=[msisdn], value=[48500635392]
+2019-01-07 12:04:37,048 | INFO  | mt-service-proxy-Netspace    | [[33344350392][160112]       ] | payload delivered: BillingPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, msisdnPack=BilledMsisdnPackDTO]status=[20]subscriptionId=[0][26003][date30_80460][null][Mon Jan 07 12:04:32 CET 2019][[BilledMsisdnDTO[48500635392][170214741739][30.81][197dc9c128564d869caea1286eda8e20]]][null][null]}, notificationSignature=Netspace_aPuY55}
+2019-01-07 12:04:37,049 | INFO  | BillingNotifierImpl          | [[33344350392][160112]       ] | Trying to dispatch [BillingPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, msisdnPack=BilledMsisdnPackDTO]status=[20]subscriptionId=[0][26003][date30_80460][null][Mon Jan 07 12:04:32 CET 2019][[BilledMsisdnDTO[48500635392][170214741739][30.81][197dc9c128564d869caea1286eda8e20]]][null][null]}, notificationSignature=Netspace_aPuY55}]
+2019-01-07 12:04:37,053 | INFO  | BillingNotifierImpl          | [[33344350392][160112]       ] | Dispatching package to partner [Netspace] to URI=[https://www.datezone.com/platnosci/digital_virgo.php], login=[null], password=[null], package=[BillingPackage{partner=PartnerDTO{name='Netspace', login='Netspace', password='Jb39!PQ0Vz', partnerEmail='null', avantisEmail='null', active=true, httpAddressOut='null', loginOut='null', passwordOut='null', mpServiceId=160112, connectionTimeout=null, maxPackageSize=null, messageDayLiveness=null, detailedErrorVariant='null', internal=false}, msisdnPack=BilledMsisdnPackDTO]status=[20]subscriptionId=[0][26003][date30_80460][null][Mon Jan 07 12:04:32 CET 2019][[BilledMsisdnDTO[48500635392][170214741739][30.81][197dc9c128564d869caea1286eda8e20]]][null][null]}, notificationSignature=Netspace_aPuY55}]
+2019-01-07 12:04:37,091 | DEBUG | content                      | [[33344350392][160112]       ] | >> "<?xml version="1.0" encoding="UTF-8" standalone="yes"?><billedMsisdnsPack><billDate>2019-01-07T12:04:32</billDate><billed><lastTransactionId>197dc9c128564d869caea1286eda8e20</lastTransactionId><msisdn>48500635392</msisdn><priceNet>30.81</priceNet><accId>170214741739</accId></billed><operator>26003</operator><serviceName>date30_80460</serviceName><status>20</status><subscriptionId>0</subscriptionId></billedMsisdnsPack>"
+2019-01-07 12:04:37,264 | INFO  | BillingNotifierImpl          | [[33344350392][160112]       ] | Dispatch response=[200] for object: [BilledMsisdnPackDTO]status=[20]subscriptionId=[0][26003][date30_80460][null][Mon Jan 07 12:04:32 CET 2019][[BilledMsisdnDTO[48500635392][170214741739][30.81][197dc9c128564d869caea1286eda8e20]]][null][null]}] to [https://www.datezone.com/platnosci/digital_virgo.php]
+2019-01-07 12:04:37,264 | INFO  | EventStorageServiceImpl      | [[33344350392][160112]       ] | store in database: BillingNotificationEvent{eventType=BILLING_NOTIFICATION, eventParameters={transactionId=33344350392, partnerName=Netspace, addressOut=https://www.datezone.com/platnosci/digital_virgo.php, msisdn=[48500635392], operatorCode=26003, serviceName=date30_80460, billingStatus=20, billingDate=Mon Jan 07 12:04:32 CET 2019, subscriptionId=0, operatorError=null, lastTransactionId=197dc9c128564d869caea1286eda8e20, nextBillingDate=null}, eventDate=Mon Jan 07 12:04:37 CET 2019, status=OK}
+2019-01-07 12:04:37,264 | DEBUG | EventStorageServiceImpl      | [[33344350392][160112]       ] | key=[msisdn], value=[48500635392]
+
+
+--------
+Dzień dobry,
+
+Potwierdzamy , użytkownik o MSISDN 500635392 , dokonał płatności dla transakcji 197dc9c128564d869caea1286eda8e20 , zgodnie z poniższymi danymi
+Zgodnie z logami notyfikacja została wysłana poprawnie
+
+
+2019-01-07 12:04:25,613
+"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subscriber><msisdn>48500635392</msisdn>
+<operator>26003</operator><serviceName>date30_80460</serviceName><status>10</status><updateDate>2019-01-07T12:04:25</updateDate><source>WEB</source><lastTransactionId>197dc9c128564d869caea1286eda8e20</lastTransactionId>
+<layoutId>74f50cdee9367181e053b0cba80a9310</layoutId></subscriber>"
+
+2019-01-07 12:04:37,091
+"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><billedMsisdnsPack><billDate>2019-01-07T12:04:32</billDate><billed><lastTransactionId>197dc9c128564d869caea1286eda8e20</lastTransactionId>
+<msisdn>48500635392</msisdn><priceNet>30.81</priceNet><accId>170214741739</accId></billed><operator>26003</operator><serviceName>date30_80460</serviceName><status>20</status><subscriptionId>0</subscriptionId></billedMsisdnsPack>"
+
+Pozdrawiam,
+Krzysztof Wojnicki
+
+IT Operator
+Maintenance Division
+IT and Operations Department
+M: +48 503 208 168
+T: +48 22 312 1111
+e-mail: helpline@digitalvirgo.pl
+Digital Virgo S.A.
+ul. Inflancka 4, 00-189 Warszawa
+
+ -------------------------------------
+
+ {code}
+2019-01-08 16:36:54,223 | ERROR | TMobileDirectBillingService         | RMI-10574943-502472c448fe | Error:
+pl.avantis.xcg.client.exception.XCGException: faultBusiness: , faultCode: env:pl.ptc.xcg2.exception.ipb.IPBInsufficientBalance, faultString: env:88, faultDetail:
+        MZ response: 4012
+
+        at pl.avantis.xcg.service.client.impl.XCGClientImpl.processException(XCGClientImpl.java:344)
+        at pl.avantis.xcg.service.client.impl.XCGClientImpl.buyCommand(XCGClientImpl.java:169)
+        at sun.reflect.GeneratedMethodAccessor77.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:498)
+
+
+
+ 2019-01-08 16:35:28,709 | INFO  | PlusDirectBillingService            | RMI-10574579-534db0ed1f4a | Charge request ChargeRequest{serviceName='DVWWGRS04', netAmount=203.25, amount=250.00, chargeDescription='smskin.pl', oneShot=true}
+2019-01-08 16:35:29,608 | ERROR | PlusDirectBillingService            | RMI-10574579-534db0ed1f4a | Error {}
+ChargeException{gatewayStatus=APPLY_CHARGE_ERROR, operatorMessage='StatusCode{code=204, message='Odrzucenie płatności z powodu przekroczenia limitu płatności - Usługa ma zdefiniowany atrybut odrzucania płatności'}', operatorErrorCode=204}
+        at pl.avantis.pdb.client.ChargeManager.chargeClient(ChargeManager.java:562)
+        at pl.avantis.pdb.client.ChargeManager.charge(ChargeManager.java:256)
+
+        2019-01-08 16:34:44,510 | INFO  | TMobileDirectBillingService         | RMI-10574278-089e965b5d52 | XCG request: pl.avantis.xcg.client.api.request.XCGBuyRequest [user = "48608360309", payment = 1003170, customPrice = 1.0, xcgProductData = XCGProductData{productId='null',
+        currency='PLN', amountNet=1.0, amountGross=1.23, taxPercent=23} pl.avantis.xcg.client.api.XCGProductData@716f2349, transactionId = "DP74865213"]
+        2019-01-08 16:34:44,935 | ERROR | TMobileDirectBillingService         | RMI-10574278-089e965b5d52 | Error:
+        pl.avantis.xcg.client.exception.XCGException: faultBusiness: , faultCode: env:pl.ptc.xcg2.exception.PremiumLimitEnforcedException, faultString: env:-530, faultDetail:
+                Blokada premium PT dla numeru 48608360309
+
+
+
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?><OrderNotifyRequest><Order><OrderId>74807841</OrderId><OrderStatus>ORDER_PAYED</OrderStatus><PaymentPointId>20225</Payment
+                PointId><AuthorizationChannel>RWD_PAYMENT</AuthorizationChannel><OrderCreateDate>2019-01-07T07:59:55.327+01:00</OrderCreateDate><OrderDescription>Zamówienie nr OTDSGB</OrderDescription><Product><Name>Payment method commission</Name><Price><Net>100,00</Net><Gross>100,00</G
+                ross><Tax>0,00</Tax><TaxRate>0</TaxRate><Currency>PLN</Currency></Price></Product><OrderFailureUrl>https://supercoinsy.pl/payment/respond/digitalvirgo/OTDSGB</OrderFailureUrl><OrderCompleteUrl>https://supercoinsy.pl/payment/respond/digitalvirgo/OTDSGB</OrderCompleteUrl><T
+                ransactionId>12d773bf8402</TransactionId><PartnerTransactionId>OTDSGB</PartnerTransactionId><Msisdn>48533517436</Msisdn><CauseStatus>0</CauseStatus><OperatorCode>26006</OperatorCode><OrderRejectedErrorMessage>Response: [403 - Request unauthorized and forbidden body: [Sing
+                lePaymentOrder{id=null, msisdn='null', playTransactionId='null', requestDate=Mon Jan 07 08:00:45 CET 2019, playCreateDate=null, playUpdatedAt=null, partnerId=null, actionType='null', promotion='null', out='null', billingModel=null, state=null, correlationId='null', price=
+                null, productTitle='null', billingId='null', error='SMP::forbidden', exception='SMP::forbidden', notificationAddress='null', appkey='null', orderTransactionId='null', token='null'}]</OrderRejectedErrorMessage><orangeTokenStatus>true</orangeTokenStatus></Order><UpdateDate>
+                2019-01-07T08:01:49.834+01:00</UpdateDate></OrderNotifyRequest>
+
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?><OrderNotifyRequest><Order><OrderId>74832025</OrderId><OrderStatus>ORDER_PAYED</OrderStatus><PaymentPointId>20225</Payment
+PointId><AuthorizationChannel>RWD_PAYMENT</AuthorizationChannel><OrderCreateDate>2019-01-07T20:38:41.415+01:00</OrderCreateDate><OrderDescription>Zamówienie nr AI3BM7</OrderDescription><Product><Name>Payment method commission</Name><Price><Net>100,00</Net><Gross>100,00</G
+ross><Tax>0,00</Tax><TaxRate>0</TaxRate><Currency>PLN</Currency></Price></Product><OrderFailureUrl>https://supercoinsy.pl/payment/respond/digitalvirgo/AI3BM7</OrderFailureUrl><OrderCompleteUrl>https://supercoinsy.pl/payment/respond/digitalvirgo/AI3BM7</OrderCompleteUrl><T
+ransactionId>18621cde3146</TransactionId><PartnerTransactionId>AI3BM7</PartnerTransactionId><Msisdn>48693141338</Msisdn><CauseStatus>0</CauseStatus><SmsCode>5038</SmsCode><OperatorCode>26001</OperatorCode></Order><UpdateDate>2019-01-07T20:48:41.863+01:00</UpdateDate></Ord
+erNotifyRequest>
+
+
+------------------
+
+orlen parking , mobi parking
+zmiana nazwy wadliwego pliku
+52220  mpdevelop 1508 09/01/19 08:31:53 mv re911420880.mbp re911420880.mbp_old
+[mpdevelop@dniu /mnt/gfs/AWS/mobiparking/orlen/import]$ mv re911420880.mbp re911420880.mbp_old
+
+--------------------
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Header><ClientHeader xmlns="http://esb.polkomtel.pl/adapter/PARTNER/client/Partner"><activityName>ApplyCharge</activityName><originatorURI>DigitalVirgo</originatorURI><businessContext><bu
+sinessId>09792bb8-0fc0-4825-84af-24bcb27e9795</businessId><userId>DV</userId></businessContext></ClientHeader></soap:Header><soap:Body><ApplyChargeRequest xmlns="http://esb.polkomtel.pl/adapter/PARTNER/client/Partner"><CustomerIdentifier><MSISDN>48606360744</MSISDN></Cust
+omerIdentifier><PartnerId>DV</PartnerId><ProductId>DVERMRS01</ProductId><Charge><ChargeId>09792bb8-0fc0-4825-84af-24bcb27e9795</ChargeId><UnitPrice>1.00</UnitPrice><UnitQuantity>1</UnitQuantity><NetAmount>5.00</NetAmount><Amount>6.15</Amount><ChargeDescription>Czat FunSka
+n 18</ChargeDescription><ChargeType>E</ChargeType><FiscalAccountingFlag>true</FiscalAccountingFlag><ChargeStartDate>2019-01-10T09:26:45.648+01:00</ChargeStartDate></Charge></ApplyChargeRequest></soap:Body></soap:Envelope>
+
+https://b2b.plus.pl/ClientAdapterPARTNERPartnerInterface
+
+----------
+7155 7255 7055 7355 7137 73073 73998
+LC\..*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*OSTREC.*" />
+
+<condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*TELE.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZESP.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*WOKM.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*WOKK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PRZE.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*DEBB.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*SKAN.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*TANC.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*SEXM.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*SEXK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PROD.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*KOMP.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PLYT.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*REAK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*MPRE.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*DYSK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*LC\..*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*TELE5.*" />
+
+<condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*LC\..*" />
+    <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*PYTANIE.*" />
+
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZESP([1-9]\D|[1-9]$|[1-4][0-9]\D|[1-4][0-9]$|50\D|50$).*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*LATO.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*(WOKM|WOKK|PRZE|DEBB|SKAN|TANC|SEXM|SEXK|PROD|KOMP|REAK|WYDA)([1-9]\D|[1-9]$|[1-5][0-5]\D|[1-5][0-5]$).*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*(DYSK|DUET)([1-9]\D|[1-9]$|[1][0-9]\D|[1][0-9]$|20\D|20$).*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PLYT([1-9]\D|[1-9]$|[1-3][0-5]\D|[1-3][0-5]$).*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*TELE([1-9]\D|[1-9]$|[1-2][0-5]\D|[1-2][0-5]$).*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*GUZICZEK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*KULKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*KONCERT.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*CHILLI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*CZYSTY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*UPS.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*THRILLER.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*CHRUPKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*CUKIERKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*WINDA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*FRYZ.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*LALECZKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*INTERESIK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*TOALETA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*BAM!.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*ZIMA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*MATKA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*ZAWODY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*ZAPRACOWANY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*MAJTECZKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*NA WIZJI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*FANTAZJA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*KOSTIUM.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*PORANEK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*ZABAWKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*BUZIAK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*KANAPKA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*ROZBIERANKA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*MIESZKANIE.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*TARGI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*ENTER.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*BASEN.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*PROWOKACJA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*TANIEC.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*OSTRZEC.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*POKER.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*SZYBKO.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*TV.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*WYMIANA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*TURNIEJ.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*MS.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?s)(?m)(?i)\s*TUNING.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZAPASY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*WYSTAWA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZMIANA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*KOTKA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ROLNIK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*LEKARKA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PLUSY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*MATEMATYK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZUCHY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*RODZICE.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*WIBRATOR.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*LODY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*KROPLA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZRYWA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PERFEKCYJNA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*UPADEK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*KONSTELACJE.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*MYJNIA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*SKOK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*SLIPY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PLUSZAKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PARIS.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*POKOLENIA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*GARDEROBA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PREZENTERKA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*HORROR.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*NOC.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PIES.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*NUDY.CI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*MARZENIA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*TY.ECZKI.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*MLEKO.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*LODY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*RANDKA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*MODEL.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*CASTING.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PRACA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*WODA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*BAR.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*RANEK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*DOTYK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*SEXY.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*FALE.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PERFEKCYJNA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*DUBBING.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ROWEK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PARYZ.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PARK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZAKRYTA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ANALIZA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*NOWYROK.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*KAMERA.*" />
+      <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PYTANIE.*" />
+    </condition>
+    <consequence>
+      <service-id>110104</service-id>
+    </consequence>
+
+    <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT1.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT2.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT3.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT4.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT5.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT6.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT7.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT8.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT9.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*KLIP[1-9]" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*KLIP[1-5][0-9]" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*KLIP60" />
+  <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*ZESP([1-9]\D|[1-9]$|[1-4][0-9]\D|[1-4][0-9]$|50\D|50$).*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*(WOKM|WOKK|PRZE|DEBB|SKAN|TANC|SEXM|SEXK|PROD|KOMP|REAK|WYDA)([1-9]\D|[1-9]$|[1-5][0-5]\D|[1-5][0-5]$).*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*(DYSK|DUET)([1-9]\D|[1-9]$|[1][0-9]\D|[1][0-9]$|20\D|20$).*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*PLYT([1-9]\D|[1-9]$|[1-3][0-5]\D|[1-3][0-5]$).*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?i)(?s)(?m)\s*TELE([1-9]\D|[1-9]$|[1-2][0-5]\D|[1-2][0-5]$).*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*LATO.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*LATO01.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*LATO100.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*GA[1-9].*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*GA10.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*DB[1-9].*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*DB1[0-9].*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*DB1[0-9][0-9].*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*DB200.*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT[1-9].*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT[0-9][0-9].*" />
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*UT100.*" />
+
+  <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*POZ\..*" />
+ <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*MZ.*" />
+ <condition operator="pattern" expression="sms-text" pattern="(?s)(?i)(?m)\s*POZ.*" />
+
+
+
+
+
+
+s3://dv-artifact-repository/content/repositories/docker/pl/avantis/music-club-web/1.0.1/music-club-web.war
+
+	101204

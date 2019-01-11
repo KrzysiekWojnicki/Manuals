@@ -27,4 +27,8 @@ szkolenie z nagiosa
 
 jak parsować xml w bash
 
-zabrać linuch mag 
+napisać skrypt :
+	- pobiera jako parametr $1 nazwe loga
+	- pyta o fragmety po których ma wyszukać lini (pusta odp. kończy pętle)
+	- pyta jakie fragmety na wyłuskać ( trudniejsze )
+	- ładnie dzieli w fomatkę (wyłuskane dane rozdzielone znakiem '|'

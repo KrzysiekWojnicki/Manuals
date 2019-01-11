@@ -274,6 +274,7 @@ parted - pisać z sudo
 	-l listuje dyski i info o nich
 fdisk - też z sudo
 	-l jak wyżej
+tail -f /var/log/secure
 cat /proc/meminfo - info o pamięci sys.
 cat /proc/partitions -  alternatywne sposoby podglądania utrządzeń
 cat /proc/devices - wypisuje urządzenia blokow i znakowe , którym system przydzielił streowniki
