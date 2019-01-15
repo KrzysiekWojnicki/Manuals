@@ -32,3 +32,8 @@ napisać skrypt :
 	- pyta o fragmety po których ma wyszukać lini (pusta odp. kończy pętle)
 	- pyta jakie fragmety na wyłuskać ( trudniejsze )
 	- ładnie dzieli w fomatkę (wyłuskane dane rozdzielone znakiem '|'
+
+
+svn:externals
+
+zobaczyć jak w autokey , w pythonie można przemieszczać kursor

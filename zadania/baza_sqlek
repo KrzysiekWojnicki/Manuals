@@ -557,3 +557,29 @@ and status != '3'
 and status != '2'
 and do.update_date >= sysdate -3/24
 order by do.create_date desc;
+
+
+--sprawdza błędy direct_billing , kiedy "direct_billing" jest równy 1 to będzie
+--to direct billiny , każdan inna wartość to NIE będzie direct billing
+select distinct do.msisdn, do.operator, do.direct_billing ,do.status, ds.key, do.order_rejected_error_message ,
+do.transaction_id,do.update_date ,do.create_date, do.order_description, do.product_name from directpay.orders
+do left join directpay.order_status ds on do.status = ds.value
+where operator in ('POLAND_ERA') and
+ds.key = 'REJECTED'
+and do.msisdn !='48999999999'
+and direct_billing = 1
+and status != '3'
+and status != '2'
+and do.update_date >= sysdate -3/24
+order by do.update_date desc;
+
+--sprwadzanie czy notyfikacja do partnera została wysłana
+select id, send_notification_date, partner_id, order_id, http_response_status
+from directpay.partner_notifications
+where order_id =  75088669;
+
+--sprawdza czy partenr przyjął notyfikaje
+select id, send_notification_date, partner_id, order_id, http_response_status
+from directpay.partner_notifications
+where partner_id = 'allegro'
+and send_notification_date > sysdate -2/24 ;
