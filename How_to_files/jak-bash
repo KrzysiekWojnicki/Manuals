@@ -196,6 +196,8 @@ ssh -X ip_adres -połączenie z xserwerm na zdalnej maszynie , bez x tylko termi
 	-p port -użyje wybranego portu , domyślnie 22
 	ssh-keygen - generuje klucze domyślnei rsa
 	-t rsa -definiujemy typ , w tym przypadku rsa , | ecdsa | ed25519 | rsa | rsa1
+	--- aby dodać klucz publiczny do remote server
+	cat ~/.ssh/id_rsa.pub | ssh user@hostname 'cat >> .ssh/authorized_keys'
 nice - nadaje pryjorytet procesowi . -20 najwyższy , 19 najniższy
 	nice -10 cat > file --odpali z pry. 10
 	nice --10 cat > file --odpali z pry.-10

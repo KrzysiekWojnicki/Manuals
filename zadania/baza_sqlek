@@ -132,7 +132,7 @@ order by sop.scheduled_to desc, serop.operator_prefix;
 -- Chyba ruch m2la albo na odwrót
 select e.sent_messages_num as suma, e.creation_time
 from mp.mpservice s, mp.mpevent e where
-e.service_id = 110090 and
+e.service_id = 101342 and
 e.service_id=s.service_id and
 e.creation_time >= to_date('2015-01-03 17:00','yyyy-mm-dd hh24:mi') and
 e.creation_time <= to_date('2015-01-03 18:00','yyyy-mm-dd hh24:mi')
@@ -583,3 +583,20 @@ select id, send_notification_date, partner_id, order_id, http_response_status
 from directpay.partner_notifications
 where partner_id = 'allegro'
 and send_notification_date > sysdate -2/24 ;
+
+
+---jeżeli chce zobaczyć zbilowane numery jak w tasku hl-128134
+select subop.id, serop.gateway_service_name OP_NAME, ser.name SEVICE_NAME,
+serop.operator_la la, serop.operator_prefix OPERATOR, subop.status status,
+subop.scheduled_to, serop.cron_send_date, subop.request_date,
+sub.id, subop.transaction_id, subop.ack_transaction_id, subop.error_msg
+from mtsp.service_operator serop, mtsp.service ser, mtsp.subscription sub
+join mtsp.subscription_operator subop on sub.id = subop.subscription_id
+where ser.id = serop.service_id
+and ser.name in ('MANIAC' , 'APPLE' ,'VIP_60798' , 'MP3_60955' , 'WYGRANA_60246' , 'PRE_60798' , 'WEEZCHAT_60955' , 'GRY_60577' , 'YES_60655')
+and serop.id = subop.service_operator_id
+and subop.scheduled_to >= sysdate-10
+and subop.scheduled_to <= sysdate + 1
+--and subop.status = 'SUBSCRIPTION_RESPONSE_SUCCESFULL'
+and (subop.status = 'SUBSCRIPTION_RESPONSE_SUCCESFULL' OR subop.status = 'BILLING_SUCCESFULL')
+order by subop.scheduled_to desc, serop.operator_prefix asc;
