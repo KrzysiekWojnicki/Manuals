@@ -25,7 +25,7 @@ truncate - shrink or extend the size of a file to the specified size
 	truncate -s 100 plik.txt  -zmieni wielkość pliku do 100 byte
 figlet - wieli baner z znaków ascii. NIE jest domyślnie zainstalowany
 	figlet -f digital NAPIS -wyświetli baner zapis w formacie digital
-	watch -n1 "date '+%D%n%T'|figlet -k"  -co sek. pokarze aktualny czas 
+	watch -n1 "date '+%D%n%T'|figlet -k"  -co sek. pokarze aktualny czas
 		w postaci baneru ze znaków ascii
 dd - konwertuje i kopjuje pliki
 	dd if=plik_wejściowy of=plik_wyjściowy conv=ucase  -zmieni małe na wielkie litery w nowym pliku
@@ -44,7 +44,7 @@ tput - inicjalizuj terminal lub pytaj bazę terminfo
 	     dim - przyciemniona
 	     smul - podkreślenie
 	     rmul - koniec podkreślania
-	     rev - reverse 
+	     rev - reverse
 	     smso - standout , białe tło
 	     rmso - koniec standout
 	     sgr0 - reset attributes
@@ -71,20 +71,20 @@ printf - formatuje i wypisuje dane
 	printf "mój penis ma %d długości i jest %s " 20 olbrzymi
 		%d - Signed decimal integer , można też użyć %i
 		%s - String of characters
-		%f - float 
+		%f - float
 		%.4f - kropka okrśla dokładność ,czyli 4 po przecinku
 		printf "%.*f" 5 3.1415926535897932 - jeżeli podam * zamiast liczby to pierwsza
-			z podanych dwuch w argumencie zostanie potraktowana jako wskaźnik ile 
+			z podanych dwuch w argumencie zostanie potraktowana jako wskaźnik ile
 			miejsc po przecinku chce zobacztć , tu 5
-	printf "%s %s %s\n" "this is" "the printf" "command"  - %s określa argumet , tu 3 argumenty i 
+	printf "%s %s %s\n" "this is" "the printf" "command"  - %s określa argumet , tu 3 argumenty i
 		utawienie kursora w nowej lini
 	printf "%20s %20s %30s\n" "this is" "the printf" "command" - między argumentami będzie 20 i 30
 		znakowa przerwa
-		%*s - potraktuje pierwszy z dwuch argumetów jako znacznik w miejscu * 
+		%*s - potraktuje pierwszy z dwuch argumetów jako znacznik w miejscu *
 	printf "\u2020" - \u unicode , wydrukuje znak †
 	wyswietlUnicode=$(printf "\u$unicode%.0s" `(seq 1 $nTimes)`; echo) - zmienna wyświetlająca $unicode
 		%.0s - precyzja , seq pokazało by znak i liczbe kolejna , precyjza chwyta tylko znak
-yes - domyślnie dodaje 'y' 
+yes - domyślnie dodaje 'y'
 	yes | komenda - jeżeli komenda posiada zapytanie to odrazu odpowie yes
 seq - sekfencja liczb
 	seq 1 20 - odliczy od 1 do 20 , domyślnie zaczyna od 1 wiec można napisać tylko 20
@@ -104,7 +104,7 @@ expr - wykonuje obliczenia wyrażeń regularnych
 talk - program do komuniksji między urzytkownikami w terminalu
 write - szybki komunikator między urzytkownikamin na tej samej maszynie
 	write [user] [tty] - syntax
-source - is a builtin command of the Bash shell. It takes a file name, 
+source - is a builtin command of the Bash shell. It takes a file name,
 	and executes the commands in that file as if they had been typed on the command line.
 export - wbudowane polecenie bash , eksportuje zmienne środowiskowe lokalne do globalnych
 logname - pokazuje login name usera
@@ -117,7 +117,7 @@ aspell - interactive spell checker
 dump - zapisuje całą partycje lub wybrane pliki na backup
 	!!!--- UMOUNT-uj partycje przed ,aby uniknąć błędów ---!!!
 restore - restore files or file systems from backups made with dump
-slocate - NIEzainstolowany domyślnie - secure locate tz. że przeszuka pliki roota 
+slocate - NIEzainstolowany domyślnie - secure locate tz. że przeszuka pliki roota
 	ale nie wyświetli jego zawartości
 	-u -tworzy index od root w dół
 	-U -tworzy index od podręczego katalogu w dół
@@ -126,7 +126,7 @@ slocate - NIEzainstolowany domyślnie - secure locate tz. że przeszuka pliki ro
 	-d index.txt -zapisz do pliku index.txt
 	-r regexp -szuka plików pasujących do regexp
 accton / acctoff - wł/wył proces
-dump-acct /var/account/pacct - drukuje plik acct 
+dump-acct /var/account/pacct - drukuje plik acct
 dump-utmp /var/run/utmp - dtukuje plik utmp
 last - (acct) pokazuje listing ostatnio logującuch userów
 which - pokazuje ścieżke polecenia np; /usr/bin/which
@@ -136,7 +136,7 @@ sa - (acct) sumuryczne info o wcześniej wykonywanych poleceniach gdzie;
        		- 2466k is a cpu-time averaged core usage, i.e. 1k units
        		- sshd command name
 	-c -najwyższy procen urzycia
-	-m -numer procesu ,i numer minut CPU 
+	-m -numer procesu ,i numer minut CPU
 ac - ( polecenie usługi acct ) Wypisuje statystyki odnośnie  czasu  połączenia  użytkowników ,na podstawie pliku wtmp
 	ac kw -dla użytkownika kw
 	-d -info z kilku dni
@@ -187,7 +187,7 @@ netstat -połączenia sieciowe
 arp -a -Adderss Resolution Protocol , wyświelta sieci IPv4 z pamięci kernela ,
 	flaga -a BDS style output format ,pokarze ipadres
 	jeżeli w cache nie ma informacji o innych urządzeniach w sieci należy puścić pinga do
-	szukanej maszyny , jeżeli odpowie info. o niej zostanie dodana do cache 
+	szukanej maszyny , jeżeli odpowie info. o niej zostanie dodana do cache
 	-n -pokarze ip ,zamist hostname
 	-a -inna forma danych :raspberrypi (172.16.15.254) at d4:ca:6d:0e:d6:19 [ether] on wlp2s0
 	arp -d HWADDR -usunie z cache entry o podanym HW address
@@ -242,16 +242,16 @@ free - info o pamięci wykorzystanej w sys.
 	-s N -pokazuje co N sekund
 	-m mega bity
 strace - śledź wywołania systemowe i sygnały
-echo - wyświtla podany string , echo może być wbudowanym poleceniem ,albo 
+echo - wyświtla podany string , echo może być wbudowanym poleceniem ,albo
 		/bin/echo -binarką , sprawdzisz : type echo
 		oczywiście można wybać . Echa mogą się różnić opcjami
 	-n - nie wypisuje kończącego znaku nowego wiersza, czyli
 		jak dalej polecimy read to prompt będzie za stringiem
-	-e - uruchamia formatowanie tj; znaki \n \r itd . 
+	-e - uruchamia formatowanie tj; znaki \n \r itd .
 	Uwaga muszą być w cudzysłowiu np; 'dupa\nupa\n'
 	echo * - wyświetli liste plików w lini
 	echo -e \\n{1..3} -wyświetli nam 1,2,3 w nowych liniach
-	-E	Disables the interpretation of these escape characters, even on systems where 
+	-E	Disables the interpretation of these escape characters, even on systems where
 		they are interpreted by default. Czyli jak "a \t b" to nie bedzie tabulacji
 	echo -e "\033[1mdupa\033[0m" - sekfencja znaków sterujących
 		\033[1m -początek , [0m -koniec . 1-pogrubienie ,0-normalny tekst
@@ -266,13 +266,13 @@ lsblk -wypisuje urządzenia blokowe
 blkid - lista sys.plików z ich UUID (universally unique identifier)
 	???---partycje FAT nie mają UUID ale można się do nich odwołać
 	poprzez numer seryjny np;UUID="6528-6273" ---???
-e2label - creating disc lables 
-df - info o zużyciu przestrzeni dyskowej systemu pliku 
+e2label - creating disc lables
+df - info o zużyciu przestrzeni dyskowej systemu pliku
 	-h human readable form
 	-i -inode "węzły" An inode is a data structure that contains metadata about a file.
 	???--- Everything about a file is in the inode, except two things : name them!
 	The name of the file is in a directory, and the contents is somewhere on the disk. ---???
-parted - pisać z sudo 
+parted - pisać z sudo
 	-l listuje dyski i info o nich
 fdisk - też z sudo
 	-l jak wyżej
@@ -289,7 +289,7 @@ mount - wyświetli urządzenia dyskowe które już widoczne w systemie
 	-o --umożliwia podanie długig opcji polecenia
 		mount -t vfat /dev/hda1 /dos -o ro,conv=auto
 		ro - to to samo co -r , conv=auto -nakazuje konwerowac znaki końca wiersza
-		tu z formatu DOS na format właściwy dla danego systemu unix 
+		tu z formatu DOS na format właściwy dla danego systemu unix
 		exec , noexec - włącza i wyłącza możliwość uruchamiania progamu w danym sys.plików
 		suid , nosuid - wł/wył możliwość korzystania przez progam z bitu setuid
 		conv=text -wszystkie pliki będą traktowane jak tekstowe
@@ -318,7 +318,7 @@ route - pokazuje / obsługuje tablicę trasowania protokołu IP
 	route del -net 10.10.10.0/24 gw 192.168.0.1 - delete
 	route add default gw 192.168.0.1 - dodaje domyślny gateway
 nslookup - odszukuje ipaddres hosta ,albo odwrotnie
-traceroute - program służący do badania trasy pakietów w sieci IP. 
+traceroute - program służący do badania trasy pakietów w sieci IP.
 	traceroute ipaddress -albo- hostname - pokarze przez jakie routery leci paczka
 	Pierwsza jest gateway naszej sieci potem ISP (Internet service provider)
 	???--- domyślna paczka ma 40 bit ,jednak można to zmienić ---???
@@ -327,7 +327,7 @@ dig - lookup utilty ,zapytuje DNS o konkretne rekordy
 	dig wp.pl - domyślnie wyświetli rekord A przechowujący IPaddress
 	dig wp.pl mx - rekord mx (mail exchange record) , można też napisać dig -t mx -(type)
 		NS - an authoritative name server
-		CNAME - the canonical name for an alias 
+		CNAME - the canonical name for an alias
 	dig wp.pl any - wyświeli wszelkie rekordy
 	dig wp.pl +short - sam address IP
 		+noall +answer - polarze nam tylko sekcje answer
@@ -337,13 +337,13 @@ dig - lookup utilty ,zapytuje DNS o konkretne rekordy
 	.digrc - w kat. domowym możemy zrobić konfiguracje do dig-a
 		po prostu piszemy np; +noall +answer  -i z takimi ust.domyślnie będzie dziłał
 curl - narzędzie do transferu danych z i do serwera przy urzyciu różncy protokołów
-	np; http, ftp i wiele innych . Różni się tym od wget że obsługuje wiele więcej protokołów 
+	np; http, ftp i wiele innych . Różni się tym od wget że obsługuje wiele więcej protokołów
 	ma więcej metod autoryzacji
 	???--- można potestować na https://jsonplaceholder.typicode.com ---???
 	curl https://jsonplaceholder.typicode.com/users - pobierze informacje o userach ze strony
 		-# -prosty progres bar
 		-L -prekierowuje niedokładne adersy np; wp.pl na https://wp.pl
-		-s -silet mode 
+		-s -silet mode
 		-i - wyświetl też header
 		-h - tylko header , -I -ten sam efekt
 		-o plik.txt - zapisze wynik do pliku
@@ -355,15 +355,15 @@ curl - narzędzie do transferu danych z i do serwera przy urzyciu różncy proto
 		--data "title=Witaj&body=Witaj świecie" - zrobimy post do wybrnego targetu
 			zawierający tytuł ,i body . -d -robi to samo
 		-X put -d "title=dupa" - update-ujemy np;posts/1 nadając mu nowy tytuł
-		-d name=john email=john@mail.com www.mysite.com/formpage.php -przekarzemy submit 
+		-d name=john email=john@mail.com www.mysite.com/formpage.php -przekarzemy submit
 			data do formularza php . Gooole blokuje takie praktyki
 			jest wicej opcji tego typu , -F koduje przesył np;obrazka
 		-X delete - skasujemy
 		curl -L wp.pl - przekieruje nas na prawidłowwy adres www.wp.pl
 		curl -u kw:hasło - autoryzuje ,nazwa hosta i hasło
-		curl -i kw@mój_ser:hasło -T plik.txt ftp://ftp.cośtam.com - uploudujemy plik 
+		curl -i kw@mój_ser:hasło -T plik.txt ftp://ftp.cośtam.com - uploudujemy plik
 			za pomocą protokołu ftp
-			-O -zamiast T ściągamy plik 
+			-O -zamiast T ściągamy plik
 host - wyszukuje nazwy hostów, używając serwerów domen
 	host wp.pl - pokaże domyślnie dns record A
 	host -t ns - pokaże domain name serwer
@@ -398,14 +398,15 @@ cp -p - zachowuje arybuty domyślne takie jak właściciel i prawa dostępu
 ldd - prints the shared objects (shared libraries) required by each program or shared object specified on the command line.
 	ldd /bin/ls  -pokarze wszystkei pliki zależne polecenia 'ls'
 	???--- Ciekawostka , jak plik można odczytać , to kopiując go bez opcji -p właścicielem staje się kopiujący ---???
-scp - secure copy ,scp kopiuje pliki między komputerami w sieci. 
-	Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację 
+scp - secure copy ,scp kopiuje pliki między komputerami w sieci.
+	Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację
 	oraz daje takie samo bezpieczeństwo jak ssh(1).Scp pyta w razie potrzeby o hasła uwierzytelniające.
 	scp plik.txt uesr@server_ip:ścierzka/docelowa -kopjuje plik.txt gdzieś tam
+	scp user@host:/gdzies/cos /home/download -kopiuje z hosta do katalogu dowladad na naszym komuperze
 	-p -duplikuje atrybuty
 	-r -rekursywnie katalogi i ich zawartość
 	-v -rozległy output ,dobry do debugowania
-ftp - file transfer protocol , server ftp 
+ftp - file transfer protocol , server ftp
 	ftp adres_hosta -albo addressIP ,połączymy się z hostem
 	ftp root@costm
 		ftp> help -lista komend , ftp> ? -też help
@@ -422,7 +423,7 @@ mail - prosty klien poczty
 	mail -włączy tryb wpisywania mail , i pojawi się prompt '&'
 		? -wyświetli help
 wget - pobiera strony www, pliki ,obrazy . Wget różni się tym od curl że pobiera rekuryswnie ,potrafi
-	podążać za odnośnikami ,oraz jest nieinteraktywny czyli może działać w tle , przy zerwaniu 
+	podążać za odnośnikami ,oraz jest nieinteraktywny czyli może działać w tle , przy zerwaniu
 	połączenia próbuje je zwnowić aż do skutku
 	???--- libcurl -biblioteka z poleceniami curl dla jezyków programowania ---???
 	wget -r www... -pobiera strone i inne 5 głębiej (domyślna głębokość)
@@ -442,7 +443,7 @@ wc - word count
 nl - number line , numeruje wiersze w pliku
 	-i 3 -wyświetli numerki co 3
 less - podczas przeglądania pliku można:
-	f -strona do przodu , lub ^V ,^F 
+	f -strona do przodu , lub ^V ,^F
 	b -trona do tyłu ,lub ^B
 	? , / -wyszykaj do tyłu , przodu
 		n , N - natępne , poprzednie
@@ -476,7 +477,7 @@ bg - background przesówa proces w tło
 jobs - wyświetla zatrzymane procesy
 	???---procesy są częścią działającego systemu , są znane tylko
 	powłoką w których pracują ---???
-disown %[number] - żaden terminal nie będzie właścicielem 
+disown %[number] - żaden terminal nie będzie właścicielem
 	praca będzie trwać nadal po jego zamknięciu
 nohup - uruchamia polecenie niewrażliwe na zawieszenie wykonywania, z wyjściem skierowanym na non-tty
 	nohup bash sleep1.sh - uruchomi w forground skrypt , z & na końcu poleciał by w background
@@ -484,8 +485,8 @@ nohup - uruchamia polecenie niewrażliwe na zawieszenie wykonywania, z wyjściem
 		i przy okazji wynik wrzyci do pliku
 trap --wyświelti wszystkie trap-y ustawine aktualnie
 	( trap słóży do chwytania sygnałów )
-kill -Term -wysyła sygnał do procesu(SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c . 
-	kill -l -lista sygnałów 
+kill -Term -wysyła sygnał do procesu(SIGKILL ),domyślne ustawienie , to to samo co Ctrl+c .
+	kill -l -lista sygnałów
 	-Cont -wznowienie zatrzymanego procesu ( patrz MAN 7 signal)
 	-9 --sygnał kill , zabija proces i wyświetla killed
 	kill -[signal] %[number] - Send the signal [signal] to job number [number]
@@ -494,18 +495,18 @@ killall - kill processes by name
 grep [co?] [gdzie?] - operator wyłuskiwania
 	grep slowo /kat/* - wyszuka slowo w katalogu
 	grep -n dupa plik.txt --pokarze na której lini w pliku jest dupa
-	-c --count policzy ilość wystąpień 
+	-c --count policzy ilość wystąpień
 	grep -E 'ooo?' plik -szuka trzech liter "o" ale trzecia jest opcjonalna
 	grep -E 'o{3}' plik -pokarze w pliku string gdzie są dokładnie 3 'o'
 	grep -E 'o{2,3}' plik -wybierze string gdzie 'o' występuje od 2 do 3 razy
-	grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?') 
+	grep [a]pache - grepuje pache z jednym znakiem (tutaj 'a' ,dowlony byłby '?')
 		przed , czyli samo polecenie grep też na się nie wyświetli
 	grep [OPCJE] WZORZEC [PLIK...]
 	-v odwrócenie wyszukania
 	-i rozróżnienie wielkości liter
 	-A1 również 1 lina po wyniku jest wyświetlana
 	-B1 jedna przed wynikiem
-	-C1 jedna po i przed 
+	-C1 jedna po i przed
 	grep a$ plik -gdzie ostatnia "a" w stringu
 	grep ^F plki - piewsza "F" w stringu
 	grep '\bdupa\b' plik - znacznik \b to spacja , czyli szuka słowa "dupa" w stringu
@@ -524,15 +525,15 @@ cut - wycina kolumny z plików
 		-f pola
 	cut -d: -f1 /etc/passwd | column - wyświetli wszystkich lokalnych urzytkowników
 	cut -c 12-16 -wpisze tylko znaki od 12 do 16 w każdym wierszu
-ping -c 1 costam.ru | grep 'bytes from' | cut -d = -f 4 
-	# jeden raz wywołujemy ping 
+ping -c 1 costam.ru | grep 'bytes from' | cut -d = -f 4
+	# jeden raz wywołujemy ping
 	# ze zwrotnej informacji wyłuskujemy linie zawierającą 'bytes from'
 	# z wyłuskanej lini wybieramy 4 pole które jest oddzielone znakiem '='
 column - bierze dane z wyjścia i wyświetla je w formie kolmn
 let - ewaluacja zmiennch arytmetycznych np;
 	let x="3 +4" - zmienna x równa się 7
 	let x="0xFF' - zmienna x równa się 255
-	let potrafi sobie przemienić system ósemkowy i szesnastkowy 
+	let potrafi sobie przemienić system ósemkowy i szesnastkowy
 tr - translacja
 	cat plik.txt | tr 'a' 'A' -zamieni a na A
 	cat plik.txt | tr '\n' ' ' -zamieni zanak końca lini na spacje , tekst bedzie w jednej lini
@@ -549,12 +550,12 @@ comm - comparing streams (or files) , porównywarka
 	comm file1 file2	| jan		 |
 				|   	marian   |
 				| dupa		 |
-	domyślnie wyświetla 3 koluny 
+	domyślnie wyświetla 3 koluny
 	comm -13 - tylko 1 i 3 itd..
 diff - porównywanie plików
 	diff -y plik1 plik2 | less  -porównywanie side by side
 xxdiff - graficzny program do porównywania plików
-paste -d ":" plik plik2 - skleja wiersze z dwuch plików 
+paste -d ":" plik plik2 - skleja wiersze z dwuch plików
 	d -delimiter , bez nigo domyślnie jest \t (tabulacja)
 join -join - łączy wiersze dwóch plików według wspólnych pól
 	join -1 2 -2 3 t , plik plik2 -drugie pole w pliku1 bedzie wspólnym polem,
@@ -563,7 +564,7 @@ join -join - łączy wiersze dwóch plików według wspólnych pól
 	-a 1 -zawartość pierwszego bedzie wyświetlona najpierw
 fold - zawija tekst
 	-w 16 -s  -zawiń teks po 15 znakach ,s -zapobiega rozdzielaniu słów w środku
-fmt - prosty program formatujący tekst 
+fmt - prosty program formatujący tekst
 	bez parametrów wyświetla teks w jednej lini
 	-w 20 -zawija tekst po 20 znakch
 	-s -dzieli długie linie ,do długości , wszystkie kródsze zostaną pominięte
@@ -572,12 +573,12 @@ fmt - prosty program formatujący tekst
 	-u -unifikuje spacje
 	-c indentation of 2 first line
 	-g -width ,default 93%
-od - pokazuje zawartość pliku w kodzie szesnastkowym 
+od - pokazuje zawartość pliku w kodzie szesnastkowym
 	-b ósemkowym
 	-c ASCII
 xargs - wykonaj polecenie z arg. ze stdout
 	echo {1..9} | xargs -n3  -wywoła 3 argumenty na raz , czyli 1,2,3 ,i 4,5,6 w nowej lini itd.
-find / -name *.txt | xargs grep -i dupa --odszuka w całyej gałęzi nazwy *.txt i 
+find / -name *.txt | xargs grep -i dupa --odszuka w całyej gałęzi nazwy *.txt i
 	wybierze tylko te z stringiem dupa
 	-maxdepth -1  -przeszuka tylko bierzący katalog ,określamy głębokość szukania
 	-delete  -find domyśli robi print ale możemy skasować wyniki
@@ -595,7 +596,7 @@ date +%s - czas UNIX-owy w sekundach
 bzip2 - kompresja w bzip
 gzip - kompresja w gzip
 gunzip - dekompresuje gzip
-zcat 
+zcat
 zmore - oba to podgląd skompresowanych gzip
 bunzip - dekompresja bzip
 bzcat
@@ -608,7 +609,7 @@ tar cvf archiwum.tar plik1 plik2 ... - tworzy archiwóm z podanych elemetów
 	-v tryb wypisywania danych diagnostycznych (podgląd)
 	-vv drugie v to szczegułowe info (rozmir..)
 	-f nazwa pliku (trzeba po tym argumencie podać nazwe , ale jest wyjątek przy sdtout ,istdin wtedy można napisać -f - myśnik)
-tar xvf plik.tar [nazwa pliku składowego]-opcjonalnie 
+tar xvf plik.tar [nazwa pliku składowego]-opcjonalnie
 	-x tryb rozpakowywania
 	-t tryb wyświetlania zawartości pliku tar
 	-p zachowanie uprawnień plików z archiwum
@@ -621,7 +622,7 @@ tar ztvf plik.tar.gz - spradza zawartość archiwum
 	-j automatyczne uruchaminie bzip2
 	.tgz <---> .tar.gz
 set -x [plik] - ustawia wykonywanie dla pliku dla usera,grupy,innych
-set +u - domyślnie jeśli zmienna nie istniej to nie pojawi się nic , opcja set +u wyświetli nam wiadomość że zmienna jest unabled . 
+set +u - domyślnie jeśli zmienna nie istniej to nie pojawi się nic , opcja set +u wyświetli nam wiadomość że zmienna jest unabled .
 set -u - wraca do stanu domyślnego
 	set +u <--> set +o nounset
 	set -u <--> set -o nounset
@@ -631,13 +632,13 @@ env - wyświetla exportowane zmienne
 	-u ZMIENNA -unset pomija zmienna w skrypcie
 rename 's/string/inny_string/'* - szuka wzorca i podmienia nazwe
 rename 's/text/txt/' *.text - zamiana rozszerzenia na txt
-rename -n 's/TXT/txt/g' aTXT.TXT 
+rename -n 's/TXT/txt/g' aTXT.TXT
 	-n - pokarz pliki które pomienisz
 	/g -global
 rename 's/.txt/.txt/i' * -podmieni wszystkie rozszrzenia , ale tylko małe litery
 	/i -case sensitive
-rename 's/.txt$/.TXT/' *.txt - znak '$' znaczy at the end (na końcu) 
-	czyli jakmamy plik.txt.txt to zamieni na plik.txt.TXT 
+rename 's/.txt$/.TXT/' *.txt - znak '$' znaczy at the end (na końcu)
+	czyli jakmamy plik.txt.txt to zamieni na plik.txt.TXT
 awk - czyli qawk język wyszukiwania i przetwarzania wzorców.
 	awk '{ print $3 }' filename - wyświetli string z pliku w trzeciej kolumnie
 	awk '{ print }' filename - wyświetli zawartość pliku , jak cat
@@ -654,12 +655,12 @@ sed -edytor strumieniowy do filtrowania i przekształcania tekstu
 		skrypt piszemy poprostu podając polecenia
 			s/t/T/g
 			s/\w*.//g
-	sed 's/\bkot\b/pies/g' - zamieni kot na pies 
+	sed 's/\bkot\b/pies/g' - zamieni kot na pies
 		\b -bounds ,granice ,czyli nie uwzględni kotwatość , a jedynie stricte kot
 	sed -n 's/słowo/&/gp' - wyświetki tylko linie gdzie wystąpiło 'słowo' coś jak grep
 		-n -silen mode , nic nie wyświetla
 		/p -tylko przypadki
-		/I -wielka litera I na końcu to case sensitiv 
+		/I -wielka litera I na końcu to case sensitiv
 	sed '/bzdury/dg' - d usunie bzdury globalnie , niema znaczenia wileki czy małer d
 	sed '4 q' - wyświetl 4 linie i quit
 	sed '5,& d' - wyświetl 5 zakończeń lini i usuń (piątą i reszte) sposób wyżej lepszy
@@ -667,7 +668,7 @@ sed -edytor strumieniowy do filtrowania i przekształcania tekstu
 	sed -n '$=' -nie wyświetlaj nic ,ale podja numer wierszy , i tylko ostatni
 		= -podaje numer lini
 	sed '=' text | sed 'N; s/\n/---/' -ponumeruje linie , doda nową linie ,a w jej miejscu wstawi "---"
-		N -append ,doda do ciągu 
+		N -append ,doda do ciągu
 		\n -new line
 	sed 's/./&\n/g' - weź każdy znak "kropka" i wyświetl w nowej lini
 	sed 'n,d' - kasuj nową linie , czyli 1 wyświetli ,2 nie bo nowa linia , potem wyświetli 3 itd.
@@ -676,12 +677,12 @@ sed -edytor strumieniowy do filtrowania i przekształcania tekstu
 	sed -n 'p,n,n,n' - wyświetli co 3 linie ,itd
 	sed 's/[0-9]/ooo/g' - zamieni wszystkie liczby na 'ooo'
 	sed 's/[a-zA-Z]/ooo/g' - zamieni wielkie oraz małe litery
-	sed 's/[A-z]/ooo/g' - to co wyżej . 'A' musi być najpierw bo w tablicy ASCII wielkie występują 
+	sed 's/[A-z]/ooo/g' - to co wyżej . 'A' musi być najpierw bo w tablicy ASCII wielkie występują
 		wcześniej ,i  idwrotna kombinacja nie zadziała
 		Skrót dziła na tej zasadzie że oznaczmy na tablicy ASCII dwa punkty
 		a wszystko i wszystko między nimi jest wliczone w nasze zainteresowanie
 		ale uwaga bo między 0-z są też inne znaki takie jak np '.' '?' itp.
-	sed 's/[0-Z]/ooo/g' - jeszcze jeden skrót , wszystkie liczby i wielkie litery 
+	sed 's/[0-Z]/ooo/g' - jeszcze jeden skrót , wszystkie liczby i wielkie litery
 		[0-z] - zastąpi wszystkie numery i liczby
 	sed 's/[0-9]i/ooo/g' - zastąpi każde wystąpienie liczby po której występuje litera 'i'
 	sed 's/[0-9]//g' - usunie liczby
@@ -697,7 +698,7 @@ sed -edytor strumieniowy do filtrowania i przekształcania tekstu
 		delimiterem może być cokolwiek
 	sed 's/[^0-9]/ooo/g' - zastąpi wszystko ,nawe spacje, poza liczbami
 	sed 's/a/1/g;s/b/2/g' - dwa zadania dla sed rozdzielone ';' jak w skryptach bash
-	sed 's/\w*//g' - symbol \w* oznacza pierwsze słowo a-z 
+	sed 's/\w*//g' - symbol \w* oznacza pierwsze słowo a-z
 		dodatkowo \w*. -spacja po słowie też zostanie usunieta
 		\w*$ -ostatnie słowo
 	$ echo Sunday | sed 's_\(Sun\)_\1ny\1_' -otrzymamy Sunny Sunday
@@ -705,12 +706,12 @@ sed -edytor strumieniowy do filtrowania i przekształcania tekstu
 	$ echo -e 'today\tis\twarm' | sed 's_\s__g' -otrzymamy todayiswarm , nie wiem czy taki miał być wynik \s -to white spaces
 	'x/d' -karzda linia zawierająca x zostanie przesiana
 	$ cat plik | sed 's/o\{3\}/A/' -zastąpi 3 'o' na A
-udevadm info --query=all --name=/dev/sda -wyświetli ścieżkę i inne atrybuty użądzenia	
+udevadm info --query=all --name=/dev/sda -wyświetli ścieżkę i inne atrybuty użądzenia
 	P: ścieżka urządzenia w systemie sysfs
 	S: dowiązanie symboliczn do urządzenia utworzonego prza proces udev w /dev
 	N: węzeł urządzenia , czyli nadaną nazwe plików w /dev
 	E: dodatkowe info o urządzeniu pobrane z reguł procesu udev
-udevadm monitor - monitorowanie 
+udevadm monitor - monitorowanie
 dmesg - wypisuje ostatnie komunikaty jądra
 	dmesg | grep "irq 1[45]" - wyszukuje IRQ (interrupt request) onumerz 14 i 15 podczas bootowania
 	IRQ to sygnał urządzenia do CPU ,bo na przykład ma dane gotowe do urzycia
@@ -747,7 +748,7 @@ histsize = 100 - ustawi nam rozmiar histori na 100
 * - dzika karta , dowolna długość dowolnego znaku
 ? - dzika karta , dowolny pojedyńczy zak
 [] - powłoka generuje nazwy z podanych w nawiasach elementów , każdy nawias to jeden element
-	> ls file[58a] [b39] 
+	> ls file[58a] [b39]
 	> file53
 	# wszystkie dzikie karty można mieszać
 	> ls file[!4]*
@@ -757,11 +758,11 @@ histsize = 100 - ustawi nam rozmiar histori na 100
 & - postawiony na końcu polecenia wrzuca je w bacgroun , można pojerzeć - jobs
 $ - zmiena środowiskowa np; $user $uid
 $? - parametr powłoki w którym przechowywany jest code wyjścia poprzedniej powłoki np; echo $? - jak zwraca 0 to nie ma error
-$#    Stores the number of command-line arguments that 
+$#    Stores the number of command-line arguments that
       were passed to the shell program.
-      $?    Stores the exit value of the last command that was 
+      $?    Stores the exit value of the last command that was
             executed.
-	    $0    Stores the first word of the entered command (the 
+	    $0    Stores the first word of the entered command (the
 	          name of the shell program).
 		  $*    Stores all the arguments that were entered on the
 		        command line ($1 $2 ...).
@@ -779,19 +780,19 @@ $#    Stores the number of command-line arguments that
 # - znak komentarza w skryptach sh.
 	Other # uses in Bash
 	The # is often used in bash to count the number of occurrences or the length of a variable.
-	
+
 	To find the length of a string:
-	
+
 		myvar="some string"; echo ${#myvar}
 		returns: 11
-	
+
 	To find the number of array elements:
-	
+
 		myArr=(A B C); echo ${#myArr[@]}
 		returns: 3
-	
+
 	To find the length of the first array element:
-	
+
 		myArr=(A B C); echo ${#myArr[0]}
 		returns: 1 (The length of A, 0 is first element as arrays use zero-based indices/subscripts).
 
@@ -835,7 +836,7 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 /usr/include/ - standardowe pliki nagłówkowe (do kompilatora c)
 /lib - biblioteki dla plików binarnych /bin i /sbin , zawiera pliki wspólne
 /lib/modules -moduły jądra
-/opt - opcjonalny software irm trzecich 
+/opt - opcjonalny software irm trzecich
 /boot - pliki potrzebne do rozruchu systemu , są tu grub.cfg , grub.conf , kernel
 /etc - pliki konfiguracyjne systemu , urządzeń , sieci , i hasła
 /etc/ssh/sshd_config - plik z ustawieniami ssh
@@ -855,20 +856,20 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 /media - Punkty montowań dla nośników wymienialnych (ang. media; np. CD-ROMów) (pojawiło się w FHS-2.3).
 /srv - 	Dane specyficzne dla miejsca (site-specific), które są udostępniane (ang. served) przez system.
 /mnt - Punkt montowania (ang. mount point) innych niż natywny systemów plików.
-/dev - device; np. /dev/null 
+/dev - device; np. /dev/null
 /dev/tty1 -pirwsza konsola wirtualna
 /dev/ttyUSB0 -port usb
 /dev/zero - niprzerwany ciąg plików , jest źródłem danych
 	dd if=/dev/zero of=przyklad bs=1k count=100 - za pomocą dd można zapchć dysk danymi z /dev/zero
 /dev/random - generator liczb losowych w postaci losowych bajtów
 /dev/urandom - inny generator losowych rzeczy
-/dev/full - zwraca: No space left on device (symbol ENOSPC) przy próbie zapisu do niego. Jest używany do testowania zachowania programów przy braku miejsca na dysku 
+/dev/full - zwraca: No space left on device (symbol ENOSPC) przy próbie zapisu do niego. Jest używany do testowania zachowania programów przy braku miejsca na dysku
 	$ echo Hello world > /dev/full
 	bash: echo: write error: No space left on device
 /dev/pts i /dev/tty - terminale
 /var - 	Pliki często ulegające zmianom (ang. variable files), takie jak: logi, bazy danych, tymczasowe pliki e-mail.
 /var/tmp - podobne do /tmp ale pliki są zachowywane po zamknięciu sytemu
-/var/log/apt/history.log - historia poleceń apt , w tym install , jak się przegepuje to można 
+/var/log/apt/history.log - historia poleceń apt , w tym install , jak się przegepuje to można
 	znaleść ostatnio instalowane , WAŻNE nie wskazuje zainstalownych zależnoci
 /var/log - logi
 /var/log/syslog - info o tym co się stalo w systemie
@@ -887,14 +888,14 @@ trap --wyświelti wszystkie trap-y ustawine aktualnie
 		-zamkniete polecenie tput w zmiennej
 		do której można się łatwo odwołać, bez zamknięcia
 		w klamry złapalibyśmy spacje chyba że tekst byłby w '"'
-$HOME - katalog domowy usera 
+$HOME - katalog domowy usera
 $LANG - zmienn przchowyjąca kodowanie znaków np; utf-8
 $DISPLAY - nazwa x którego urzywasz
 $OLDPWD - poprzedni katalog
 $TERM - terminal
 $LOGNAME - login name
 $EDITOR	- domyślny edytor tekstu
-$VISUAL - też domyśly edytor 
+$VISUAL - też domyśly edytor
 	różne programy wybieraj inna zmienną ,dobrze mieć obie zmienione
 	export EDITOR VISUAL - ustawia obie
 
@@ -934,7 +935,7 @@ PRCE - perl regex
 	     -G jako BRE
 	     -P PRCE
 	     -F dosłownie
-PRCE i ERC używają | jako logicznego OR 
+PRCE i ERC używają | jako logicznego OR
 	grep -E 'i|a' plik	tania laura -jest "i" i "a"
 		'*' 	oznacza zero , jeden ,lub wiele wystąpień w poprzedającym
 		'+'	oznacza jeden lub więcej wystąpień
@@ -943,7 +944,7 @@ ala{ma,dypa,y,x}kota - dopasuje wszystkie wyniki z uwzglendnieniem opcji z nawia
 ^V - ucieczka znaków kontrolnych
 	echo "tu jest^V^Itabulacja" -otrzymamy- tu jest		tabulacja
 
-	
+
 
 12.BITY ODCZYTU
 ------------
@@ -953,14 +954,14 @@ chmod go+r plik - dodajemy grupie i innym(others) prawa do read ( a u to user:)
 chmod u=rwx,ug+rw,o=r permissions.txt - kombinacja pozwoleń dla usera ,grupy ,i reszty
 chmod 644 plik - TRYB BEZWZGLĘDNY wszystkie bity są zmienione
 	1--x 2-w- 3-wx 4r-- 5r-x 6rw- 7rwx 0---   SYSTEM ósemkowy
-umask - pokaże domyślne ustawienia dla nowych plików , np;0022 
+umask - pokaże domyślne ustawienia dla nowych plików , np;0022
 	-S pokazuje w formacie u=rwx,g=rx,o=rx
 
 --"sticky bit""setgid""setuid"---
-chmod +t -dodaje "lepki bit" ,dodanie go do katalogu zapobiega usówaniu plików urzytkownikom którzy nie są ich właścicielami . 
+chmod +t -dodaje "lepki bit" ,dodanie go do katalogu zapobiega usówaniu plików urzytkownikom którzy nie są ich właścicielami .
 	Bit symbolizuje litera 't' jeśli x jest ustawiony , i 'T' jeśli nie np; drwxr-xr-t
 	chmod 1775 -jedynka symblizuje lepki bit
-Aby ustawić bit grupy "setgid" można urzyć dwójki np; 
+Aby ustawić bit grupy "setgid" można urzyć dwójki np;
 	chmod 2775 lub 3 ustawi nam "setuid"
 	chmod 4775 ustawi "setuid"
 	innym sposobem jest dopisanie u+s , g+s , o+t
@@ -977,7 +978,7 @@ setfacl - pozwal ustawić acls pliku np;
 	setfacl -x sandra file33 -usunie wszystkie przywileje sandry
 	setfacl -b file33 -usunie wszystkie ustawienia acls z wybranego pliku
 	setfacl --no-mask -m u:sandra:7 file33 -opcja no-mask doda #effective:rw- czyli ustawienie maski acls bedzie zignorowane , a efektywne będzie ustawione na połączenie wszystkich grup będącej właścicielem i wszystkich nazwanych wpisów użytkowników i grup.
-	
+
 13.ZARZĄDZANIE KONTAMI
 -------------------
 	/etc/passwd -- kowalski:x:3676:1000:Jan Kowalski:/bin/bash
@@ -987,7 +988,7 @@ setfacl - pozwal ustawić acls pliku np;
 users - wszyscy aktualnie zalogowni
 useradd - dodawanie usera
 	useradd -m -d /home/yanina -c "yanina wickmayer" yanina
-	-m -tworzy katalog domowy 
+	-m -tworzy katalog domowy
 	-d - nazwa tego katalogu
 	-c -opis konta
 	-D -opis twojego stanu konta
@@ -1006,11 +1007,22 @@ chsh - zmienia powłokę na inna wybną znajdującą się w /etc/shells
 	-s /etc/ksh - zmienia na krona
 chfn - change full name - zmienia dane usera , imie,naz,tel,itp
 	-f name ,-h phone , -o office
-grep ^PASS /etc/login.defs - tutaj są domyślne ustawienia dla haseł urzytkowników jak minimalna długość 
+grep ^PASS /etc/login.defs - tutaj są domyślne ustawienia dla haseł urzytkowników jak minimalna długość
 	grep słowo plik.txt -przeszuka plik wyłuskując linie zawierające słowo
 	grep color=auto słowo plik.txt - tak jak wyżej ale podkoloruje mu wynik
 		$ export GREP_OPTIONS='color=auto' -ustawienie konfiguracyjne na auto color dla grep
-	grep -i -case sensitiv
+	grep -r  -rekursywnie w całym katalogu gdzie jestm jak nie podam scieżki
+	     -R  -tez rekursywnie ale podąża za linkami symbolicznymi
+	     -w  'wzorzec'  -tylko słowa
+	grep -c wrzorzec inputfile  -liczy ile znalazła wyszukań
+	     -n  -pokazuje numer lini w wzorcu
+	grep "^[0-9][0-9][0-9]-" numbers  -wyszuka linie zaczynające się od trzech cyfr i myślnika tj,321-numbers
+	grep "^[0-9]\{3\}-" numbers  -to co wyrzej tylko krócej
+		{5,10}  -a to znaczy że minimum 5 razy ale nie więcej niż 10
+		{5,}  -a tak że min. 5 razy ale może być więcej
+	grep "godz" lista.txt  -w pliku txt wyszukuje lini które posiadają "godz" można też urzywać pojedyńczego '
+	grep -i 'bar' file1  -case-insensitive dla fragmentu 'bar'
+
 chage - edycja ustawień haseł , passwd też ma takie możliwości
 chage -l kw -informacje o ustawieniach hasła dla urztkownia kw
 passwd - ustawia hasło np; passwd kw
@@ -1047,7 +1059,7 @@ gpasswd - edycja /etc/group o /etc/gshadow - pliku z danymi kto jest adminem
 chgrp - zmień grupe , np; chgrp grupa2 plik - plik teraz jest własnością grupy 2
 chown - właściciel pliku/katalogu np; chown kw plik
 	chown kw:grupa2 plik - zmienia właściciela i grupe
-chattr - zmienia atrybuty plików	
+chattr - zmienia atrybuty plików
 	u -niekasowalność , zobacz też inne [aAcCdDeijsStTu]
 	a -append only
 	A -access not timestamp , nie zmieni timestamp
@@ -1139,7 +1151,7 @@ SZTUCZKI
 
 16.SYSTEMD
 -------
- 
+
 who -r -sprwadza run level
 systemctl list-units - lista aktywnych jednostek systemd
 	--full -pełne nazwy
@@ -1150,14 +1162,14 @@ systemctl disable nazwa jednostki --jednosta nadal będzie działć ale nie zost
 	ponownie uruchomina przy ponownym włączeniu systemu
 systemd-cgls --info o grupie kontrolnej w oderwaniu od tanu samej jednostki
 pkg-config systemd --variable=systemdunitdir -katalogi jednostek systemowych
-pkg-config systemd --variable=systemdconfdir -katalogi jednostek konfiguracyjnych 
+pkg-config systemd --variable=systemdconfdir -katalogi jednostek konfiguracyjnych
 systemd start -aktywacja jednostki
 	stop , restart - deaktywuje , restartuje
 systemctl reload jednostka - ponownie ładuje conf. jednostki
 systemctl daemon-reload - ponownie ładuje conf. wszystkich jednostek
 systemctl list-jobs - lista prac (żądań aktywacji i deaktywacji jednostek)
 systemctl poweroff - wyłącza maszyne
-systemctl reboot - rebootuje maszune 
+systemctl reboot - rebootuje maszune
 	start unit -aktywacja jednostki
 	stop , restart - deaktywuje , restartuje
 	disable unit - jeśli ma sekcje [install] trzeba ją wyłączyć aby
@@ -1167,7 +1179,7 @@ systemctl daemon-reload - ponownie ładuje conf. wszystkich jednostek
 systemctl list-jobs - lista prac (żądań aktywacji i deaktywacji jednostek)
 	???--- trudno podejżeć prace bo systemd raczej szybciej je zakończy ,
 	ale można szybko się zalogować i spróbować ---???
-	???--- praca zakończona ni oznacza wyłączenia jednostki , może ona być 
+	???--- praca zakończona ni oznacza wyłączenia jednostki , może ona być
 	nadal aktywna ,np; usługa ---???
 systemd --failed -pokaże usługi które nie uruchomiły się przy starcie maszyny
 	można potem zrobić status i zobaczyć szczeguły
@@ -1192,7 +1204,7 @@ crontab -l -listuje zadania
 	PATH=/sbin:/bin:/usr/sbin:/usr/bin
 	MAILTO=jakis_user
 	NICE=15
-	
+
 	SHELL=/bin/bash
 	PATH=/sbin:/bin:/usr/sbin:/usr/bin
 	MAILTO=jakis_user
