@@ -600,3 +600,15 @@ and subop.scheduled_to <= sysdate + 1
 --and subop.status = 'SUBSCRIPTION_RESPONSE_SUCCESFULL'
 and (subop.status = 'SUBSCRIPTION_RESPONSE_SUCCESFULL' OR subop.status = 'BILLING_SUCCESFULL')
 order by subop.scheduled_to desc, serop.operator_prefix asc;
+
+-- LA2M, M2LA funskan Jira
+select '||', 'M2LA', '||', 'LA2M', '||', 'ID', '||', 'Nazwa', '||'
+from dual
+union
+select '|', to_char(sum(e.sent_messages_num)), '|', to_char(sum(e.delivered_messages_num)), '|', to_char(e.service_id), '|', s.name, '|'
+from mp.mpservice s, mp.mpevent e
+where e.service_id=s.service_id
+and e.service_id in (2203, 2204, 2205, 2205, 2207, 2208, 2209, 2210, 2211, 2212, 2410, 2411, 2412, 2413, 2414)
+and e.creation_time >= sysdate-1/24
+group by e.service_id, s.name
+order by 1 desc, 8 asc;
