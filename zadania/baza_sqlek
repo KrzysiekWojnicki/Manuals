@@ -550,7 +550,11 @@ select distinct do.msisdn, do.operator, do.direct_billing ,do.status, ds.key, do
 do.transaction_id,do.update_date ,do.create_date, do.order_description, do.product_name
 from directpay.orders do
 left join directpay.order_status ds on do.status = ds.value
-where operator in ('POLAND_ERA')
+where operator in ('POLAND_ORANGE', 'POLAND_ERA', 'POLAND_P4', 'POLAND_PLUS')
+--where operator in ('POLAND_P4')
+--where operator in ('POLAND_PLUS')
+--where operator in ('POLAND_ERA')
+--where operator in ('POLAND_ORANGE')
 and do.msisdn !='48999999999'
 and direct_billing = 1
 and status != '3'
@@ -612,3 +616,26 @@ and e.service_id in (2203, 2204, 2205, 2205, 2207, 2208, 2209, 2210, 2211, 2212,
 and e.creation_time >= sysdate-1/24
 group by e.service_id, s.name
 order by 1 desc, 8 asc;
+
+--spradza z jakiej usługi na jaką wyszła wiadomość
+select SR.TRANSACTION_ID, AR.OWNER_ID, ACK.RECIPIENT_ID, SR.SEND_TIME, SR.RECIPIENT,operator_id, SR.sender, SR.text
+--select *
+from MP.SMS_RECORD SR
+JOIN MP.ACCOUNTING_RECORD AR on SR.TRANSACTION_ID = AR.TRANSACTION_ID
+JOIN MP.ACKNOWLEDGE_RECORD ACK on SR.TRANSACTION_ID = ACK.ACCOUNTING_TRANSACTION_ID
+where (sender in ('48510257893') OR recipient in ('48510257893'))
+--where RECIPIENT = '48501123123'
+--where SR.TRANSACTION_ID = 33371396552
+--and SR.SEND_TIME >= sysdate -1
+and SR.send_time >= '19/01/31 08:31:16,444000000'
+and SR.send_time <= '19/01/31 12:31:16,444000000'
+order by operator_id, SR.SEND_TIME;
+
+--wybiera wiadomości z błędami
+select e.creation_time as time, e.queue_size as queue, e.delivered_messages_num as delivered, e.sent_messages_num as sent, e.service_id, s.name, e.mpevent_level as "level", e.mpevent_desc as description
+from mp.mpservice s, mp.mpevent e where
+e.service_id=s.service_id and
+e.service_id = 101204 and
+e.creation_time >= sysdate-1/24
+and e.mpevent_level >= 2
+order by e.creation_time desc;
