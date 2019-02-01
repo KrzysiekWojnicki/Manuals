@@ -10,6 +10,7 @@ and so.operator_prefix = '26002'
 and so.gateway_service_name like '%WYGRANA%'
 group by so.operator_prefix;
 
+
 -- listowanie zarejestrowanych numerów + warunki
 select so.operator_prefix ,n.msisdn, n.update_date, n.status, so.gateway_service_name from mtsp.subscriber n, mtsp.service_operator so,
 (select s.msisdn as nr, s.service_oper_id as sid, max( s.update_date) as da from mtsp.subscriber s
@@ -45,16 +46,7 @@ and n.msisdn in  ('48511674073', '48503605569', '48514147145', '48514748879', '4
 order by n.update_date
 
 
-select so.operator_prefix , count (n.msisdn) from mtsp.subscriber n, mtsp.service_operator so,
-(select s.msisdn as nr, s.service_oper_id as sid, max( s.update_date) as da from mtsp.subscriber s
-group by s.msisdn, s.service_oper_id) t1
-where n.msisdn = t1.nr and n.update_date = t1.da and n.service_oper_id=t1.sid
-and n.service_oper_id = so.id
-and n.status = 'REGISTERED'
---and so.operator_la = '8017'
-and so.operator_prefix = '22601'
-and so.gateway_service_name like '%PLAY%'
-group by so.operator_prefix
+
 
 ------
 select *
@@ -604,6 +596,7 @@ and subop.scheduled_to <= sysdate + 1
 --and subop.status = 'SUBSCRIPTION_RESPONSE_SUCCESFULL'
 and (subop.status = 'SUBSCRIPTION_RESPONSE_SUCCESFULL' OR subop.status = 'BILLING_SUCCESFULL')
 order by subop.scheduled_to desc, serop.operator_prefix asc;
+<<<<<<< HEAD
 
 -- LA2M, M2LA funskan Jira
 select '||', 'M2LA', '||', 'LA2M', '||', 'ID', '||', 'Nazwa', '||'
@@ -639,3 +632,5 @@ e.service_id = 101204 and
 e.creation_time >= sysdate-1/24
 and e.mpevent_level >= 2
 order by e.creation_time desc;
+=======
+>>>>>>> 9e3ecc5bf8b414d99b513a36d3ad58cfadb62000
