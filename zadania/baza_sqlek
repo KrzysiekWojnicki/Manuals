@@ -634,3 +634,58 @@ and e.mpevent_level >= 2
 order by e.creation_time desc;
 =======
 >>>>>>> 9e3ecc5bf8b414d99b513a36d3ad58cfadb62000
+
+--DIRECTPAY correct payments
+--Check sprawdza czy są udane płatności w przeciągu godziny per operator oraz czy stosunek będnych do udanych jest mniejszy niż 1:5.
+select Addition.operator, Addition."Correct payment", Addition."Incorrect payment",
+ROUND(Addition."Correct payment"*100/(Addition."Correct payment"+Addition."Incorrect payment"),2) as "% Correct"
+from
+(
+  select CorrectNew.operator,
+  (case when CorrectNew."Correct_count" is NULL then 0 else CorrectNew."Correct_count" end) as "Correct payment",
+  (case when CorrectNew."Incorrect_count" is NULL then 0 else CorrectNew."Incorrect_count" end) as "Incorrect payment"
+  from
+    (select Correct.operator, sum(Correct."Correct") as "Correct_count", sum(Correct."Incorrect") as "Incorrect_count"
+    from (
+        select distinct o.msisdn,
+        (case when s.key = 'PAYED' then 1 else 0 end) as "Correct",
+        (case when s.key in ('REJECTED','LOCKED','CANCELED') then 1 else 0 end) as "Incorrect", o.OPERATOR
+        from DIRECTPAY.orders o
+        join DIRECTPAY.ORDER_STATUS s on o.STATUS = s.value
+        where o.UPDATE_DATE >= sysdate -3/24
+        and operator in ('POLAND_ORANGE', 'POLAND_ERA', 'POLAND_P4', 'POLAND_PLUS')
+        and s.key in ('REJECTED','LOCKED','CANCELED','PAYED')
+        --and o.DIRECT_BILLING = 1
+        and o.MSISDN != '48999999999'
+        order by operator) Correct
+    group by Correct.operator) CorrectNew
+  ) Addition
+;
+=======
+
+--DIRECTPAY correct payments_db
+--Check sprawdza czy są udane płatności w przeciągu godziny per operator oraz czy stosunek błędnych do udanych jest mniejszy niż 65% (dotyczy tylko płatności DB).
+--Jeżeli brak jest płatności w przeciągu ostatniej godziny, można zakupić coś celem weryfikacji.
+select Addition.operator, Addition."Correct payment", Addition."Incorrect payment",
+ROUND(Addition."Correct payment"*100/(Addition."Correct payment"+Addition."Incorrect payment"),2) as "% Correct"
+from
+(
+  select CorrectNew.operator,
+  (case when CorrectNew."Correct_count" is NULL then 0 else CorrectNew."Correct_count" end) as "Correct payment",
+  (case when CorrectNew."Incorrect_count" is NULL then 0 else CorrectNew."Incorrect_count" end) as "Incorrect payment"
+  from
+    (select Correct.operator, sum(Correct."Correct") as "Correct_count", sum(Correct."Incorrect") as "Incorrect_count"
+    from (
+        select distinct o.msisdn,
+        (case when s.key = 'PAYED' then 1 else 0 end) as "Correct",
+        (case when s.key in ('REJECTED','LOCKED','CANCELED') then 1 else 0 end) as "Incorrect", o.OPERATOR
+        from DIRECTPAY.orders o
+        join DIRECTPAY.ORDER_STATUS s on o.STATUS = s.value
+        where o.UPDATE_DATE >= sysdate -3/24
+        and operator in ('POLAND_ORANGE', 'POLAND_ERA', 'POLAND_P4', 'POLAND_PLUS')
+        and s.key in ('REJECTED','LOCKED','CANCELED','PAYED')
+        and o.DIRECT_BILLING = 1
+        order by operator) Correct
+    group by Correct.operator) CorrectNew
+  ) Addition
+;
