@@ -689,3 +689,50 @@ from
     group by Correct.operator) CorrectNew
   ) Addition
 ;
+
+Collapse 
+===============================
+--[sqlScheduler] mt_mtsp_no_billed, HL-130179
+--jira mtsp_no_billed
+select '||', 'ID', '||', 'NAZWA SERWISU', '||', 'LA',
+'||', 'OPERATOR', '||', 'STATUS', '||', 'SCHEDULED_TO', '||', 'REQUEST_DATE', '||', 'TRANSACTION_ID', '||'
+from dual
+union
+select '|', to_char(subop.id), '|', ser.name, '|',
+serop.operator_la, '|', to_char(serop.operator_prefix), '|', subop.status status, '|',
+to_char(subop.scheduled_to), '|', to_char(subop.request_date), '|', to_char(subop.transaction_id), '|'
+from mtsp.service_operator serop, mtsp.service ser, mtsp.subscription sub
+join mtsp.subscription_operator subop on sub.id = subop.subscription_id
+where ser.id = serop.service_id
+and ser.name in ('MANIAC', 'VIP_60798', 'WYGRANA_60246', 'PRE_60798', 'GRY_60577', 'YES_60655', 'OK_60554', 'APPLE', 'WEEZCHAT_60955', 'MP3_60955', 'TAK_60520', 'DOSTEP_60598', 'SOFTPL', 'MA_60577', 'HT.WAGA_ORANGE', 'SKAN_60955')
+and serop.operator_prefix = '26003'
+and subop.status like 'SUBSCRIPTION_RESPONSE_SUCCESFULL'
+and serop.id = subop.service_operator_id
+and subop.scheduled_to >= sysdate-10
+and subop.scheduled_to <= sysdate-2/24 -- minus 2 godziny bo tak liczy monitoring
+order by 6 desc;
+
+--[sqlScheduler] directpay_correct_payments
+--jira
+select '||', 'ID', '||', 'OP NAME', '||', 'SERVICE NAME', '||', 'LA', '||',
+'OPERATOR', '||', 'STATUS', '||', 'SCHEDULED TO', '||' ,'CRONE', '||', 'DATA WYS.', '||', 'DATA ODP.', '||'
+from dual
+union
+select '|', to_char(subop.id), '|', serop.gateway_service_name, '|', ser.name, '|',
+serop.operator_la, '|', to_char(serop.operator_prefix), '|', subop.status, '|',
+to_char(subop.scheduled_to), '|',  to_char(serop.cron_send_date), '|', to_char(subop.request_date), '|',
+to_char(subop.response_bill_date), '|'
+from mtsp.service_operator serop, mtsp.service ser, mtsp.subscription sub
+join mtsp.subscription_operator subop on sub.id = subop.subscription_id
+where ser.id = serop.service_id
+--and ser.name like '%EMPYRE%'
+and subop.id in (191485849, 191485297)
+--and serop.gateway_service_name like 'CHRON'
+--and serop.operator_la = '60798'
+--and serop.operator_prefix = '26002'
+and serop.id = subop.service_operator_id
+and subop.scheduled_to >= sysdate-10
+and subop.scheduled_to <= sysdate+1
+--and subop.scheduled_to >= to_date('11-07-2016 00:00:00','dd-mm-yyyy hh24:mi:ss')
+--and subop.scheduled_to <= to_date('12-07-2016 23:59:59','dd-mm-yyyy hh24:mi:ss')
+order by 14 desc, 10 asc;
