@@ -1,0 +1,51 @@
+# W ATOM
+----------
+ctrl+shift+p - wyszukiwanie funkcjonalności w atom-ie
+ctrl+p - wyszukiwarka plików
+ctrl+t - też wyszukiwarka plików
+ctrl+b - wyszukiwanie tylko otwartych
+ctrl+o -otwiera plik
+ctrl+shift+s -save as
+alt+\ -skacze do drzewa zakładek i z powrotem do panelu
+crtl+\ -chowa i pokazuje drzwo zakładek
+atom ./notatki_routing/z_loga ./żarty -otworzy oba pliki
+ctrl+, - otworzy settings
+
+# Poruszanie się
+----------------
+ctrl+g -do konkretnej lini:znaku np; 3:15
+ctrl+prawo / lewo -słowo do przodu do tyłu
+home -początek tekstu w lini
+end -koniec tekstu w lini
+ctrl+home / end  -początek , koniec całego dokumentu
+ctlr+R  -wybierz linie do której chcesz przejść
+ctrl+shift+f2  -stworzymy zakładke pod f2
+shift+f2 -przelici przez zakladki
+
+# Oznaczenie tekstu
+-------------------
+ctrl+a -cały content
+ctrl+l -cala linia
+shift+prawo -znak w prawo
+ctrl+shift+prawo  -słowo w prawo
+shift+home  -select do pierwszej litery
+ctrl+shift+v  -wklejimi tekst w sposob nieformatowany
+ctrl+z -cofnij zmiany
+ctrl+/ -odznacznie i przywracanie komentarza(jak plik jest ropoznay jako skrypt)
+ctrl+[ -wcincie w tekście
+ctrl+] -w drugie str.
+ctrl+szczałka góra dół przenosi linie zaznaczoną w góre lub dół
+ctrl+shift+k -kasacja lini
+ctrl+shift+d -duplikacja lini
+ctrl+shift+F2 -tworzy zakładkę , pomiędzy zakładkami poruszam się F2
+
+# W BASH
+---------
+atom plik:50 -otworzy plik na 50 lini
+atom plik:50:3 -otworzy na 50 lini i trzecim słowie
+apm install <package_name>  -instaluje paczki z basha
+apm install <package_name>@<package_version>  -konkretna wersja paczki
+
+# KARTY
+--------
+ctrl+w  -zamyknie karty

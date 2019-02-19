@@ -292,6 +292,7 @@ group by serop.gateway_service_name, serop.operator_la, serop.operator_prefix, b
 order by sop.scheduled_to asc, serop.operator_prefix;
 
 
+
 -------------------------------
 HL-10090
 
