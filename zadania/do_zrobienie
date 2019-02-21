@@ -47,5 +47,13 @@ https://linuxacademy.com/cp/modules/view/id/107
 https://www.youtube.com/watch?v=lI4M94eUvj8 - jak atom
 >>>>>>> cf4f1fb8b4a64d4f6d7e34ea347cda135bda33c7
 
+<<<<<<< HEAD
 -autokey
 -pritun vpn
+=======
+
+-select * from mp.mpservice s, mp.mpevent e where
+e.service_id=s.service_id and
+e.service_id = 101368;
+--przerobić tak abym mógł podglądać kto jest dew. i men.
+>>>>>>> 4873a009ad13f78b66e8fe46ac229ca0481e0582

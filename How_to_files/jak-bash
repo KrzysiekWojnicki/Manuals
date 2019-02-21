@@ -360,6 +360,7 @@ curl - narzędzie do transferu danych z i do serwera przy urzyciu różncy proto
 			jest wicej opcji tego typu , -F koduje przesył np;obrazka
 		-X delete - skasujemy
 		curl -L wp.pl - przekieruje nas na prawidłowwy adres www.wp.pl
+		curl ifconfig.me  -podejrzymy swój addressIP
 		curl -u kw:hasło - autoryzuje ,nazwa hosta i hasło
 		curl -i kw@mój_ser:hasło -T plik.txt ftp://ftp.cośtam.com - uploudujemy plik
 			za pomocą protokołu ftp
@@ -399,10 +400,10 @@ ldd - prints the shared objects (shared libraries) required by each program or s
 	ldd /bin/ls  -pokarze wszystkei pliki zależne polecenia 'ls'
 	???--- Ciekawostka , jak plik można odczytać , to kopiując go bez opcji -p właścicielem staje się kopiujący ---???
 scp - secure copy ,scp kopiuje pliki między komputerami w sieci.
-	Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację
-	oraz daje takie samo bezpieczeństwo jak ssh(1).Scp pyta w razie potrzeby o hasła uwierzytelniające.
-	scp plik.txt uesr@server_ip:ścierzka/docelowa -kopjuje plik.txt gdzieś tam
-	scp user@host:/gdzies/cos /home/download -kopiuje z hosta do katalogu dowladad na naszym komuperze
+		Do transferu danych używa ssh(1) i wykorzystuje tę samą autoryzację
+		oraz daje takie samo bezpieczeństwo jak ssh(1).Scp pyta w razie potrzeby o hasła uwierzytelniające.
+	scp file.txt username@to_host:/remote/directory/  -	Copy file from local host to a remote host SCP (UPLOAD)
+	scp username@from_host:file.txt /local/directory/  - 	Copy file from a remote host to local host SCP (DOWNLOAD)
 	-p -duplikuje atrybuty
 	-r -rekursywnie katalogi i ich zawartość
 	-v -rozległy output ,dobry do debugowania
