@@ -28,6 +28,7 @@ figlet - wieli baner z znaków ascii. NIE jest domyślnie zainstalowany
 	watch -n1 "date '+%D%n%T'|figlet -k"  -co sek. pokarze aktualny czas
 		w postaci baneru ze znaków ascii
 dd - konwertuje i kopjuje pliki
+	dd if=/home/pawel/Pobrane/slitaz-rolling-core.iso of=/dev/sdb  --wypalimu na sdb obraz iso
 	dd if=plik_wejściowy of=plik_wyjściowy conv=ucase  -zmieni małe na wielkie litery w nowym pliku
 	???--- można konwertować pliki na wiele różnych sposobów , patrz MAN ---???
 tput - inicjalizuj terminal lub pytaj bazę terminfo
