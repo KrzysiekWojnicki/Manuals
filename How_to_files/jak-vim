@@ -29,6 +29,7 @@ r - zamina litery
 t - wyszukuje do przodu w lini , t + nasz znak , i ustawia nam kursor przd nim
 gt - go to tab , idzie do zakładki , jak may zakładki to tak między nimi skaczemy do przodu
 gT - skacze zakładke do tyłu
+{i}gt - skacz do zakładki numer {i}
 ctrl + N lub P  - uzupełnianie składni
 i - tryb wpisywania pod kursorem
 I - tryb wpisywania na pierwszej w lini literze
@@ -56,6 +57,7 @@ u - undo stuf
 0 - początek lini
 $ - ostatni znak w lini
 ^ - pierwszy znak w lini
+^g - pokarz w lewyn dolnym krótką informacje o pliku i miejcu kursora
 Ctrl-w h Ctrl-w ←	Shift focus to split on left of current
 Ctrl-w l Ctrl-w →	Shift focus to split on right of current
 Ctrl-w j Ctrl-w ↓	Shift focus to split below the current
@@ -72,12 +74,20 @@ Ctrl-w n-	Decrease size of current split by n lines
 :r jakiś_plik - czyta zawartoś pliku i zapisuje do dokumentu
 :r !ls - zapisuje wynik wywołanego polecenia powłoki , tu "ls"
 :bp - bufor previus
-:tebe plik. - otwiera plik w zakładce
 :!bash % - uruchamia program np; w bash , ale może byc php itd. , % - to nasz plik który edytujemy , np; napiszemy program i chcemy go odrazu odpalić
 :map <F5> !bash % - mapujemy sobie klawisz , czyli pod f5 mamy naszą poprzednią komende uruchamijącą skrypt w bash
 :imap du dupa - mapowanie w trybie input (wpisywania) , teraz kiedy napiszemy "du" to nam się zmieni w "dupe"
 :ab du dupa blada - ustawi abberacje(podmiane) , wpisane "du" zamieni się na "dupa blada"
 :una du - wyłącza abberacje "du"
+:sp - split screen
+:tab - otworzy altualną karte w nowej zakłace (jak mamy splita)
+:tab split - powiel obecą karte w nowyej zakładce
+:tabs - wyświetl wszytkie zaklaki
+:tab drop <plik> - otwórz plik w nowej zakładce i przeskocz do niego
+:tabclose {i} - zamknij zakładke o numerze {i}
+:tabonly - zamknij wszystkie zakłaki z wyjątkiem tej w której jesteś
+:tabm {i} - przemieść się o zakładdki numer {i}
+:tabe - albo "tabedit" otwiera nową pustą zakładeke, a jak się poda plik to otworzy go w niej
 
 ----- TRYB VISUAL ------
 shift + v - visual tryb blokowy

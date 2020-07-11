@@ -131,6 +131,8 @@ dump-acct /var/account/pacct - drukuje plik acct
 dump-utmp /var/run/utmp - dtukuje plik utmp
 last - (acct) pokazuje listing ostatnio logującuch userów
 which - pokazuje ścieżke polecenia np; /usr/bin/which
+whereis - też pokazuje ścieżkę ddo binarki ale również inne
+	..np do man-a do danego polecenia
 sa - (acct) sumuryczne info o wcześniej wykonywanych poleceniach gdzie;
         	- 9.86re is a “real time” as per wall clock minutes
        		- 0.01cp is a sum of system/user time in cpu minutes
@@ -443,6 +445,8 @@ stat [plik] - statystyki pliku
 	-t -zwięzła forma , w jednej lini
 wc - word count
 nl - number line , numeruje wiersze w pliku
+	$ ll | nl
+	..ponumeruje wiersze wyświetlone poleceniem ll
 	-i 3 -wyświetli numerki co 3
 less - podczas przeglądania pliku można:
 	f -strona do przodu , lub ^V ,^F
@@ -492,8 +496,15 @@ kill -Term -wysyła sygnał do procesu(SIGKILL ),domyślne ustawienie , to to sa
 	-Cont -wznowienie zatrzymanego procesu ( patrz MAN 7 signal)
 	-9 --sygnał kill , zabija proces i wyświetla killed
 	kill -[signal] %[number] - Send the signal [signal] to job number [number]
+	kill 1984  -zabije proces 1984
 killall - kill processes by name
+	..zabije karzdy proces który bedzie zgodny z podaną nazwą
 	killall jav
+	-i  -zapytaj przed egzekucją
+	..może zabić wiecej procesów o tej samej nazwie
+	..można zabijać starsze niż, w konktetym terminalu, ziałające od(czas)
+pkill - działa jak pgrep tyle że wysłya sygnały domyślnie kill,
+	..wystarczy część nazwy procesu zawarta w pierwszych 15 znakach
 grep [co?] [gdzie?] - operator wyłuskiwania
 	grep slowo /kat/* - wyszuka slowo w katalogu
 	grep -n dupa plik.txt --pokarze na której lini w pliku jest dupa

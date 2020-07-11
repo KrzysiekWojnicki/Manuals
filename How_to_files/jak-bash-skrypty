@@ -322,6 +322,7 @@
 
 	# inny zapis oraz przykład przekazywania parametrów do funkcji , tak jak przy skrypcie
 	function print() { echo $1 $2 $3 ;  } ; print kot pies mysh  
+	# słowo function można pominąć
 	
 	
 # ZMIENNE LOKALNE
@@ -472,17 +473,17 @@ shift $(expr $OPTIND - 1)
 	# to ta sama komenda co powyżej ale więcej znaków jest wliczonych do puli , i ma pomieszaną kolejność
 	' openssl rand -hex 12 ' #ostatni zank to tylko w celach odkomentownia
 	' openssl rand -base64 12 ' # dwa inne sposoby
-	' date | md5sum   ' # najłatwiejszy do zapamiętania
+	' date | md5sum   ' # najłatwiejszy do zapamiętania'
 	
 # ZAGNIŻDŻANIE
-#--------------
+--------------
 	A=shell 
 	echo $C $B $A $(B=sub;echo $C $B $A ;echo $(C=sub; echo $C $B $A))
 	# otrzymamy
 	shell sub shell sub sub shell
 
 # TPUT - WYŚWIETLANIE W TERMINALU
-#---------------------------------
+---------------------------------
 	tput setab - kolor tła ,oczywiście z numerm
 	     setaf - kolor czcionki
 	     bold - pogrubiona
