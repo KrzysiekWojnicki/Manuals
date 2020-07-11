@@ -1,0 +1,41 @@
+
+# config
+########
+	..w config/ranger/rc.conf jest plikiem konfiguracyjnym, jak go nie ma to go zrup lol
+
+set show_hidden
+	..pokarze ukryte pliki
+
+# poecenia
+###########
+	..w pasku poleceni
+:shell <polecnie>
+	..wykonamy polecenie shell-owe
+:sort mtime
+	..sortowenie względem daty moyfikacji
+:sort ctime
+	..sortowenie względem daty utworzenia
+
+
+# skróty
+########
+ctrl+n
+	..nowa zakładka
+ctrl+w
+	..zamknij zakłake
+tab
+	..nastepna zakładka
+shift+tab
+	..poprzeddnia
+i
+	..podgląd pliku
+zz
+	..filtruje, tj szuka
+zh
+	..pokaż/ukryj hidden files
+cw
+	..zmień nazwe pliku
+
+# pomocne linki
+##############
+https://www.digitalocean.com/community/tutorials/installing-and-using-ranger-a-terminal-file-manager-on-a-ubuntu-vps

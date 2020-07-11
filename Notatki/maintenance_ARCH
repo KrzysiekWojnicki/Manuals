@@ -1,0 +1,44 @@
+$ pacman --help
+	..opcje
+
+$ pacman -S --help
+	..wysztkie opcje z flagą '-S' 
+$ pacman -Syy
+	.. synchronizacja baz
+	'-S' sync
+	'-y' refresh remote packages database
+	'-yy' refresh newt jeśli jest up to date 
+$ pacman -Su
+	..upgrade
+	'-u' upgrade
+	'-uu' pozwól na dowgrade
+$ pacman -Ql
+	.. barddzo dluga lista wszyskich zainstalowanych paczek
+$ pacman -Q 
+	..lista wszystkich paczek
+$ paczek -Qs
+	..lista zaisatalowanych paczek
+$ pacman -Qe 
+	.. lista tych które zainstalowałeś
+$ pacman -Qet 
+	.. paczki opcjonalne ale nie wymagane prze inne 
+$ pacman -Qdtq
+	.. paczki które sa zbednymi zależnościami
+$ sudo pacman -R $(pacman -Qdtq)
+	.. a tak można sobie pomóc to zautomtyzować
+$ pacman -Rs package_name
+	.. albo tak też usuniemy paczkę i jej zależności które innym są zbędne
+$ pacman -F 
+	.. szuka konkretnych plików w packach
+$ pacman -Qu 
+	..query, upgrade, czy sa jakieś paczki do ulepszenia
+
+YAOURT - program rozszerzający fukcjonalniości pacmana, przeszukuj również paszki AUR
+
+KOMPILACJA PACZEK
+	..po ściągnięciu np; z gita plików do budowy paczki 
+	..wchodzimy do foldderu gdzie jest plik 'PKGBUILD' i..
+$ makepkg -si 
+	'-s' sync
+	'-i' install
+

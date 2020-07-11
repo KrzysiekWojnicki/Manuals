@@ -1,0 +1,73 @@
+about:config
+
+Options:
+New Windows and Tabs should be blank to prevent a site from knowing the pages and tabs you open
+
+(Privacy and Security)
+Do not save passwords and autofill
+Do Not store history
+Do not allow 3rd party cookies (only use first party)
+Do not allow search suggestions in search bar
+Block Popups
+Warn when installing addons
+Do not share telemetry with firefox
+Do not use Firefox Account
+
+
+about:config
+WebRTC is DRM, allows netflix, and others, but can show real IP if you are on a VPN
+media.peerconnection.enabled
+
+Fingerprint resistence - why is this not enabled by defaults?!?!
+privacy.resistfingerprinting
+(set to true)
+
+Disable 3DES Cipher - many security vuln and is depriciated
+security.ssl3.rsa_des_ede3_sha
+
+
+Safe negotiating requires only the safest negotiation with servers
+security.ssl.require_safe_negotiation
+
+
+Disable TLS version 1.0 and 1.1
+security.tls.version.min
+(enter value 3)
+
+
+Disabling Automatic Form Filling (extra step to not remembing history)
+browser.formfill.enable
+(set to false)
+
+
+Disable Geolocation
+geo.enabled
+(set to false)
+
+
+Disable all telemetry - there are a lot of these, they are all under toolkit.telemetry
+browser.newtabpage.activity-stream.feeds.telemetry browser.newtabpage.activity-stream.telemetry
+browser.pingcentre.telemetry
+devtools.onboarding.telemetry-logged
+toolkit.telemetry.archive.enabled
+toolkit.telemetry.bhrping.enabled
+toolkit.telemetry.firstshutdownping.enabled
+toolkit.telemetry.hybridcontent.enabled
+toolkit.telemetry.newprofileping.enabled
+toolkit.telemetry.unified
+toolkit.telemetry.updateping.enabled
+toolkit.telemetry.shutdownpingsender.enabled
+
+
+Disable Prefetching - firefox will preload links you might click on, thus using more bandwidth and calling content you have not requested.
+network.dns.disableprefetch
+(set to true)
+
+network.prefetch-next
+(set to false)
+
+
+Disable all notifications
+dom.webnotifications.enabled
+(set to false)
+

@@ -1,0 +1,141 @@
+SPIS:
+------
+JAK ZACZĄĆ
+POLECENIA
+ADNOTACJA 
+NOWE REPO
+
+https://guides.github.com
+..tu jest jakiś manual
+
+
+JAK ZACZĄĆ (repozytorium na github.com)
+--------------------------------------
+1.wjedź na github.com i załóż konto
+
+2.Przywita cię okno opcji "załóż nowe repozytorium" , gdzieś obok jest też ładny manual który możesz przeczytać jak nic nie zrozumiesz z tego co ja napisałem.
+
+3.kilkasz na ładny przycisk na środku ekranu , albo w prawym górnym rogu na symbol plus ,i tam klikasz "create repository"
+
+4.Wypełniasz krótki formularz tj; nazwa repo. i opis . Zaznaczasz "create readme file" - to stworzy plik readme w twoim nowym repo ,oczywiście z twoim opisem repo.
+
+5.Na swoim komputrze tworzysz sobie katalog gdzie będzie twoje lokalne repozytorium , zwyczajnie mkdir.
+
+6.Są dwie drogi do utworzenia repo . Jedna to ta gdzie klonujesz repo z githuba - w konsoli piszesz # git clone i_link_ze_strony_repo - w katalogu pojawi się nowy katalog twojego zdalnego repo z gita , przechodzisz do niego i teraz piszesz # git init - ta komenda stworzy ukryty katalog .git - w którym będą twoje konfiguracje i historia zmian , tak naprawde to ta inicjacja tworzy lokalne repo i bez niej ani rusz ,dla tego lepiej zacząć od inita ,patrz drugi sposób.
+
+Drugi sposób jest taki że sam tworzysz katalog do którego przechodzisz i piszesz # git init - tworzy katlog .git , później piszesz # git remote add nazwa_po_jakiej_chcesz_się_odwoływać "link_twojego_zdalnego_repo" - ten sam co w poprzedniej metodzie , aby teraz ściągnąć pliki z zdalnego repo piszesz # git pull twoja_nazwa_odwołująca_się_do_repo i_nazwa_gałęzi(master lub testing)- oczywiście wybieramy tą na której pracujemy , Teraz już powinniśmy mieć nasze pliki z remote repo.
+
+7. Aby bezpiecznie łączyć się z remote repo możemy zamiast zwykłego linku http użyć ssh , w tym przypadku najpierw generujemy klucz ssh # ssh-keygen -tworzy nam się klucz w .ssh/id_rsa , teraz trzeba go podejrzeć na poleceniem cat i skopiować , następnie na stronie github wchodzimy w opcji -> klucze ssh i tam tworzymy nowy klucz i wklejamy nasz skopiowany , wracamy do terminala i synchronizujemy połączenie poleceniem # ssh -T git@github.com , i już.
+
+8. Jak wpiszesz  $ git status - zobaczysz jakie pliki są w strefie "pracy" a jakie w "staging area" (czyli na scenie)(jak jeszcze nic nie dodałeś albo nie zmieniłeś to wyświetli odpowiadający temu sanowi rzeczy komunikat
+
+9.Nowe pliki , albo zmienione są w strefie roboczej( czy tam pracy) , poleceniem git add - ijego warjacjami dodajesz świerze pliki do staging area ,teraz są tu pliki o aktualnych zmianach 
+
+10.git status pokarze które są a scenie ,a które nie , polecenie # git commit -m "komentarz_komita" - dołączy pliki ze sceny do twojej lokajnej gałęzi .
+
+11.poleceni # git push twoja_nazwa_zdalnego_repo nazwa_gałęzi - wypycha informacje z twojego lokalnego repo na serwer zdalnego repo.
+
+12.aby było wiadomo kto zrobił comita piszesz # git config --global user.name "Mona Lisa" -global stworzy specjalny plik w katalogu domowym .gitcofig , bez global nasza informacja zapisze się w ./git/config . można też dodać mejla 
+
+// zapisujemy pliki w wybtanym folderze ,
+// git add "nazwa_pliku" ,
+// git commit -m "nazwa_gałęzi_master"
+
+// na stronie git trzeba zrobić synk;
+// git push origin master - wypycha obiekty w OM do chmury
+// git pull origin master - ściąga z chmury
+
+[!] ssh-copy-id ~/.ssh/idrsa.pub <git_user>@git.server.com { połączenie z 
+	serwerem za pomocą ssh , z terminala rzecz jesna }
+[!] Zakommitowane mogą być tylko pliki znajdujące się w stageing area
+[!] URL /home/user/user_repo/.git/config
+[!] working area -> ADD -> stageing area -> COMMIT -> git repo
+
+POLECENIA
+----------
+git init {inicjalizuje projet git , tworzy .git -śledzi nasze projety }
+git help <wyrażenie> {wyświetla help file}
+git <wyrażenie> help {wyświetla help file}
+git add -u {dodaje wszustkie pliki w drzewie z wyjątkiem nowopowstałych}
+git add --no-all {dodaje wszystkie pliki w drzewie z wyjątkiem usuniętych}
+git add -A { dodaje wszystkie pliki do stageing area ,wszystkie w drzewie , jak okrślimy katalog 
+git add . {dodaje wszystko , można też urzywać dzikiej kary *.dupa - i dodać pliki .dupa 
+	Dodaje też log lile , czego możemy nie chcieć}
+git status {pokazuje ststus stageing area}
+git clean -df {usówa wszystkie nieśledzone pliki "-f" ,oraz katalogi "-d"
+git commit -m "komentarz" { flaga m dodaje komentarz przy commicie}
+git commit --amend -m "komentarz" {zmienia kometarz ostatniego commita , UWAGA! zmienia historie więc robić tak zanim się zrobi git push 
+	zmienia też ID commita}
+git commit --amend {robi commit ale nie tworzy nowego w log , dodaje zmiany do ostatniego commita ,UWAGA! zmienia 
+	historie więc robić tak zanim się zrobi git push . Odpala się edytor w którym można zmienić nazwe commita}
+git branch { wyświetla branch-y , flaga -a wszystkie , flaga -d kasuje}
+git branch -D {kasuje gałąź na której się jest}
+git branch -m <stara_nazwa> <nowa_nazwa> {komentrz zbendny}
+git branch -a { listuje wszystkie branch , nawet te remote}
+git branch --merged {listuje co zmerdżowaliśmy do gałęzi na której jesteśmy}
+	-v -ostetni zatwierdzony zestaw zmian (przed zmerdżowaniem)
+git checkout <plik> przywraca plik do stanu z przed modyfikacji , również przywraca skasowane}
+git checkout . -przywróci wszystkie skasowane 
+git checkout <nazwa> {przenosi na wybrany branch}
+git checkout -b <nazwa> {tworzy branch i przenosi na niego}
+git merge { lisuje }
+git merge <nazwa_branch> {merdżuje brancze , musisz być na gałęzi do której
+	merdżujesz}
+git mergetool - graficzne narzędzie do maprawiania konfliktów merge
+	najpierw możesz też spr. git ststus który wskarze które pliki ,i gdzie w pliku jest konflikt merge
+git revert <commit_ID> { nadpisuje komita którego ID podaliśmy , nie kasuje go ale dopisuje przed komentarzem że jest to revert ,
+	tak się robi w przypadku gdy ktoś już nasze commity podrał do swojego repo . Jest to poniekąd anulowanie naszego commita
+	którego już nie możemy reset bez narusznia historii innich osób}
+git remote add <nazwa_gałęzi> <url> {dodaje remote libery do .git , zamiast url można
+	podać katalog na dysku , lub inne dowole miejsce}
+git remote -v {wyświetla wszystkie zdalne repo}
+gir reset {usów wszystkie pliki z stageing area  pliki trafiają z powrotem do working area}
+git reset --soft <ID_commit> { ID commita do jakiego chcemy się cofnąć ,wszystko puźniej zostanie reset . Cofnięty commit
+	zwraca nam pliki z powrotem do stageing area}
+git reset --hard <ID_commit> { ID commita do jakiego chcemy się cofnąć ,wszystko później zostanie reset . Usunięte (cofnięte)
+	zostaną również wszystkie pliki śledone (takie które już wcześniej istniały) , w working area zostają tylko te nieśledzone (nowe)}
+gir reset <nazwa_pliku> {usówa plik z stageing area , UWAGA bez pliku
+	usówa wszystko
+git diff {pokazuje zmiany}
+git diff <ID_commita> <ID_2_commita> {pokazuje różnice w tych commitach}}
+git difftool {pokazuje rożnice w zmienionych plikach}
+git pull <źródło_orgin> <nazwa_gałęzi> {ściąga gałąź z remote}
+git push  <źródło_orgin> <nazwa_gałęzi> {wypycha gałąź na remote , można utworzyć nową (na remote) piszą jej nazwe}
+git push <źródło_orgin> --delete <nazwa_gałęzi> {usówa z remote repo wybraną gałąź}
+git reflog {pokazuje referencje wszystkich zmian na commitach .Checkout-ując ID któregoś przenosi nas w HEAD-detach mode -poza gałęzią , 
+	możemy w tedy komendą git banch <nazwa> utworzyć gałąć z stanu histroji do jakiego wszliśmy}
+git log --stat {pokazuje statystyki loga ,czyli jakie zmiany przy commicie miały miejsce}
+git log { listuje commity}
+.gitignore {plik na pomijane przy add pliki}
+git init {tworzy .git}
+git config --list {listuje ustawienia}
+git config --global user.name "name" { ustawia nazwe urzytkownika}
+git init --bare {tworzy same wnętrzności plkiu .git}
+git stash save "nazwa" {zapisuje projekt na stos o nadanej nazwie }
+git stash list {listuje stosy}
+git stash apply <ID_stosu> {podnosi projekt ze stosu ale nie zabiera go ze stosu}
+git stash drop <ID_stosu> {usówa ze stasu wybrany projekt}
+git stash pop <ID_stostu> {podnosi ze stosu wybrany projekt . Bez ID podnosi pierwszy na wierzchu . ZABIERA ze stosu}
+git stach clear {niszczy cały stos}
+git tag -a 'nazwa_taga' -m 'komentarz' HEAD {tworzy taga dla HEAD ,
+	ale można też podać ID_commita}}
+git show <ID_commit> {pokazuje szczegóły commita}
+ 
+
+
+ADNOTACJA
+---------
+
+git init - inicjalizuje repozytorimu , można też ściągnąć całe repo z GitHuba pisząc git clone: {adreshttp/lub ssh} 
+Jak chcesz mieć repo nie na githuie to załóż jakieś gdzie tam chcesz initem , teraz przejdź do folderu w którym będziesz miał swoje osobiste "local"-ne miejsce , i w nim pisze: git add {nazwa skrótowa, zamiast pisać ciągle adre} {adres http/ssh/ścierzka_do_katagu/.git/}
+z tego właśnie zdalenego repozytorimu będziesz pull-ował i push-ował . 
+Jak chcesz ssh , to skopiuj klusz , jak nie masz to :ssh keygen , i wklej go na githube/setings/ssh . trzeba będzie jeszcze 
+ustalić połączenie : ssh -vT git@github.com .
+
+NOWE REPO
+----------
+	..nowe repo możesz stworzyć na stronie githuba
+	.. a następnie klonować, musisz być w katalgu w którym git był zainicjowany
+	.. bedzie tam po prostu katalog ".git/)" z ustawieniami
+	git clone git@github.com:KrzysiekWojnicki/Nowe_repo.git
+	.. pojawi się katalog 'Nowe_repoo.git"

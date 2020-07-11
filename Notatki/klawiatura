@@ -1,0 +1,127 @@
+FONTY
+------
+	fonty insatlujesz w /usr/shared/fonts
+	$ sudo unzip Downloads/czcinak.tty -d /usr/shared/fonts
+	aby podejżeć jak powinna być nazwana nasza 
+	..czcinaka w pliku konfiguracyjnym poddajesz komende:
+	$ fc-list :lang=pl
+	..lang jest opcjonalne, patrz hlep
+	później dopisujesz w .Xdefauts
+	..jeżeli masz urxvt-unicode za termin:
+	URxvt.font:	xft:czcionka cośtam coś:style=Regular:pixelsize=12
+	..zapisaujemy i jescze musimy zrestartować config:
+	xrdb .Xdefaults
+
+FONTY SYSTEMOWE
+--------------
+	$ fc-match sans-serif
+	$ fc-match serif
+	$ fc-match monospace
+	..polecenia pokażą defaultowe ustawienia sysyemu
+
+KLAWIATURA
+----------
+	$ setxkbmap pl
+	..ustawi klwaiature w X na pl
+	.. to ważne aby wisać to polcenie pierwsze gdzyż w razie porzeby
+	.. ustawimi swoją klawiature na powót na pl
+	$ setxkbmap ru
+	.. a tu oczywiście zaonsatlujemy ruską
+
+POLSKIE ZNAKI DIAKRYTYCZNE
+-------------------------
+	aby je ustawić należy:
+	$ sudo loadkeys pl
+	$ sudo setfont Lat2-Terminus16.psfu.gz -m 8859-2
+	aby je ustawić permanentnie..
+	następnie należy edytować /etc/vconsole.conf
+	..jak teego pliku nie ma to stwórz go
+	..a w nim
+	KEYMAP=pl
+	FONT=Lat2-terminus16.psfu.gz
+	FONT_MAP=8859-2
+
+MAPOWNIE KLAWISZY
+-----------------
+	Jeżeli masz klawiature na USB to iddentyfikacja numerów klawiszy może się w poniżsych
+	..przykładdach nie powieść, spróbuj w tedy programu EVTEST
+	Pierwszym z opcjonalchy ale przydatnych programów bęzie SETXKBMAP który przywóci domyślne mapowanie klawiszy 
+	$ pacman -S xorg-setxkbmap
+	..trzba potem po prosu go odpalić poleceniem $  setxkbmaop
+
+	Inny opcjonalny program to XSET który jest uniwersalnym narzędziem do konfiguracji X
+	..można go urzyć na przykład do wył/włą opcji powtzrania klawisza, tj. tzrmając a otrzymamy aaaaaa
+	$ xset -r 63
+	..klawisz pod 63 nie będzie się powielał przy trzymaniu
+	$ xest r 63 
+	..na powrót klawisz pod 63 będzie się powielał
+
+	https://metebalci.com/blog/efficient-multi-language-typing-on-linux/
+	..pod linkiem jest ciekawy poranik
+
+	..inna ciakwostka to w /usr/include/X11/keysymdef.h są nazwy i oznaczenia znaków
+
+	przyatnym programem może być XEV ,który rejestruje X eventy, czyli np;
+	..press i release key
+	$ xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
+	... ograniczy nam output dla postawojej komeny do numeru klawisza i jego nazwy
+
+	Aby podejrzeć kody klawiszy na klawiaturze:
+	$ xmodmap -pke
+
+	Można też urzyć polecenia:
+	$ sudo showkey --keycodes 
+
+	Jeżeli chcemy zmienić klawiszt tylko w tej sesji to robimy to poleceniem
+	$ xmodmap -e keycode NUMBER=KEYSNAME
+	np:
+	$ xmodmap -e "keycode 36=Shift_R"
+	..zamieni to ENTER(nie koniecznie masz ten sam) na prawy szift
+
+	Ustawienia można zapisać do pliku np: .xmodmaprc 
+	$ vim ~/.xmodmaprc
+	..dodając kody np:
+	# keycode  54 = c C ccedilla Ccedilla
+	# keycode  56 = b B ssharp U1E9E
+	..a to znaczy:
+	# keycode <number> = ks shift_ks mode_switch_ks shift_mode_switch_ks
+	..gdzie, shift_ks to klawisz z sziftem, mode_shwich_ks 
+	..to klawisz z modem (może być np; prawy alt)
+	następnie ustawiamy wpisując polecenie :
+	$ xmodmap ~/.xmodmaprc
+
+	Aby uzyskać sekwencje zanków lub polecenia klawisze możemy przypisać 
+	..do keysym (reprezenatacja akcji klawiaury) np;
+	# keycode 112 = F70
+	..następieni możemy F70 przypisać do jakiegoś stringa np:
+	# string F70 = "Hello"
+	..klawisze (F1-F246) w przedziale po F30 są zazwyczaj wolne
+	Komeny muszą być zakończone znakiem nowej lini (tak przynajmniej napisali w manualu)
+	# string F70 = "sudo /usr/sbin/hibernate\n"
+	..stan hibernacji
+
+	Do klawiszy funkcyjnych (np; szift) można doać inne:
+	$ xmodmap -e 'add shift = a'
+	..a będzię dziłać jak szift
+	$ xmodmap -e 'remove shift = a'
+	..zabierzamy 'a' moc sziftowania
+
+	Aby ustaienia ładowały się przy starcie X sesji trzba:
+	..w pliku .xinitrc opisać linie:
+	# xmodmap .Xmodmap
+	..gdzie .Xmodmap to nasz plik z konfiguracjami klawiszy
+	..można też napisać taki krótki skrypt. który spr. najpierw czy ów istnieje:
+	# [[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
+	Można też, jeżlei sobie już przetetowaliśmi jakieś kombinacje kazać xmodmap
+	..zapisać je do pliku i oszczdzić sobie ddłubania od zera:
+	$ xmodmap -pke >~/.Xmodmap
+	...flagi mówią właśnie że chcesz z tego output w formie możliwiej do interpretacji przez xmodmap
+	$ xmodmap  -e keycode NUMBER=KEYSNAME
+	np:
+	$ xmodmap -e "keycode 36=Shift_R"
+	..zamieni to ENTER(nie koniecznie masz ten sam) na prawy szift
+
+	PRZYATNE LINKI
+	https://wiki.archlinux.org/index.php/Keyboard_input
+	https://wiki.archlinux.org/index.php/Console_keyboard_configuration#Creating_a_custom_keymap
+	https://jlk.fjfi.cvut.cz/arch/manpages/man/loadkeys.1

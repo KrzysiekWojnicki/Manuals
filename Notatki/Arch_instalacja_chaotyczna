@@ -1,0 +1,673 @@
+INSTALACJA KROK PO KROKU
+------------------------	
+1.wybieramy klawiature ls /usr....(patrz AIG)
+2.komenda lesyautkey pl (p.AIG)
+3.³¹czymy siê z netem i spr. pingiem czy dzia³a.
+	przez wifi urzywamy
+	wifi-menu
+3a. jak chcemy siê po³¹czyæ przez wifi
+	cp /etc/netctl/examples/wireless-wpa /etc/netctl/wireless-nazwa
+	ip a
+	patrzymy jak siê nazywa modó³ wiwi
+	vim /etc/netctl/wireless-nazwa 
+	i zmieniamy interface na to co znaleŸliœmy, i zmieniamy ESSID na nasz¹
+	nazew 'wireless-nazwa'
+	na koñcy w KEY wpisujemy nasze chs³o do sieci. zapisujemy i wychodzimy
+	netctl start wireless-nazwa
+4.aktualizujemy zeger (p.aig)
+	timedatectl set-ntp true
+	By sprawdziæ stan us³ugi, u¿yj:
+	timedatectl status
+4,5 aktualizacja
+	pacman -Syyy
+5.partycjonujemy dyski
+	Je¿eli chcemy LVM to patrz rozdzia³ LVM albo SZYFROWANY DYSK albo obie opcje patrz ni¿ej, je¿eli nie to kontynu³uj
+	lsblk -Sp	--wszystkie dsyki i pe³na informacja
+	fdick /dev/sda
+	'o' wyczyœci parycje i utworzy tablice partycji DOS 
+	'g' (stworzymy GPT, mo¿a te¿ dos ale oczywiœcie inn¹ literk¹)
+	je¿eli tworzymy szyfrowan¹ partycje to BOOT musi byæ na oddzielnej
+	partycja BOOT w zale¿noœci od tego ile bedziemy mieæ kerneli musi byæ adekwatnie du¿a
+	minimalnie 250mb.
+6.formatujemy partycje (system plików)
+	UWAGA!
+	je¿eli partycja ma byæ szyfrowana to mo¿na wybraæ
+	mkfs.btrfs -L boot /dev/sda1	--to dla patycji boot oczywiœcie
+	SZYFROWAN¥ PARTCJE patrz instrukcje ni¿ej
+	je¿eli nie szyfrujemy partycji to:
+	mkfs.ext4 /dev/sda1
+	dla uefi partycja bootuj¹ca to nfs..czy coœ patrz (AIG)
+	dla uefi te¿ mo¿e byæ mkfs.fat -F32 /dev/..
+
+SYFROWANIE LUKS - Linux Unified Key Setup
+-------------------------------------------
+	Przedewszystki 'cryptsetup' musi byæ zainstalowany
+	WARZNE!! partycja /boot z GRUB-em i kernelem powinna byæ osobno aby system móg³ siê za³adowaæ
+	Je¿eli chcemy mieæ klucz dostêpu na USB to musimy utworzyæ najpierw nag³ówek
+	# dd if=/dev/zero of=header.img bs=16M count=1
+	# cryptsetup luksFormat /dev/sdX --offset 32768 --header header.img
+	Dobrz zrobiæ sobie kopie nag³ówka, bez niego nie odczytamy dysku
+	# cryptsteup luksHeaderBackup /dev/sdXY --header-backup-file Header.bin
+	jak bêdziemy potrzebowali go przywróciæ to
+	# cryptsteup luksHeaderRestore /dev/sdXY --header-backup-file Header.bin
+	Jelieli nie chcemy nag³ówka na USB to tworzymy kontener
+	cryptsetup liksFromat /dev/sdXY  --na przyk³ad, pamiêtaj¹c ¿e sda1 to boot
+	zdaje siê ¿e domyœlnie jest jeden klucz dostêpu, mo¿na dodaæ wiêcej jeœli jest taka potrzeba	
+	po stworzeniu kontenera i/lub nag³ówka musimy go otworzyæ
+	UWAGA nie wiem które polecenie bedzie bardziej aktalane
+	.. bo jest jeszcze 'LuksOpen' zamiast po prostu 'open'
+	# cryptsetup open --header header.img /dev/sdX enc	--'enc' to nazwa naszego kontenera 
+	# cryptsetup open /dev/sdaX 	--type luks JAKAŒ_NAZWA
+	ustawienia luks mo¿emy podejrzeæ
+	cryptstup luksDump /dev/sdXY
+	W /dev/mapper powinno by³o byæ widaæ ¿e jest mapowanie na szyfrowany dysk
+	..tym samym wszelki dostêp np; przy montowaniu dysków wykonujemy poprzez mount /dev/mapper/enc /mnt
+	teraz mo¿emy utworzyæ file system na zaszyfrowanej
+	mkfs.f2fs -l NAZWA_PATRYCJI /dev/mapper/NAZWA_PARTYCJI
+	montujemy
+	mount /dev/mapper/NAZWA_P.. /mnt
+	mkdir /mnt/boot
+	mount /dev/sda1 /mnt/boot
+	NASTÊPNIE suatwiamy mirrory i instalujemy linuksa
+	POTEM generujemy fstab
+	genfstab -p -U /mnt > /mnt/etc/fstab
+	POTEM arch-chroot /mnt /bin/bash	--to drugie jest dowolne, wybieramy sobie pow³ok¹
+	POTEM wybieramy locale
+	i locale-gen
+	i echo LANG=pl_PL.UTF-8 > /etc/locale.conf
+	i export LANG=pl_PL.UTF-8
+	POTEM ustawiamy time zone ln -s..
+	POTEM hardware clock
+	POTEM ustawiamy hosta
+	POTEM enable dhcpcd@enp0s3.servive
+	ale to wy¿ej mo¿e inaczej trzeba zrobiæ, patrz ni¿ej
+	podgl¹dn¹ nazwe urz¹dzenia mo¿na 
+	ip link
+	POTEM ustawiamy has³o dla roota
+	POTEM intalujemy bootloadera
+	WARZNE w pliku /boot/grub/brub.cfg trzeba sparawdziæ czy
+	APPEND parzy we w³aœciw¹ patrycje, powinen patrzeæ na mapowan¹ partycje
+	APPEND root=/dev/mapper/NAZWA_PARTYCJI rw
+	dodatkowo powinna parzeæ na szyfrowan¹
+	APPEND cryptdevice=/dev/sda2:NAZWA_PARTYCJI root=/dev/mapper/NAZWA_PARTYCJI rw
+	albo inaczej wskazuj¹c UUID zamias œcierzki:
+	cryptdevice=UUID=<device-UUID>:cryptroot root=/dev/mapper/cryptroot
+	lsblk -f	--poczytamy jakie zrobiliœmy UUID
+	blkid	--poczytamy dok³adniej
+	vim /etc/mkinitcpio.conf
+	i w tym pliku edytujemy linie
+	HOOKS=(base udev.... block filesystem...
+	 'keyboard keymap' nie jest niezbêdne (gwarantuej odpowiedni¹ klawiature przy wpisywaniu has³a) wiêc mo¿na:
+	HOOKS=(... keyboard keymap block encrypt ... filesystems ...)
+	ALBO w zalo¿noœci jaki system plików zainstowaliœmy
+ 	DOSFS=(base udev.... block filesystem...
+	i miêdzy block i filesystem dopisujemy
+	encrypt NAZWA_DYSKU
+	WAZNE! poczytaj o tym wiêcej, mo¿e wystarczy dopisaæ "encrypt"
+	JE¯LEI zainsalowaliœmy te dziwne systemy plików to
+	pacman -S f2fs-tools btrfs-progs
+	DALEJ
+	mkinitcpio -p linux
+	I KOÑCZYMY
+	exit 
+	umount
+	reboot
+	??CIEKAWOSTAKA
+	w /etc/fstab mo¿emy dopisaæ
+	tmpfs /home/NAZWA_URZYTKOWNIKA/temp tmpfs mode=0777,notime 0 0
+	dzieki temu mo¿emy bez timestampa zapisyawæ rzeczy do tymczsasowego folderu
+	urzytkownika gdzie dane zapisywane s¹ na ram dziêki czemy nigdy nie zaisniej¹ na dysku
+	PO zalogownu siê na usera musimy jescze stworzyæ ten katalog
+	mkdir temp
+	mo¿na w nim zamocowaæ dane z chroma np. aby moje dane z konta google nie wisia³y na kompie
+7.montujemy siê - mount /dev/sda1 /mnt
+	montujemy wszystkie nowe partcje takie jak root i home, 
+	dla home tworzymy sobie wpierw plik
+	mkdir /mnt/home
+	mount /dev/sdaX /mnt/home
+	jak wpiszemy samo mount to podgl¹dniemy co jest zamontowane
+	DLA efi jeœli mamy oddzieln¹ partycje boot mo¿emy:	
+	mkdir /boot/EFI
+	mount /dev/sda1 /boot/EFI
+8. instalujemy archa
+	a.normanie wybieraniy mirror, z mirror listy
+	ale mo¿na zaistalowaæ skrypt "reflector" który
+	pobriera najnowsz¹ listê mirrorów ze strony 
+	MirrorStatus, filtruje najbardziej aktualne 
+	mirrory, sortuje je wed³ug szybkoœci i zast¹pia plik.
+	ALBO
+	przenosimy siê do 
+	cd /etc/pacman.d
+	i nadpisujemy plik mirror list nowszym, i output-owaæ jako mirrorlist
+	wget archlinux.org/mirrorlist/?counry=Poland -O mirrorlist
+	???CIEKAWOSTAKA??
+	cp mirrorlist mirrorlist.b
+	sed -i 's/^#//'		--substract pierwszy zank '#' i zast¹p niczym
+	rankmirrors -n 3 mirrorlist.b > mirrorlist
+	REFLECTOREM:
+pacman -Sy reflector
+	Uruchamiamy skrypt
+reflector --verbose --latest 15 --country Poland --sort rate --save /etc/pacman.d/mirrorlist
+	b. instalujemy archa
+	instalujemy go w /mnt bo tam zaontowaliœmy nasz¹ partycje dla root
+	pacstrap -i /mnt base
+	(-i interactiv, pyta o potwierdzenie)
+	pakiet base jest okrojony, nie zawiera np. MAN albo kernela (linux), i trzeba to 
+	z palca poinstalowaæ. w base-devel jest wiecej ciekawostek np.sudo ale spr. co jest 
+	w obu ¿eby unik¹æ zdziwenia ¿e czegoœ nie ma w nowej instalacji
+	mo¿na jeszcze:
+	vim
+	linux -kernel (linux-5.4.10.arch1-1-x86_64.pkg.tar.zst)
+	netctl -?
+ 	efibootmgr  -jak urzywamy efi
+	dosfstools  -te¿ dla efi
+	mtools  -Mtools is a collection of utilities to access MS-DOS disks from GNU and Unix without mounting them
+	linux-headers
+	network-manager-applet  -Applet for managing network connections
+	networkmanager  -trzeba enable, dla wifi bardziej
+	wireless-tools
+	wpa-supplicant
+	dhcpcd  -calkiem wa¿ne
+	dialog  -A tool to display dialog boxes from shell scripts
+	base-devel xorg-server xorg-xinit i3 xterm(ju¿ teraz mo¿na zainstalowæ ró¿ne rzeczy)
+	(base-devel -zawiera sudo, jak instalujemy samo base
+	to musimy doinstalowaæ sudo)
+	przynajmniej teraz trzeba base
+	póŸniej (po chroocie) mo¿emy reszte np. grub linux-headers linux-lts linux-lts-headers
+	linux-lts (drugi kernel przy bootowoaniu)
+	linux-lst-hesders (pliki headers dls lts)
+	je¿eli zainstalowaliœmy openssh to teraz musiny go enabled alby siê uruchamia³ przy bootowaniu
+	systemctl enabledsshd
+	DLA uefi te¿ bed¹ potrzebne
+	efibootmgr
+	dosfstools
+	JAK chcemy podej¿eæ ile paczek mamy zainstalowane	
+	pacman -g |wc -l
+9.generujemy fstab
+	genfstab -U /mnt >> /mnt/etc/fstab
+10.chroot
+	arch-chroot /mnt
+11.time zone
+	ln -sf /ust/share.zoneinfo.....(p.AIG)
+	ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+12.synchronizujemy zegar hardwerowy
+	hwclock --systohc --utc
+13.lokalizacje, locale conf, aby klawiature ustawiæ p.AIG
+	vim /etc/locale.gen 
+	wybieramy poskie utf-8 i mo¿e usa, zapisujemy i wychodzimy
+	locale-gen
+14.ustawiamy sobie jêzyk
+	echo LANG=pl_PL.UTF-8 > /etc/locale.conf
+	export LANG=pl_PL.UTF-8
+ Czcionka konsoli i mapa klawiatury – skonfiguruj poleceniem:
+	loadkeys pl
+	setfont Lat2-Terminus16
+ Wyedytuj równie¿ plik „vconsole.conf”: 
+	vim /etc/vconsole.conf
+	dodaj do niego dwie linie:
+	KEYMAP=pl
+	FONT=Lat2-Terminus16
+15.tworzymy hostname p.AIG
+	echo Nazwahosta > /etc/hostname
+16.edytujemy hosta w /etc/hosts
+	127.0.0.1        localhost
+	::1              localhost
+	127.0.1.1        myhostname.localdomain        myhostname
+
+16a. NETWORKING
+----------------
+	¿eby mieæ internet po bootowaniu musimy uruchomiæ su³ugê DHCP
+	systemctl enable dhcpcd
+	je¿eli nie mamy internetu to
+	systemctl enable NetworkMenager
+
+17.Ja¿eli inatuleny z enkrypcj¹, albo na VM to tworzymy initramfs p.AIG
+	ale przy zwyk³ej instalacji pacstrapem nie jest to konieczne.
+18. ustawiamy passwd dla roota 
+	passwd ****
+19.istalujmy bootloader, je¿eli wczeœniej go nie œci¹gneliœmy to teraz to robimy
+	pacman -S grub
+19b.instalacja
+	grub-install --target=i386-pc /dev/sda
+	samo grub-install domyœlnie wybierze architektóre i386
+	je¿lei instalujmy na uefi to insatcja jest inna:
+	grub-install --target=x86_64-efi --bootloader-id=grub-uefi --recheck
+	cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+	WA¯NE !!! ta komenda wy¿ej jest dla en , ale nie widzie pl
+	a co to robi?:To prevent a (harmless) error message at boot time.
+	grub-mkconfig -o  /boot/grub/grub.cfg
+	Dla uefi zonacz jak zainstalowaæ na archwiki
+21.dodajemy u¿ytkownika
+	useradd -m -g users -G wheel.storage.power -s /bin/bash Jaœ
+	wilkie G to dodatkowe grupy, ma¿na pomin¹æ
+22.passwd usera
+	passwd Jaœ 
+	*****
+
+23. je¿eli instalowaliœmy jakiœ menager gogowania np.sddm to musimy go teraz enabled
+	systemctl enable sddm
+24.wychodzimy z chroota
+	exit
+25.odmontowujemy
+	umount /mnt
+	umount /mnt/ home
+	..i wsztskie inne wczeœniej zamontowane
+	umount -a 
+	odmotowuje wszystko
+26.reboot
+
+27?. Swap.	
+	plik swap:
+	a. tworzymy plik
+	touch swapfile-name
+	b. formatujemy plik za pomoc¹ dd
+	dd if=/dev/zero of=swapfile-name bs=1024k count=MB-num
+	c. formatujem plik na swap
+	mkswap swapfile-name
+	d. aktywujemy swap
+	swapon swapfile-name
+	e. dopisujemy do pliku /etc/fstab:
+	/swapfile-name none swap sw 0 0 
+	dziêki tej ostatniej czynnoœci swap bêdziê nam dzi³a³ przy boot-cie
+28. Innaczej uruchomiony swap file
+	fallocate -l 2G /swapfile
+	chmod 600 /swapfile
+	mkswap /swapfile
+	echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+	to ostatnie to dopisanie do fstab
+POST INSTALACJA
+
+27.
+28. je¿eli nie mamy przywilejów sudo to edytujemy sudoers dopisuj¹c ALL
+
+
+ŒRODOWISKO GRAFICZNE
+1.Instalacja xorga
+	pacman -Syyy  -rekurentna synchronzacja repozutoriów
+	pacman -S xorg-server xorg-xinit
+	¿eby wystartowaæ Xserver wpisujemy 'xinit' albo 'startx'
+	to oplecenie czyta plik ~/.xinitrc
+	lspci  -szukamy jak¹ mamy karte graficzn¹
+	Zak³adamy ¿e mamy intela
+	pacman -S xf86-video-intel libgl mesa
+	Dla nvidi
+	pacman -S nvidia nvidia-lts nvidia-libgl mesa
+	Dla ati	
+	pacman -S mesa xf86-video-amdgpu
+	Najlepiej sparwdziæ na arch wiki co za sterowniki
+
+INSTALACJA I3
+-------------
+1. instalacja
+	pacman -S i3
+	albo
+	pacman -S i3-gaps
+	a tak¿e
+	i3-status  --status bar
+	dmenu	--run prompt, rozwijane menu
+	rxvt-unicode	--terminal
+	nm-applet	--network menager
+	noto-fonts --paczki fontów 
+	(mo¿na zobaczyæ fonty na arch wiki i zobaczyæ inne fonty i wybraæ konkretn¹)
+	w razie problemów z fontami mo¿na edytowæ plik
+	`/.config/fontconfig/fonts.conf
+2.edycja .xinitrc
+	dopisujemy:
+	exec i3
+	(jesli s¹ tam jakieœ inne to odkometówujemy)
+	dla innych widow menagerów trzeba czasem dopisaæ inne polecenie, patrz w wiki
+	np.: exec xfce4-session
+3.I3 mo¿e byæ niekompadtbilne z menagerem logowania
+	wiêc lepiej go wy³¹czyæ jeœli jest w³¹czony
+	sudo systemctl stop gdm
+4.reboot
+5.startx
+
+6. Je¿eli chcemy mo¿emy zainstalowaæ menad¿era (agenta)logowania
+	sudo pacman -S lightdm lightdm-gtk-greeter
+	sudo systemctl enable ligtdm.service
+	
+?? - enable(przy starcie)
+?? - start(teraz)
+
+INSTALACJA GNOME
+------------------
+	pacman -S gdm  -menadzer pulpitów, gdm pozwla na wybieranie róznych srodowisk graf.
+	systemctl enable gdm
+	mo¿emy spr. czy dzi³a
+	systemctl status gdm
+	pacman -S gnome
+	dodoatkowo mo¿emy zainstalowaæ
+		gnome-terminal
+		nautilius  -przegladarka plikow
+		gnome-tweaks  -upiêkszane
+		gnome-control-center  -bardziej zaawansowne upiêkszanie
+	dobrze te¿ ogran¹æ takie rzeczy jak przgl¹darka
+	
+INSTALACJA XFCE
+	pacman -S xfce4 xfce-goodies xfce-terminal
+	Inne kroki tak jak wyrzej
+	Jak zainstowliœmy NetworkMenager to
+	systemctl enabled NetworkMenager
+
+
+PO INSTALACJI
+--------------
+1.Super User DO
+	Sudo jako paczkê trzeba zainstalowaæ (w base-devel ju¿ jest)
+	logujemy siê na roota
+	visudo
+	normalnie uruchomi siê w vi, jak nie chcemy to
+	EDITOR=nano visudo 
+	mozemy po prosu dopisaæ
+	Jaœ ALL=(ALL) ALL
+	ale powinno siê urzywaæ grup, wiêc je¿li Jaœ nale¿y do weel to odkomentowujemy t¹ grupê
+
+GRUB 2
+------	
+1.wybieranie iso z konsoli gruba
+	ustawiamy dysk na którym jest obraz, Y to partycja
+	WARZNE- pierwszy dysk to '0'
+	set root=(hdX,Y)
+	okreœlany gdzie jest kernel. tym razem œcierzkê okreœlam sda1
+	linux /boot/vmlinuz-linux root=/dev/sdXY ro
+	inicjujemy obraz
+	initrd /boot/initramfs-linux.img
+	i bootujemy
+	boot
+
+	grub-upadate ??
+
+
+
+`/.PROFILE albo ./BASH_PROFILE
+------------------------------	
+	w tym pliku znajduj¹ siê polecenia uruchamiane przy logowaniu
+	np:
+	export PATH=$PATH:$HOME/.skrypty	--dodaje do lokalen jmaiennej PATH filedr skrypty
+	dziêki temu mo¿emy gdziekolwiek urzywaæ poleceñ równie¿ z pliku 'skrypry'
+	expory BROWSER='firefox'	--self explanetory
+	if [[ "$(tty)" = "/dev/tty1" ]]; then
+		pgrep i3 || starx
+	fi
+	powy¿sze sprawdza czy przy zalogowaniu jesteœmy na tty1, jêœli nie to automatycznie odppala xsrever
+
+RAID
+-----
+	dla raid 0, o dwóch dyskach tej samej wielkoœci
+	mdadm --create --verbose --level=0 --metadata=1.2 --raid-devices=2 /dev/md0 /dev/sda1 /dev/sdb1
+	albo dla raid 1
+	mdadm --create --level 1 --raid-devices 2 /dev/mda2 /dev/sda1 /dev/sdb1
+	mo¿emy sobie w tym przypadku pogl¹dn¹æ na ¿ywo jak siê synchronizuj¹ dyski	
+	watch cat /proc/mdstat 
+	tworzymy partycje na nowym dysku
+	mkfs.ext4 /dev/md2
+	m¹tujemy
+	mount /dev/md2 /mnt	--albo gdzie tam chcemy
+	dla podgl¹dniêcia w³aœciwoœci nowego dysku
+	mdadm --detail /dev/md2
+	CIEKAWOSTAK do koñca tego nie rozumiem
+	wyœwietlienie konfiguracji za pomoc¹ cat /proc/mdstat widaæ (na filmie) dziwnie zapisane nazwy tablic	
+	alby je edytowaæ (coæ nie wiem czemu po prosu nie mo¿na tego na pliku kofiguracyjnym zrobiæ)
+	trzeba utworzyæ nowy
+	/usr/share/mdadm/mkconf > /etc/mdadm/mdadm.conf
+	zmieniamy md/0 na np: md0
+	potem trzeba, aby nowa conf. za³adowa³a siê do ramdick rekonfigurowaæ dzialaj¹cy kernel
+	dpkg-reconfigure linux-image-'uname -r' 
+
+SZYFROWANY RAID
+	---------------
+	dyski s¹ wymazywane losowymi danymi z wykorzystaniem /dev/zero oraz kryptograficznym z losowym kluczem. 
+	Alternatywnie mo¿esz u¿yæ dd z /dev/random lub /dev/urandom, ale bêdzie to znacznie wolniejsze
+	# cryptsetup open --type plain /dev/md0 container --key-file /dev/random
+	# dd if=/dev/zero of=/dev/mapper/container bs=1M status=progress
+	# cryptsetup close container
+	Skonfiguruj szyfrowanie dla /dev/md0:
+	# cryptsetup -y -v luksFormat -c aes-xts-plain64 -s 512 /dev/md0
+	# cryptsetup open /dev/md0 cryptroot
+	# mkfs.ext4 /dev/mapper/cryptroot
+	# mount /dev/mapper/cryptroot /mnt
+	Skonfiguruj GRUB dla zaszyfrowanego systemu, edytuj¹c plik /etc/defaults/grub, wykonuj¹c nastêpuj¹ce czynnoœci. Zauwa¿, ¿e opcja: :allow-discards umo¿liwia obs³ugê TRIM na SSD, jeœli nie chcesz jej u¿ywaæ, powinieneœ to pomin¹æ.
+
+	GRUB_CMDLINE_LINUX="cryptdevice=/dev/md0:cryptroot:allow-discards root=/dev/mapper/cryptroot"
+	GRUB_ENABLE_CRYPTODISK=y
+	Dokoñcz instalacjê GRUB na obu dyskach SSD (w rzeczywistoœci instalacja bêdzie dzia³aæ tylko na /dev/sda).
+	# grub-install --target=i386-pc /dev/sda
+	# grub-install --target=i386-pc /dev/sdb
+	# grub-mkconfig -o /boot/grub/grub.cfg
+	Utwórz plik klucza i dodaj klucz do /dev/md0
+	w tym przypadku trzeba taki klucz dodaæ do initramfs, ale on sam nie bend¹c zaszyfrowany
+	(niezaszyfrowana partycja boot) mo¿e zostaæ "ukradziony np; przez liveCD
+	Konfigurowanie systemu
+	Edytuj /etc/fstab, aby zamontowaæ urz¹dzenia blokuj¹ce cryptroot i cryptdata; jeœli nie w³¹czasz obs³ugi TRIM, usuñ opcjê montowania:
+
+	/dev/mapper/cryptroot  /           ext4    rw,noatime,discard  0   1 
+	/dev/mapper/cryptdata  /mnt/data   ext4    defaults            0   2  
+	
+	Zapisz konfiguracjê RAID:
+
+	# mdadm --detail --scan > /etc/mdadm.conf 
+	Edytuj plik mkinitcpio.conf, aby do³¹czyæ swój plik kluczy i dodaj odpowiednie haki:
+
+	FILES=(/crypto_keyfile.bin)
+	HOOKS=( ... keyboard keymap block mdadm_udev encrypt filesystems ... )
+
+	Alternatywnie mo¿na klycz zapisaæ na inne sposoby np; na usb.
+	cryptdevice=/dev/<partition1>:root cryptkey=/dev/<partition2>:<fstype>:<path>
+	for example:
+	cryptdevice=/dev/sda3:root cryptkey=/dev/sdb1:vfat:/keys/secretkey
+
+	Korzystanie z urz¹dzenia /dev/sdX, z szyfrem twofish-xts z 512-bitowym rozmiarem klucza i przy u¿yciu pliku klucza mamy nastêpuj¹ce opcje dla tego scenariusza:
+	# cryptsetup --hash=sha512 --cipher=twofish-xts-plain64 --offset=0 --key-file=/dev/sdZ --key-size=512 open --type=plain /dev/sdX enc
+
+	Mo¿emy teraz sprawdziæ, czy wpis mapowania zosta³ wprowadzony /dev/mapper/enc:
+	# fdisk -l
+
+	Konfigurowanie mkinitcpio
+	Dodaj keyboard, encrypt i lvm2 haki do mkinitcpio.conf:
+
+	etc/mkinitcpio.conf
+	HOOKS=(... keyboard keymap block encrypt lvm2 ... filesystems ...)
+
+	Aby uruchomiæ zaszyfrowan¹ partycjê root, botlader musi ustawiæ nastêpuj¹ce parametry j¹dra:
+	cryptdevice=/dev/sdX:enc cryptkey=/dev/sdZ:0:512 crypto=sha512:twofish-xts-plain64:512:0:
+
+	!! If you want to do this on a software RAID partition, there is one more thing you need to do.
+	 Just setting the /dev/mdX device in /lib/initcpio/hooks/encrypt is not enough; the encrypt hook will fail to find the key for some reason, and not prompt for a passphrase either. 
+	It looks like the RAID devices are not brought up until after the encrypt hook is run.
+	 You can solve this by putting the RAID array in /boot/grub/menu.lst, like
+	 
+	kernel /boot/vmlinuz-linux root=/dev/md0 ro md=0,/dev/sda1,/dev/sdb1
+	
+LVM - Logical Volume Manager
+	..z enkrypcj¹ (mo¿na e kroki pomin¹æ)
+----------------------------
+	https://wiki.archlinux.org/index.php/LVM_(Polski)
+	Partycja z grub i kernelem powienna byæ odzielinie on reszty LVM
+	aczkolwiek mo¿na podobo w konfiguracji gruba dopisaæ
+	GRUB_PRELOAD_MODULES=lvm
+	..co ma spowodowaæ ¿e grub przeczyta modó³ lvm. rozumiem ¿e sam grub bêdzie i tak zainstalowany poza lvm
+	..a jedynie grub.cfg i kernel bêd¹ na lvm
+	lvm tworzymy przed formatowaniem sysytemów plików
+	musi byæ zainstalowany pakiet "lvm2"
+	jak partycjonujemy dysk to typ musi byæ "linux lvm"
+	Formatujemy partycje, odzielnie grub i oddzielnie lvm (typ linux lvm)
+	.. i ¿e dla /boot niby sektor wyzerowaæ..
+	# dd if=/dev/zero of=/dev/sda1 bs=1M status=progress
+	.. ale nie wiem po co??
+	# mkfs.ext4 /dev/sdXY
+	UWAGA je¿eli to ma byæ szyfrowany lvm to teraza mo¿na zaszyfrowaæ nasz¹ partycje.
+	..ale w przypadku gdy mamy wiêcej dysków lepiej zaszyfrowaæ lvm 
+	Tworzymy phisical volume, mo¿emy wyœwietliæ listê wszystkich urz¹dzeñ, które mo¿na wykorzystaæ jako wolumin fizyczny:
+	# lvmdiskscan
+	# pvcreate --dataalignment 1m /dev/sdXY
+	lub je¿eli zaszyfrowaliœmy przedtem partycje
+	# pvcreate --dataalignment 1m /dev/mapper/sdXY
+	??? '--dataalignment 1m' to opcja specyficzna dla ssd, ale nic siê nie stanie na hd
+	Tworzymy volume group
+	vgcerate NazwaGrupy /dev/sdXY	--lub /mapper/ ;)
+	..oczywœcie mo¿na dodaæ wiele woluminow na raz
+	# vgcreate VolGroup00 /dev/sda2 /dev/sdb1 /dev/sdc
+	Je¿eli chcemy dodaæ dysk do grupy to:
+	# vgextend <volume_group> <physical_volume>
+	Tworzymy logical volume dla roota
+	# lvcreate -L 30GB NazwaGrupy -n lv_root		--objêtoœæ i nazwa
+	..i dla /home
+	lvcreate -L 100GB NazwaGrupy -n lv_home
+	.. te polecenia wykorzystaj¹ X-GB z ca³oœci 
+	.. a je¿eli chcemy wykorzystaæ wolniejszy dysk na coœtam, a szybszy na coœtam innego to:
+	# lvcreate -L 30GB NazwaGrupy -n lv_root /dev/sdX	--jakiœ wolny/szybki
+	..dla wykorzystania ca³oœci (albo pozosyt³ej przestrzeni) dopisujemy opcje '-l 100%FREE'
+	Aktywujemy lvm
+	# modprobe dm_mod
+	Mo¿e byæ konieczne za³adowanie modu³u j¹dra "device-mapper"
+	# vgscan
+	# vgchange -ay
+	..to wy¿ej to: makes a volume group known/unknown to the kernel.
+	Formatujemy partycje lvm
+	# mkfs.ext4 /dev/NazwaGrupy/lv_root
+	..I dla /home
+	# mkfs.ext4 /dev/NazwaGrupy/lv_home
+	Tworzymy punkty mocowania dla boot i home
+	# mkdir /mnt/boot
+	# mkdir /mnt/home
+	..i m¹tujemy
+	# mount /dev/sdXY /mnt/boot
+	# mount /dev/NazwaGrupy/lv_home /mnt/home
+	Teraz instalacja linuxa
+	# pacstarp -i /mnt base
+	# genfstab -U -p /mnt >> /mnt/etc/fstab
+	# arch-chroot /mnt
+	# pacman -S grub
+	# grub-install --target=i386-pc /dev/sda
+	.. samo grub-install domyœlnie wybierze architektóre i386
+	.. je¿lei instalujmy na uefi to insatcja jest inna:
+	# grub-install --target=x86_64-efi --bootloader-id=grub-uefi --recheck
+	# cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+	WA¯NE !!! ta komenda wy¿ej jest dla en , ale nie widzie pl
+	.. a co to robi?:To prevent a (harmless) error message at boot time.
+	Edytujemy /etc/default/grub
+	..i w sekcji GRUB_CMDLINE_LINUX_DEFAULT dpisujemy (z uwglêdniem nazych dysków)
+	GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/sdXY:NazwaGrupy quiet"
+	Nastêpnie
+ 	Tworzymy plik conf dla grub
+	# grub-mkconfig -o /boot/grub/grub.cfg
+	W manualu https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS
+	.. jest coœ o kofiguracji gruba:
+	.. "In order to unlock the encrypted root partition at boot,
+	.. the following kernel parameters need to be set by the boot loader:
+		cryptdevice=UUID=device-UUID:root root=/dev/mapper/root
+	.. nie jestem pewien czy to naprawde konieczne, ale sie przekonam.
+	.. jest te¿ coœ "Configuring fstab and crypttab" takiego.	
+	# grub-mkconfig -o  /boot/grub/grub.cfg
+	.. Dla uefi zonacz jak zainstalowaæ na archwiki
+	.. W nastêpnym kroku je¿eli nie szyfrujemy dysku dopisujemy tylko 'lvm2'
+	# pacman -S lvm2
+	Nastêpnie dopisujem do sekcji HOOK w pliku /etc/mkinitcpio.conf
+	'encrypt lvm2' po 'block' i przed 'filesystem' , jak nie szyfrujemy to crypt mo¿na opuœciæ
+	!!! Dla initramfs opartych na systemd:
+	HOOKS=(base systemd ... block sd-lvm2 filesystems)
+	..i aktulalizujemy mkinitcpio 
+	# mkinitcpio -p linux
+	Je¿eli instalowaliœmy linux-lts to musimy powturzyæ powy¿szy krok dla niego
+	# mkinitcpio -p linux-lts
+	Mo¿liwe ¿e bêdzie brakowaæ jakiœ modu³ów ale o ile ich nie potrzebujemy to nic,
+	.. w razie co pacman -S linux-firmware
+	.. albo odzielnie ka¿dy modu³ https://wiki.archlinux.org/index.php/Mkinitcpio
+	.. tu jest przyk³ad:https://arcolinuxforum.com/viewtopic.php?t=1174
+	Ustawiamy locale w /etc/locale.gen
+	..i generujemy
+	# locale-gen
+	Pamiêtaj aby na blaszaku enable dhcp
+	# systemctl enable dhcpcd.service
+	Ustawiamy passwd dla roota
+	Jak nie robiliœmy partycji SWAP bo chcemy swapfile to:
+	# fallocate -l 2G /swapfile
+	# chmod 600 /swapfile
+	# mkswap /swapfile
+	# echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+	Wychodzimy z chroota
+	# exit
+	# umount -a
+	# reboot
+!!! Opcje j¹dra
+	Jeœli g³ówny system plików znajduje siê w woluminie logicznym, to root= parametr j¹dra musi byæ wskazany na zmapowane urz¹dzenie, np /dev/mapper/vg-name-lv-name.
+	w³aœciwoœci lvm mo¿emy podgl¹dn¹æ
+	# pvdisplay -v -m 
+	lub
+	# pvs
+	Po instrukcje jak poszerzaæ, zmniejszaæ, usówaæ, dodawaæ, chache, raid, migawki i inne bajery patrz:
+	https://wiki.archlinux.org/index.php/LVM_(Polski)#Utwórz_partycje
+	https://www.youtube.com/user/fiforms/search?query=lvm
+
+RÓ¯NOŒCI
+--------
+	smartmontools  --Na pakiet smartmontools sk³adaj¹ siê dwa programy smartctl i smartd. 
+	..Pierwszy z nich to uniwersalne narzêdzie od konfiguracji, uruchamiania testów i odczytywania z dysku informacji o jego stanie. 
+	..Smartd odpowiada natomiast za monitorowanie dysku.
+	smartctl -i /dec/sda	-info o dysku sda
+	opcja '-H' pokazjue heath
+	opcja '-a' pokazuje ca³oœæ
+	dmesg	--eventy stsyemd
+	je¿eli w raid 1 od³¹czy na siê dysk to po ponownym go wpiêciu aby zsynchronizowaæ dyski
+	mdadm /dev/mdX --add /dev/sdX		--X oczywiœcie jest to dowlna litera
+	w podstawoje instalacji linuxa powinna byæ funkcja smartctl, jak jej nie mam mo¿na j¹ zainstalowaæ
+	dziêki niej mo¿na podgl¹dn¹æ dane tech dysku
+	CleanMethod = KeepInstalled &| KeepCurrent  --ustawienia pacman.conf
+	If set to KeepInstalled (the default), the -Sc operation will clean packages that are no longer installed (not present in the local database). If set to KeepCurrent, -Sc will clean outdated packages (not present in any sync database). The second behavior is useful when the package cache is shared among multiple machines, where the local databases are usually different, but the sync databases in use could be the same. If both values are specified, packages are only cleaned if not installed locally and not present in any known sync database.
+	Load kernel and boot your system with GRUB2
+	# set root=(hdX,Y)
+	# linux /vmlinuz root=/dev/sdXY ro
+	# initrd /initrd.img
+	# boot	
+
+
+PROBLEM Z KLUCZAMI PACMANA
+---------------------------
+	 pacman-key --list-sigs Master
+	 wybieramy nas interesuj¹cy
+	 pacman-key --delete 91FFE0700E80619CEB73235CA88E23E377514E00
+	 pacman-key --populate archlinux
+	ewentualnie
+	pacman -Sy
+	pacman -S archlinux-keyring
+	pacman -Su
+
+SZYFROWAANIE I LVM podejscie 2
+------------------------------
+	-robimy partycje, bootowa musi byæ oddzielnie i mieæ flage boot
+	cryptsetup luksFormat /dev/sda2  --tak tylko zwy³¹ patrycje, lvm nie zabangla
+	-DLA LVM-a TRZBA CHYBA ROBIÆ KLUCZ
+	 mkdir -m 700 /etc/luks-keys
+	 dd if=/dev/random of=/etc/luks-keys/home bs=1 count=256 status=progress
+	 cryptsetup luksFormat -v /dev/MyVolGroup/crypthome /etc/luks-keys/home
+	 cryptsetup -d /etc/luks-keys/home open /dev/MyVolGroup/crypthome home
+	 cryptsetup open --type luks /dev/sda2 nazwa_jakaœ
+	-( pacamn -Sy ecryptfs-utils cryptsetup ) samo cryptsetup wystarczy
+	-robimy lvm-y
+	modprobe dm_mod
+	vgscan
+	-mkfs-ujemy patrycje
+	mkdir /mnt/boot  --i tam m¹tujemy niezaszyfrowan¹
+	=pakstapon
+	-generujemy fstab
+	-arh-hrot
+	-instalujemy kerele i gruby oraz lvm2
+	-robimy hooki dla lvm2 oraz encrypt
+	mkinitncpio -p linux  --to samo dla lts jeœli mamy
+	-lokale /etc/locale.gen
+	locle-gen
+	ln -s /usr/share/zoneinfo/ZSSR/moskawa /etc/localtime
+	hwclock --systohc --utc
+	passwd
+	systemctl enable dhcpcd
+	-edytujemy /etc/default/grub
+	GRUN_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/sda2:lvgroup quiet"
+	grub-install /dev/sda
+	-kopjujemy MESSAGES do grub.mo  --patrz wy¿ej gdzieœ
+	grub-mkconfing -o /boot/grub/grub.cfg
+	exit
+	umount -a
+	reboot
+
+		

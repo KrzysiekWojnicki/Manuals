@@ -1,0 +1,14 @@
+ROZSZERZENNIA
+-------------
+	aby rozszerzenia dziłały trzeba zainstalować:
+	$ pacman -S urxvt-perls
+	
+	Aby copy i paste w urxvt:
+	paste przy pomocy shifi+insert
+	
+
+	albo https://github.com/muennich/urxvt-perls/ 
+
+KONFIGURACJE
+------------
+	https://manpages.debian.org/stretch/rxvt-unicode-256color/urxvt.1.en.html

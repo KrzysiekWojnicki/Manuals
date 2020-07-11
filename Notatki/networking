@@ -1,0 +1,44 @@
+Ustawianie statycznej nazwy hosta
+..nie statycznie bęzie po prostu $ hostname nowa.nazwa
+..można edytować plik
+/etc/hostname
+..ablo komendą
+$ hostnamectl set-hostname Arch88.example.com
+..jak chcemy mieć PRETTY NAME
+$ hostnamectl set-hostname "Arch'88.example.com"
+..pojawi się wtedy nowe pole PRETTY NAME
+$ hostnamectl
+..a tu je zobaczymy
+..stworzymy terz nowy plik w
+/etc/machine-info
+..zawiierający PRETTY NAME
+
+Ustawianie aliasów aresów
+..eytujemy plik
+/etc/hosts
+..dodając po prawilnej nazwie alias
+.. ta nazwa która jest druga i dalej będzie zawsze traktowana jako alias
+196.182.1.1 Arch88.example.com ARCH archuś arH
+..trzy ost będą aliasami
+
+Time hardware i system time
+..czas można sysnhronizować w obie strony
+$ hwclock --systohc
+..system to hc
+$ hwclock --hctosys
+..hc to system
+..czas systemowy możemy sobie zmienić
+$ date --set"20200411 22:32"
+..nowo ustawiony czas pogląniemy poleceniem DATE
+..jenak te zmiany zostaną (powinny) być zsynchronizowne
+..co się dzieje zawsze przy zamykaniu systemu
+..Można zmienić jednocześnie czas ch i sys
+$ timedatectl set-time "20201-04-11 22:44:00"
+..jeżeli rozbierzność czasowa pomięzy nowym czasem i strym
+..jest większa niż 1000s (INSANE TIME) to nie zmienimy
+..bo w timedatectl jest enable opcja 'NPT enable'
+..można ją wtedy zmenić poleceniem
+$ timedatectl set-npt false
+..są progrmy o konfiguracji czasu na serverach
+crony
+npt

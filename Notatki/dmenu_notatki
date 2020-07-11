@@ -1,0 +1,24 @@
+Aby uruchomić dmenu z wierza
+$ dmanu_run
+
+$ echo -e "tak\nNie" | dmenu -i -p "czy jesteś pweien?"
+..w pasku dmenu pojawi się prompt (-p) z pytaniem
+..i dwie opcje które można wybarć w CASE INSESITIV sposób
+
+$ cat plik | dmenu
+..w pliku jest kilka lini i w dmenu się pojawią jako opcje 
+
+Aby zminić configuracje dmenu trzba na stronie sucless
+..ściągniąć i skompliować paczkę, i wtey można w pliku cof 
+..okonać zmian wygląu, rozmiar, kolor itp.
+
+można też ze strony sucless doawać pacze
+.. np: HIGHLIGHT który podśiwtla pasując litery w pasu wyszukiwania kiedy
+..je wpisujemy
+..paczujemy tak że w katalogu paczki dmenu jaką pobraliśmy wpisujemy
+$ patch -p1 < nazwa_pacza.diff
+..następnie kompilujemy
+$ sudo make install
+..jeżeli mamy jakieś błędy to tzrba zajżeć na strone pacza
+..i zobaczyć czy nie trzeba opisać jakiś lini kodu do plikuconfiguracujnego naszego dmenu
+..po korekcie jeszcze raz kompilujemy.  

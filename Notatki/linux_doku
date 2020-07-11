@@ -1,0 +1,990 @@
+DAY 1
+######
+$ ldd plik.sh
+	..pokarze jakie bibliteki potrzebuje program przy starcie
+$ netcat -l -p numer_portu
+	..gnu-netcat nasłuchuj na porcie...
+$ netcat host_addres port_number
+	..też nasłuch na podanym porcie hoście
+$ mkfifo plik 
+	..tworzy plik rurkę '|' ..wynik jakiegoś polecenia może być dostępny np;
+	..na drugim terminalu
+
+DAY 2
+######
+	..wyrażenie regularne..
+$ cat plik > plik2`date +%Y-%m-%d'
+	..zapisze zawartość pliku w pliku2 z dopisaną w nazwie datą
+	..dzięki apostrofowi (`) 
+	
+$ gerp elementarz | grep "^ala"
+	..wyłuska te "ale" które znajują się na początku
+	..znak $ to koniec, tak samo jak w vim-e
+
+$ grep "a[[:alpha:]]a"
+	..obierzemy dowolną ilość liter alfabetu w opasowaniu o ala
+	..[[:digit:]] dobierze dowolną ilość cyfr
+	
+$ grep "pyth\?on"
+	..dobierze python albo pyton
+	..znak może być alebo nie \?
+
+	..ukośnikiem  \ możemy altywować znaki specjalne takie jak
+	..or |
+	..[0-9] przedział cyfrowy 
+	..+ dowolna nie zerowe liść razy
+	..{1,3,7} jeden, trzy lub siedem razy występujący
+	..< początek słowa
+	..> koniec słowa
+	..\(\) grupowanie jak w matematyce np:
+	\(a\|b\)c 
+	..czyli a lub b i c
+
+$ fgrep ^coś
+	..wyszyka frazy ^coś
+	..nie trzeba uciekać \ do znaków specjalnych
+DAY 3
+#####
+	..skróty w vim, tryb poruszania się
+	F/f
+	..pierwsze występieeniw znaku w prawo/lewo
+	T/t
+	..przd pierwsze występieeniw znaku w prawo/lewo
+	c
+	..kasuje linie i wchodzi w tryb wpisywania
+	>/< 
+	..wcięcie lini (tabulacja) w prawo lub lewo (cofnięcie wcięcia)
+
+	..regeksy w vim
+	
+	..w trybie komend:
+:1,3s/raz/dwa
+	..zamieni między liniami 1-3 wystąpienie znaków 'raz' na 'dwa'
+	..nawet w śroku stringa
+	..domyślnie case insensitiv
+	..tyko pierwsze wystąpienie
+:%s/raz/dwa/gI
+	..'%' znaczy w całym tekście
+	..'g' globalnie, czyli nie tylko pirwsze wystąpienie w lini
+	..'I' case sensitive, czyli 'RAZ' już się nie kwalifikuje
+:%/\<raz\>/dwa/c
+	..uniszczenie w klamrak znaczy że chcemy okłanie znaki w nich umieszczone 'raz' nie np: 'razowy123'
+	..'c' na koncu to control, da nam kilka opcji:
+	..y/n
+	..l ..jako ostatnia zmiana i wyjdź
+	..q
+	..^E/^Y ..przesunie stonew w górę bądź w dól
+:%s/.*raz
+	..'*' zachłanna gwiazka,
+	..czyli jeżeli 'raz' występuje w kilku miejscach w lini to załapie OSTATNIE i włączy całość przed
+:%s/.\{-\}raz
+	..'.\{-\}' nie zachlany myślnik, 
+	..czyli jeżeli 'raz' występuje w kilku miejscach w lini to załapie PIERWSZE i włączy całość przed
+:%s/\i*()
+	..'\i*' identyfikator tj. 'id.raz()' i nie zastąpi całości jak coś tylko 'raz()'
+:%s/\S*()
+	..'\S' wyszuka razem z inddentyfikatorem tj. 'id.raz()' i zastąpi całość jak coś czyli 'id.raz()'
+:%s/raz/<tag>\0<tag>
+	..'\0' postawi 'raz' między '<tag>'-i
+	..znajdzie pierwsze wystąpienia w lini sciągu 'raz' i umieści go w '<tag>'-ach
+
+:%s/\d\d\d[-.]\d\d\d[-.]\d\d\d
+	..powiezmy że szkuamy numerów telefonów rozzielonych myślnikiem lub kropką
+	..'\d' to digit czyli liczba (0-9)
+	..'-' na początku [-.] oznacza że szukamy znaku myślnik lub minus
+	..jednak pomiędzy [0-9] oznacza zakres, tu o 0 do 9
+	..inne przytane zaczniki wyrażeń regularnych to
+	\D ..not digit (0-9)
+	\w ..word character (a-Z, 0-9, _)
+	\W ..not wor character
+	\s ..whitespace (space, tab, newline)
+	\s ..not whitespace (space, tab, newline)
+:%s/'\w\+'/\U\0/
+	.. zastąp wszystkie wordcharcter-y w apostrofach wielkimi 'U'
+	..'0' oznacza aktualną grupę, gyby było więcej wtedy 1.2.3..
+:%s/\braz\b
+	..'\b' word bounry, nie zaliczy np:'razowy'
+	\W ..not word bounry
+:%s/[^8,9]\d\d
+	..szukamy trzy cyfrowych wartości które nie zaczynają się na '8 lub 9', myślnik też zadziała
+	..'^' daszek w zakresie oznacza negację
+:%s/\d{3}
+	..szukamy 3 cyfr
+:%s/\(\w\{3}\)\.\(\w\{3}\)/\1/
+	..szukamy DWÓCH zbiorów po TRZY znaki rozdzielone KROPKĄ
+	..umieszczamy je w GRUPACH '(\w{3})' za pomocą nawiasów
+	..w miejscu postawienia wstawiamy tylko PIERWSZĄ GRUPĘ trzech znaków '\1'
+	..w VIM nie można nazywać grup
+https://cheatography.com/fievel/cheat-sheets/vim-regexp/
+	..przydatny link do regexp
+	..inne kwantyfikatory to
+	* ..zero or more
+	+ ..one or more
+	? ..zero or one
+	{3} ..dokładna liczba, trzy.
+	[1-2] ..przedział, ablo tak [1,2] ..czyli od 1 do 2
+
+
+
+	..program SED, poobnie urzycie regeksów
+	
+$ sed -e 's/raz/dwa' plik.txt
+	..poda na stanarowe wyjście wynik w którym pdmieni pierwsze wystąpienia w lini ciągu 'raz' na 'dwa'
+$ sed -e '/XYZ/s/raz/dwa/gi' plik.txt
+	..tylko z liniach gdzie jest 'XYZ'
+	..'g' globnie, czyli wsztkie wystąpienia w lini 
+	..'i' case insensitiv. INACZEJ NIZ W VIM TO NIE JEST DOMYŚLNE USTAWIENIE
+
+DAY 4
+######
+	..proces to kod wykonujący się
+	..tworzy się prze 'fork()' jako dziecko (potomek) procesu który go wywołuje np: BASH
+	..poleceniem 'jobs' można podejżec jakie ta powłoka ma procesy (dzieci)
+	..po stworzeniu forka wykonywane jest polecenie 'exec()' które zastępuje kolona tym procesm który wywołaliśmy
+$ exec ls -l
+	..pominiemy fork-owanie i nasza powłoka zostanie po prosu zastąpiona poleceniem 'ls -l'
+
+$ uptime
+	..podejżymy obciążenie procesora z ost. 5 10 i 15 min.
+$ ps axr
+	..'a' inni urzytkownicy
+	..'x' nie tylko ten terminal
+	..'r' tylko w stanie runing
+	..inne przydatne to
+	..'l' wiecej info
+	..'e' śroowisko karzego procesu
+	..'u' urzytownik i moment uruchomienia
+	..'ww' zawija linie na szerokość terminala
+	..jeśli chcemy coś konkretnego to poajemy poceje 'o' a po niej nazwe kolumny np;
+$ ps axo pid,pcpu,comm
+	..'pid' wiadomo ;)
+	..'pcpu' ile czasu procesora (procentowo) zajmuje ten proces
+	..'comm' nazwa procesu
+	..'cputime' łączny czas procesora zurzyty przez ten proces
+	..'rss' ilość pamięci rzeczywiście leżącej w RAM-ie
+	..'vsz' również tę wy-SWAP-owaną
+	..'state' to stan procesu gdzie:
+	..R proces gotwy ddo wykonania lub wykonywany
+	..S śpi, ale może w karzej chwili obuzony
+	..D śpi, ale nie może być obudzony (najprawopodobniej czeka na zakończenie operacji wejścia-wyjścia)
+	..T zatrzymany lub jest ślezony
+	..Z zombie (proces wykonał exit() ale zwócona wartość nie została odebrana)
+	..jest wiecej w dokumentacji man
+$ ps -l <PID>
+	..zobaczymy szczeguliki oweg procesu
+$ pmap -d <PID>
+	..ile pamięci jest zajęte przez pocszczególne biblioteki
+	..na dole w posumowaniu jest poana waga jaką zajmuje sam proces bez bibliotek
+$ top 
+	.. wciśnięcie 'i' wypisze procesy gotowe do wykonania lub wykonywane
+	.. wciśnięcie '1' rozbicie sumaycznej informacji o procesach na info. o poszczegulnych procesorach
+	.. linia cpu pokazuje ile czasu zajmują procesorowi różne działania 
+	'%us' czas procesy urzytkownika ( nie  licząć NICE większe od zera)
+	'%sy' ile czsu zajeło jąro
+	'%ni' procesy urzytkownika o NICE większym od zera
+	'%di' czas bezczynności
+	'%wa' czekanie na zakończenie operacji wyjścia-wejści
+	'hi' i '%si' czas obsługi przerwań
+	'%st' czas zabrany w wirtualnej maszynie (w przypadku wizualizacji)
+$ pidof ssh
+	..wypisze PID wszytkich procesó o ddanj nazwie (tu ssh)
+
+$ kill -term <PID>
+	..domyśny sygnał kill-a, kończy proces. może być przechwycony lub zignorowany
+	..to znaczy że proces ma czas na skończenie swoich prac zanim się zamknie
+	..'HUP' kończy proces. może być przechwycony i wymusza przeczytanie konfiguracji i zmiane parametrów. RESTRAT
+	..'STOP' zatrzymuje. ^Z
+	..'CONT' kontynuuje zatrzynamy proces. 
+	..'INT' kończy proces, wyświetli podsumowania jak ^C
+	..synały mogą mieć watość numeryczną
+	'-20' STOP
+	'-18' CONT
+$kill -l
+	..lista wszystkich sygnałów 
+
+$ sleep 666 &
+	..uruchomi roces w tle
+	..aby go przywrócić na "pierwszy plan" piszemy:
+$ fg
+	..domyślnie zatrzyma ostatni proces uruchomiony w tle
+	..można podejżeć jaki to w powłoce rozica poleceniem:
+$ jobs
+	..plus to ostatni uruchomiony proces
+	..minus to przed ostani
+$ fg %3	
+	..tak wybierzemy który z procesów działających w tle przeniesiemy na FOREGROUND
+$ bg %2
+	..uruchomi proces (zatrzymany) w tle.
+
+DAY 5
+######
+	..pliku konfiguracyjnego grub (grub.cfg) nie powinno się edytować manualnie
+	..robimy to edytująć pliki z templatek w /etc/grub.d
+	..oraz ustawień z /etc/default/grub
+	..następnie przekonfigurujemy ustawienia gruba
+$ grub-mkconfig
+	
+	..przykłaowo chcemy zmienić czas wyświetlania ekranu wyboru systemu przy starcie komputera
+	..edytujemy wtedy 
+$ vim /etc/default/grub
+	..i zmieniamy pozyjce TIMEOUT na dowolną ilość sekund
+	..następnie przkonfigurujemy plki gruba
+$ grub-mkconfig -o /boot/grub/grub.cfg
+
+	..jeśli natomiast chcemy utworzyć nowe wejście
+$ vim /etc/grub.d/40_custom
+	..dpisujemy
+	menuentry 'jakaś nazwa' opcje {
+	jakieś paramery..poejżyj grub.cfg
+	} 
+
+	..jeżeli chcemy zmienić domyślny wybór systemu
+	..pamiętając że te grub liczy od 0
+$ grub-set-default 1
+	..ustwi nam recu mode (jeżeli ten jest akurat drugim wejściem)
+	..domyśle wejście możemy też zmienić w pliku /etc/default/grub pozycja 'default'
+	
+	..z poziomu wiersza poleceń możemy odpalić dowolny system
+	..są sposoby na ograniczenie dotępu pewnych opcji przez utworzenie kont urzytkowników dla gruba
+	..do pliku konfiguracyjnego gruba dopisujemy użytkowników i ich hasła
+	password janek tajehalo1
+	password bob tajehalor2
+	password emil tajehalor3
+	..jeśli nie chcemy zapisywać hseł otwarym tekestem to :
+$ grub-mkpasswd-pbkdf2
+	..(lub grub2, zależy od dystrybucji)
+	..wygeneruje się cią znaków który tak wpisujemy do pliku konfiguracyjego
+	passwd_pbkdf2 adam
+	barddzo-lugi-ciag-zankow...
+	..następnie określamy którzy użytkownicy są root, tylko oni będą mogli urzywac polecen grub
+	set superuser="adam,roman"
+	..nastepnie okreslamy przy wybaranych opcjach (wjeciach) którzy użytkownicy bedą mogi je  uruchamiać
+	..oczywiście w pliku /etc/grub.d/40_custom
+	menuentry 'jaks nazwa' opcje --users="adam,roman"{ ... }
+	..jeśli pozyje 'users' pozostawimy pustą
+	--users=""
+	..to tą opcje będą mogli uruchamiać tylko super-użytkownicy
+
+	..aby uruchomić z palca nasz system :
+$ set root=(hd0,1)
+	..mowimy gdzie ma szukać swoich plików
+	..tutaj jest to sda1
+$ linux /vmlinuz-4.666 root=/dev/mapper/arch ro quiet
+	..poajemy nazwe pliku z jąrem króre chcemy załaddować
+	..ścierzka jest poawana względem katalogu 'boot'
+	..poddajem też parametry jeśli chcemy
+	..'root=<urządzenie>' urządzenie z systemem plików z korzeniem drzewa katalogów.
+	..'ro' początkowy system plików w trybie tylko do ODCZYTU
+	..'quiet' nie wypiuj żanych komunikatów
+	..'init=<ścierzka>' siezka do programu pierwszego procesu
+	..'S' uruchom w trybie singiel user
+	..te dwa ostatnie mogą służyc do zmiany chała root dla danego wejścia, patrz niżej..
+$ initrd /initrd.img-4.666
+	..podajmey plik z którego załoadujemy początkowy ramdysk
+
+	..innm ciekawym i przddatmy parametrem jest 
+	..'init=/bin/sh'
+	..spowodduje to uruchomienie w pierwszej kolejności (przed initem) powłoki z uprawiniemi roota
+	..ale aby zapisać zmienione hasło trzeba przemątowć system pliów w korzeni drzewa w tryb do oddczytu i zapisu
+$ mount -o rw,remount /
+	..możemy wtedy zmienić hasło roota polecenim 'passwd'
+	..teraz na powrót trzeba przemątować partycje w tryb tylko do odczytu
+$ mount -o ro,remount /
+	..pozostaje tylko restart komputera, polecenie syystemow jeddnak nie zadział by nie uruchomiliśmy inita
+	..więc robimy to palcem
+
+$ boot
+	..uruchomimy (wbootujemy się) w zdefiniowany system
+	..będąc w menu możemy wcisnąć 'e' i móc znieniac polecania związane z bierzącą pozycja menu
+
+DAY 6
+######
+$ systemctl list-units
+	..zobaczymy wszytkie uruchomione cele
+$ systemctl list-unit-files 
+	..pokarze WSZYSTKIE jenostki niezależnie czy są uruchomione
+	..'vendor preset' oznacza jaki jest domyślny stan po instalacji paczki
+$ systemctl --type=target
+	..albo
+$ systemctl list-units --type target
+	..tylko targety AKTYWNE
+	.. target zawiera informacje które usługi należy uruchomić a które zatrzymać na danym poziomie pracy(np. graphical)
+	..pliki konfiguracyjne sa w /lib/systemdd/system oraz /etc/systemd/system
+$ systemctl list-units --type target --all
+	..wszystkie targety, aktywnie i nie
+
+	..systemd pozwal na uruchominie jakieś jdnostki w trybie izolowanym (zatrzyma wszystkie inne jednostki i 
+	.. urucjomi właśnie tą wraz z jej zależnościemi)
+$ systemctl isolate emergency.target
+	..wrzuci nas w tryb tekstowy
+	..to opowienik
+$ init 1	
+	..czyli tryb SINGEL-USER, czyli ratunkowy w trybie tylko do odczytu
+	..jest jeszcze rescue.target
+
+	..ciekawostak, poziom pracy 0, czyli shutown to:
+$ systemctl shutown.target
+
+$ systemctl get-default
+	..zobaczymy jaki mamy target (runlevel) omyślny dla usera
+$ systemctl get-default multi-user
+	..można ododać na końcu .target ale nie trzeba
+	..teraz omyślny przy restarcie biędzie tryb tekstowy (dla wielu userów) 
+	..'graphical' dla desktopu
+$ systemctl isolate multi-user
+	.. natychmiastowo wrzuci nas w tryb tekstowy (init 3)
+$ systemctl isolate graphical
+	..a tak z powrotem w tryb graficzny
+
+$ journalctl
+	..wszystkie logi z pliku /var/log/syslog
+$ journalctl -fub sshd
+	..'-u' unit, tu sshd, czyli wszystkie info związane z sshd
+	..'-f' folow, odświerza na bierząco
+	..'-b' boot, czyli wyszystkie wpisy z tej sesji bootowania
+$ dmesg	
+	..hardware i kernel log
+
+DAY 7
+######
+$ strace -c -p 1234
+	..'starce' podłącza się pod proces i go szpieguje :)
+	..It captures and records all system calls made by a process and the signals received by the process
+	..'-p' proces id, tu 1234
+	..'-c' generuje raport podumowujący całkowity czas, wywołania, błedy wywołań
+$ strace -e trace=write df -h
+	..tylko polecenia zapisu dla programu 'df -h'
+	..albo wicej
+$ sudo strace -e trace=open,close,read,write df -h
+$ strace -o df_debug.txt df -h
+	..'-o df_debug.txt' zapisz ddo pliku
+
+DAY 8
+######
+	..polecenie rtuncate zapisuje lub odejmijue bajty pliku, dopisane będa zawsze NULL bajtami
+	..polecinie lseek przesówa marker początku pliku, kiedy przesunie się poza koniec (EOF) to lseek go powiększy
+	.. i zapełni bajty pomięzy, wszystkie to będa NULL bites
+
+	..plik posiada discriptor w skład którego wchodzi 'marker' który jest numerycznym wskaźnikiem tego obserwujący 
+	.. w którym miejscu nastpne wywołanie read() albu write() bedzie miało miejsce
+	.. by default marker ustawiony jest na 1 bajt, i jeśli przczytamy 5 bajtów to marker przsunie się o 5 bajtów
+
+	..ciekawosta, w uniksach bufory plikow by default są zapisywanye i czytane bez koordynacji
+	.. i o ile dla read() nie ma to większego znaczenia o tyle gdy jest pomieszanye z wrrite() 
+	.. może to spowoować (gdy marker discriptora jest ustawiony na tym samym bajcie) że docztamy niewłaściwe dane
+	.. a dwa wite() może pomieszać dane
+
+	..każdy plik i katalog na partycji jest rozpoznawalmy przez unikalny 'inode'
+	..zawsze w partycji jest root directory o inode 2
+	..inode 1 to lista złych sekcji partycj, nie ddo urzydku
+	..inode 0 to null pionter, nie istniejące pliki i katalogi
+
+	..różnica między block devices a character devices polega na tym że:
+	.. w block możemy wybrac gdzie write() i read(), są to zazwyczaj obszerne przestrzenie
+	.. posiada tekrze jeden bufor z którego zapisuje i oddczytuej. bloki bajtów są cztanie w całości np: 512b
+	.. a charcter to komunicjacja write() raed() sekwencyjna, małe miejsca, coś ocztytam coś zapisze
+	.. posiada dwa bufory input i output FIFO (czyta z posiatku a zapisuje na końcu przy inpucie, a odwrotnie przy outpucie) 
+
+	..psełdo-devies to /dev/null /dev/zero /dev/random
+
+DAY 9
+#####
+$ systemctl --failed
+	..zobaczymy które daemony nie wstały przey starcie
+$ systemctl is-enabled sshd
+	..zobaczymy czy jest enable czy diabled
+
+	..przy tworzeniu nowch daemonów (services) w seekcji '[service]' możemy opisać
+	restart=always
+	..dzieki temu jeżeli serwis panie to się ponownie poniesie
+	..jadnak plików daemonowych się bezpośrenio nie edytuje gdyż przy updacie systemu te zmiany mogą być stracone
+	.. chyba że są to nasze własne
+	..a nastepnie trzeba zrobić reload daemona
+$ systemctl daemon-reload
+
+	..eycje można zrobić na dwa sposoby:
+$ systemctl edit <service>
+	..stworzymy nowy katalog /etc/system/system/<nasz-service>.service.d/ 
+	.. wewnątrz którego bedą nasze nowe instrukcje (jak powyższy restart)
+	..DRUGI spsób: 
+$ systemctl edit --full <service>
+	..edytujemy bezpośrenio plik daemona
+	..w ten sposób można tylko eytować istniejące service
+	..nie trzeba też robic reload
+
+	..inna przydatną rzeczą jest zrobienie katalogu /etc/system/system/<nasz-service>.service.d/ 
+	..i wrzucenie tam naszeego pliku z ustawieniami który będzie od teraz domyślnym dla tej usłgi
+	..WARZNE plik musi mieć koncówke '.service'
+	..dzieki temu nie naruszamy orginalnego pliku 
+	..daemony są w /etc/systemd/system/.. 
+
+$ hostnamectl
+	..info o hoście
+	..wiele z tych możemy eytować, o pretty name już gdzieś pisałem
+	..po zmianach żeby były wioczne trzeba zrestartować1
+
+	..w systemd socety służą o komunikacji mięzy procesami w sieci
+
+DAY 10
+######
+
+$ ldd /bin/ls
+	..zobaczymy zależne biblioteki polecnia 'ls'
+	..trzeba podać pełną ścieżkę
+	'-u' ..unused bibliteki
+	'-r' ..dynamiczne executable, poda info jeżeli nie jest
+	'-v' ..inforamcje szczegułowe, jak wersja biblioteki
+
+$ strace -p <PID>
+	..śledzi wywyłania systemowe dla programu o podanym pid
+$ strace -c ls
+	..posumowanie wywołań oraz czasu ich realizacji
+$ strace -e open ls
+	'-e open' tylko wywołania open
+	'-t' timestamp
+	'-tt' timestamp i mikrosekundy
+	'-r' czas ekzekuji 
+	'-o' output do pliku '-o dane.txt'
+$ strace -f pro.o
+	..strace ddomyślnie nie śledzi potomów procesów, dlatego opcja '-f'
+	..pokrze dziecko procesu 'pro.o'
+
+	..INSTALOWNIE AUTOMATYCZNE
+	..przy instalowniu stytemu z poziomu boot kiedy podajemy
+> vmlinuz initdr=initdr.img ....
+	..opisujemy na końcu:
+	'ks=hd:sdb1:/ks.cfg'
+	..czyli nasz nośnik z plikiem 'ks.cfg' który zawiera instrukcje instalacyjne
+	..Ewentualnie jeśli mamy server ftp, inasz plik znajduje się w /var/ftp/pub
+	'inst.ks=ftp://192.168.1.1/pun/ks.cfg'
+	.. może być też ntp albo http
+
+	..KOMPILACJA PACZEK
+	..przy kompilkacji paczki i jej instalacji może nastąpić np; napisanie plików
+	.. już istniejących programów, której nie będziemy mogli cofnąć
+	.. albo stworzy pliki conf których nie usuniemy wraz z usówaniem paczki
+
+	..w '/usr/shared/pacman' jest przykładowy plik 'PKGBUILD'
+	https://wiki.archlinux.org/index.php/Arch_packaging_standards
+	.. wytyczne jak budować paczki dla arch
+
+DAY 11
+######
+$ lsmod 
+	..wyświetli wsztkie załaowne moduły
+
+$ udevadm info -q all -n /dev/sdc1
+	..wszystkie info z bazy danych o urządzenieu /dev/sdc1
+
+$ lspci
+	..listuje opisy kart podłączonych do magistarli PCI
+
+$ pacman -Sy smartmontools
+	..zainstaluje pakiet do Control and monitor S.M.A.R.T. enabled ATA and SCSI Hard Drives
+$ smartctl -a /dev/sda
+	..info o /dev/sda
+
+DAY 12
+######
+	..węzły inode wskazują na bloki 
+	.. zawierają w sobie informacje o: numerze wezła,typie(np.zwykly plik), uprawnieniach, właścicielach, liste bloków
+
+	..dowiązania (twarde linki) to onośnik prowazący do inode pliku właściwego
+	.. czyli można mieć kilka ścierzek dostępu do tego samego pliku
+
+	..dowiązanie syboliczne (syb. link) to inode zawierający ścierzkę do danego pliku
+
+	..pliki typu 'pipe name' to kolejki FIFO , dane w nich umieszczane trafiają bufora
+	.. jeden program dane wrzuca inny wyjmuje
+	.. jeśli króryś przesadza zostaje przychamowny przez system, tak zeby zawsze było miejsce na wicej
+	.. lub jakieś coś do wyjmowania
+$ mkfifo pipe -m700
+	..tak stworzymy plik fifo 
+	.. dodatkowo nadamy mu określone uprawnieni
+$ mknod pipe2 p
+	..'mknod' możana też tworzyć block i charcter devices	
+
+	..gniaza 'socets' litera 's' umożliwiają dwustronną komunikacje programów pobnie do rurek "pipes"
+
+$ stat <plik>
+	..szczegułowe dane o pliku
+
+	..'setuid' i 'setgi' czyli 's' i 'g' w pasku uprawnień
+	.. pliki tak oznaczone bedą zawsze uruchamiane z uprawnieniami właśniciela lub grupy niezależnie kto je uruchomi
+
+	..'sticky bit' czyli 't' powouje że tylko ROOT, właściciel pliku i właściciel katalogu mogą usunąć plik
+	.. nawet jeśli ktoś trzeci ma do tego uprawnienia, czyli karzdy może tworzyć pliki  w  katalogo 
+	.. ale usówać może tylko sowje
+
+	..uprawnie zapisywane usemkowo można zapiętać tak r(4) w(2) x(1) = 7
+	..domyślnie nadawane uprawnia są przykrywanie MASKĄ 'umask' danego urzytkownika
+	..domyślnie dla plików to 666
+	.. dla katalogów 777
+$ umask
+	..pokaże jaką mamy maskę np: 0022
+	..czyli plik i katolog bedą miały uprawnienia: '644' i '755'
+	.. pierwsze zero to : 'setuid(4)' 'setgid(2)' 'sticky bit(1)'
+
+	..montowanie systmó plików można wykonać z różnymi opcjami
+	..'ro' read only
+	..'noexec' nie pozwól na uruchamianie pliów binarnych
+	..'loop' umożliwia podanie pliku zamist urzązenia
+	..i wiele innych..
+$ mount --bind kat1 kat2 
+	..zamontujemy system plków z kat1 do kat2
+$ mount -a 
+	..zamontujemyw wszystkie systemy plików wykazanzane w '/etc/fstab'
+
+$ du -hs	
+	..ile miejsca zajmują pliki w obecnym katalogu
+	..'-h' human
+	..'-s' sumaric, bez tego kazdy plik bedzzie wylistowany osobno
+
+$ fsck /dev/sdc
+	..sparwndzimy spojnośc systemu pliów
+
+	..do tworzenia obrazuów iso-9660 z sysyemów plików urzywamy
+	..najpierw 'genisoimage'
+	.. dobrze jest podać rozszerzenia '-r' lub '-J' które pozwoli zachować info o uprawnieniach, właścicialach
+	.. '-V <etykieta>' a tak nadamy etykiete
+	..potem żeby wypalić na plytce( jak mamy takie coś) 'wodim'
+	
+DAY 13
+###### 
+	..parametry do komendy ' $1 $2' itd.
+	.. a dziesięć lub wiecej  notujemy tak: ' ${10} ${23}'
+
+$ find . -name .snapshot -prune -o \( \! -name '*~' -print0 \)| cpio -pmd0 /dest-di
+	..z man find 
+	..odnajuje wszystkie katalogi z wyjątkiem '.snapshot' oraz tych zakończonych znakiem '~'
+	.. i kopjuje je do '/dest-di'
+	..'-o' omit, nie uwzgledni terz NAZW katalogów kończących się na '~' ale nie ich zawartość
+	..'-prune' wsztko co poprzedzi jest ignorowane w raz z zawartością
+	..'cpio' kopjuje pliki z, i do archiwów
+	..'-p' przyjmij liste plików z stdin i kopjuj do opowiednik katalogów
+	..'-m' zachowaj orginalną date moyfikacji plików
+	..'-d' zrób katalog jeśli jest potrzebny
+	..'-0' czytaj nazwy plków rozddzielone "nul charcter" zamist "new line"
+	.. w tym przypaku chodzi o to że ostatni plik bedzie miał new line 
+	 
+	..'$@' expanded as "$1" "$2" "$3" ... "$n"
+	..'$*' expanded as "$1y$2y$3y...$n", innymi słowy to ciągły string
+
+	..'IFS' -Internal Field Separator
+	.. IFS wskazuje jaki ma być delimeter np:
+	# while IFS=' ' read -r f1 f2
+	# do
+	# echo "field # 1 : $f1 ==> field #2 : $f2"
+	# done < "$file"
+	.. wybierze takie elementy które są rozdzielone spacją
+	.. np: w lini pliku bedzie " kota ala.ma " wybierze "kota" i "ala.ma"
+	# while IFS=: read -r f1 f2 f3
+	..jeżeli linia zawiera: "ala:ma:kota" porozdziela słowa (/etc/passwd jest tak skonstruowany)
+
+DAY 14
+######
+$ read -sp "enter passwd: " zmienna1 ; echo $zmienna1
+	..bedzie czekał na pobranie stringa i zapisze go do "zmienna1"
+	.. a echo go wyświetli
+	..'-p' print, można w cuzysłowiu unieścić jakiś string do wyświetlenia
+	..'-s' secret, pisywane znaki nie będą wioczne
+$ read  -i default -e ;echo $REPLY
+	..'-i' wyświetli nam gotowa opowiedź 'default', możemy ja skasowac dzięki:
+	..'-e' przujmuj znaki dopuki nie ostaniesz 'NEW LINE'
+$ read -a zbior ; echo "${zbior[1]}"
+	..pobrany string zapisze do tablicy[zbioru] "zbior"
+	.. a echo wyświetli "drugą" !!! wartość którą podamy
+	.. liczymy od '0'
+$ read -n 3 -p "padja 3 znaki: " znaki ; echo $znaki
+	..'-n 3' ograniczy liczbe mozliwych poanych znaków do 3 ,można oczywiście podać mniej i wcisnąć enter
+	..'-N 3' dokłanie 3 znaki, nie mniej nie wiecej
+	..'-t 3' timeout, wyjdzie po 3 sek.
+	.. echo wyświetli zapisaną w zmiennej 'znaki' wartość	
+$ read ; echo $REPLY
+	..kiedy 'read' nie zapisze do zmiennej wortość wprowadzona trafi ddo bufora
+	.. pod zmienną 'REPLY'
+
+	..przeszukiwanie plików:
+	# while IFS= read -r -d $'\0' file; do
+	# echo "$file"
+	# done < <(find . -print0)
+	..'IFS=' bez parametru domyślnie ustawia rozdzielnik na TAB,SPACJE,NEW LINE
+	..'-r' zachowuje wsztkie backslash-e w nazwach plików
+	.." -d $'\0' "ustawia rozdzielnik w postaci znaku 'NULL' w postaci ASCII code
+	.. nazwy plków w linux mogą zawierć new line, ale już nie NULL dlatego tak.
+	..' <(find . -print0) ' wyjście komendy jest czytane jako plik
+	.. czyta każdy plki w obecnym katalogu i rozziela go 'NULL' znakiem
+
+
+DAY 15
+######
+$ echo -e "\n"
+	..'-e' interpertuj znaki ucieczki, tu new line
+	..'-n' bez domyślnego new line
+$ a=kot
+$ echo ${a}ek
+	..umieszczenia zmiennych w nawiasch lkamrowych ułatwia ich zrozumienie przez powłoke
+
+shift
+	..polecenie przesówa w lewo parametry $1 znika, $2 => $1 itd..
+
+$ touch plik-`date +%d`.txt
+	..odwrócone apostrofy
+	..wynik w nich zawarty zostanie zwórcony, tu dzień tyg.
+$(polecenie) 
+	..tak samo działają nawiasy
+$ touch plik.{jpg,pdf,txt}
+	..stworzymy TRZY pliki o różnych rozszeżeniach
+$ echo $((2+4))
+	..otrzymamy '6'
+
+	..cytowanie
+$ touch 'ale ka$a'
+	..cytowanie apostrofem pozbwia znaczenia każy znak specjalny
+$ touch "$`\"
+	..cytowaniem cudzysłowiem nie pozbawimy znaczenia 3 znaków: $ ` \ 	 
+
+	..specjalna zmienna '$?'
+	..program który zakonczył dziełanie zwraca bit 1 lub 0 do tego który go uruchomił
+	..0 sukces
+	..1 porażka
+$ echo $?
+
+$ ! cd /root/yyy
+	..zwroci 0 -sukces
+	..'!' oddwócił sens
+
+$ test 2 -eq 2
+	..zwróci 0
+	..'test' jest równoznaczny z nawiasami kwadratowymi [ 2 -eq 2 ]
+
+DAY 16
+######
+	..Pluggable Authentication Module (PAM)
+	..przy modyfikacji PAM dobrze jest mieś otwartą sesje TTY dla ROOT
+	.. gdybyśmy się pomylili i nie mogli zalogować możey to naprawić sesją ROOT-a
+
+	..PAM to mechanizm autoryzacji i autentyfikacji. Opiera się biblitekach (moułach)
+	.. proces wywołuje funkcje która czyta plik konf. i na jego podstawie łauje mouły
+	.. w PAM można konfigurować każdą usługe oddzielnie
+	.. a do tej usługi która nie zostanie opisana odnoszą się reguły usługi 'other' /etc/pam.d/other
+
+
+	../etc/pam.d
+	.. tu są wszystiek ustawienia PAM dla uslug
+
+	../etc/security
+	.. a pliki konfiguracji moułów PAM
+
+	..kofiguracja PAM w /etc/pam.d 
+	.. składa się z:' typu, control, moule-path, argumenty '
+	.. moduły wykonywane są w takiej kolejności w jakiej występują w pliku
+	..TYPE :
+	.. 'acount' slozy to ograniczania dostepu wzglendem np: dnia, czasu, liczby usero, itd.
+	.. 'auth' pyta o hało i może uostepnic członkostwo w grupie, mogą też zwrócić "listy uwierzytelniające"
+	.. 'password' moduł wymagany o update tokena autoryzacji. Jeden moduł na karzde wyolanie. odpowiada AUTH
+	.. 'session' rzeczy które muszą być wykonane przed dostępem do usługi. np; utworzenie katalogu HOME
+
+	..CONTROL :
+	.. to pole mówi jak ma być traktowany wynik działania danego moułu
+	.. 'required' ostatecznie zwraca failure ale opiero po sprawdzeniu wszytkich modułów
+	.. 'requisite' od razu zwarca failure
+	.. 'sufficient' sukces tego moułu wystarczy do autentyfikacji, chyba że 'required' się nie powiódł
+	.. porażka tego moułu nie jest FATAL
+	.. 'optional' sukces lub porażka tego modułu nie jest ważna
+	.. dodatkowo sa jeszcze dwie flagi:
+	.. 'includde' pobiera konfiguracje ze wskazanego pliku
+	.. 'substrack' jak 'include' ale czyta wszystkie wiersze pliku konf.
+	.. jest jescze inna składnia do obsługi błedow mułów, ale szukaj sam...
+
+	..MODULE-PATH :
+	..ścierzka ddo modułu, bezwzględna albo względna, zazwyczaj wzglendem /lib/security
+	.. lub w przypadku lib64 ..lib64 ;)
+
+	..ARGUMENTS :
+	..lista tokenów rozdzielonych spacją które mogą zmoyfikować zachowanie moułó np:
+	# silent umask=0077 skel=/etc/skel
+
+	..PRZYKŁAD !!!!
+	.. w pliku '/etc/pam.d/ssdh' dopisujemy linie:
+	# auth required pam_listfile.so item=rhost sense=allow file=/etc/security/lista-hostow onerr=succed
+	..'pam_listfile' pozwala na uostępnianie lub zamukanie usług (tu ssh) na podstawie listy urzytkowników,
+	.. terminali, grup, powłok itd. zawartych w plikach tekstowych
+	..'item=rhost' zalny host, jego to dotyczy 
+	..'sense=allow' czyli leśli jest na liście to TRUE
+	.. ananlogicznie może być 'deny'
+	..'file=/etc/security/lista-hostow' scierzka do naszej listy w jakimś napisanym pliku
+	..'onerr=succed' wszystkie limitacje są ignorowane
+
+	$ pwck -r
+	.. '-r' read only
+	..polecenie spawdzające warzność hasełw passwd i shadow
+
+DAY 17
+######
+	..przy definiowaniu funkcji słowo 'function' można pominąć
+	# function wykrzyknik() { echo !!!!!} 
+
+	..prosta pętla for 
+	# for a in `seq 5` ; do
+	# echo "pięć razy"
+	# done	
+
+	..UUENCODE - program do zakoowywania plików binarnych na znaki ASCII
+	..dla archa w repo 'sharutils'
+	$ uuencode plik plik > plik.uu
+	..pierwszy 'plik' to ścieżka, drugi to jego nazwa jaką bedzie miał przy odkoowywaniu
+	.. a na koncu przekierownie do pliku
+	$ uuencode /dev/stdout 
+	..potem możemy interaktywnie wpisywać dane, a po skończeniu CTRL+D
+	.. otrzymamy zahaszowany ciąg znaków
+	..domyślnie urzywa koowania 'UU'
+	..'-m' zmienia kodowanie na BASE-64
+
+	$ uudecode -o /dev/stdout plik.uu
+	..wyświetlimy okoddowany plik na 'stdout'
+
+	..kodowanie plików binarnych może się przydać przy wysyłaniu załączników mailem
+	$ uuencode obraz.png obraz.png | mail -s "tytuł" jakis@adres.ru
+	..koujemy obrazek i wysyłamy go przy pomocy programu 'mail'
+	$ (echo "tekst" ; uuencode obraz.png obraz.png) | mail -s "tytuł" jakis@adres.ru
+	..tak można wysłać tekst razem z obrazkiem
+
+	..XARGS - wczytuje ze stdout kolejne linie, a następnie uruchamia podane jako parametr polecenie
+	.. i podaje mu jako parametry wczytane linie
+	$ xargs 
+	..bez parametru wywołuje echo
+	$ xargs -n 1 find -name
+	..'-n 1' przyjmuj argumenty pojeynczo
+	..jeśli wpiszemy na stdout:
+	$ *.sh *.uu
+	.. xargs poda programowi find każdą nazwe pojedynczo
+	$ find . -name "foo*" -print0 | xargs -0 gedit
+	..jeśli argumenty mają spacje w nazwie
+	.."-print0" czyta całą nazwe i stawie NULL na koncu
+	.."-0" xargs taktuje każdy znak odsłownie, zamiast parzeć na 'newline' patrzy na 'NULL'
+	.. ignoruje przy tym spacje, cuzysłowia i bakslasze
+	$ cat do_utworzenia.txt | xargs touch
+	..pobierze stringi z pliku "do_utworzenia" dla programu touch
+	..'-0' stworzy plik z sacjami z całej lini w pliku txt 
+	$ find . -name '*.c' | xargs grep 'stdlib.h'
+	..przeszukuj pliki grepm
+
+	..SUDOERS
+	..eu=ytuj visudo!
+	..<kto?> <gdzie?>=(<jako kto?>) <co?>
+	..pierwsze wskazuje użtkowniaka, albo grupę np; '%grupa'
+	.. grupe porzedza zank procentu
+	..drugi wkazjuje komputer na jakim mają uprawnienia mają zachodzić, 
+	.. ma sens gdy plik jest współzielony mięzdzy kikla maszyn
+	..trzeci to uprawnieniaja jakich użytkowników mają być przejęte
+	..czwarte to poleecenia jakie mają być udostępnione
+	# %technicy ALL=(MySql) NOPASSWD:/sbin/shutdown "", /etc/init.d/apache restart
+	..grupa technicy może z uprawnień MySql-a uruchamiać bez hasła 'shutown' z dowolnymi parametrami
+	.. oraz restartować apacha 
+	# jas ALL=(ALL) ALL !PASSWD:/sbin/shutown +*
+	..Jaś może urzywać ddowolnej komeny z wyjątkiem komeny 'shutown +'
+	..https://www.sudo.ws/man/1.8.13/sudoers.man.html
+	.. przyatny link
+	$ sudo -k
+	..unieważni credentials z cache
+	..'-K' wyczyści cashe z credentials
+	..'-ll' bardziej szczegułowe dane apropos twoich uprawnien
+	..'-v' przedłurzy ważność credentials w cache, ddomyślnie 5 min
+	..'-n' nie pytaj o hasło, oczywiście jak jeste root
+
+DAY 18
+######
+	..wyszukiwanie
+	$ which cat
+	..which pokazuje który plik został by uruchomiony, tu /usr/bin/cat
+	$ type -a pwd
+	..powie czy polecenie jest wbuowne czy jest to program
+	..'-a' pokaże  rózwnież ścierzkę do binarki
+	
+	$ hash
+	..zobaczymy jakie ścierzki do binarek zapamiętała powłoka w cache (nie trzeba szukać ścierzek w PATH)
+	..'-r' reset, czyści cache
+	..'+h' wyłącz zapamiętywnie
+	..'-h' włącz na powrót
+
+	$ locate <plik>
+	..przeszukuje indeksy tworzone przez "updatedb"
+	..jeśli skasujemy plik i nie update-ujemy indeksu locate nadal będzie go pokazywał
+	..'-e' wyświetl tylko te inddeksy króte odnoszą się do istniejących plików
+	..'-i' case insensitiv
+	..'-0' domyślnie wynik są rozdzielane "NEWLINE" ale można to zmienić na "NULL"
+	..'-S' jakiej bazy urzywany, i inne info
+	..'-r' wyrażenia regularne np:" -r /kot$ " znajdzie dosłowie "kot"
+	$ updatedb 
+	..odświerzymy baze danych i tym samym indeksy
+	.. w pliku "/etc/updatedb.conf" możemy uszczgulnić które katalogi będą inddeksowane
+
+	$ find / -type d -perm 777 -print -exec chmod 755 {} \;
+	..Find all 777 permission directories and use chmod command to set permissions to 755.
+	..'-mtime 50' znajdz wszyskie zmodyfikowane 50 dni wstecz
+	..'-mtime +50 –mtime -100' 50 dni wtecz ale nie dalej niż 100
+	..'-atime' access
+	..'cmin' change in min. np 60 (godzina)
+	..parametrów jest znacznie więcej
+	$ find /tmp -user `whoami`
+	..wszytkie moje pliki w /tmp
+
+DAY 19 (starsze notatki)
+#######
+	
+	tree 
+	..poleceni wyświetlające zrewko katalogów
+
+	archiwizacja - to zżucanie katalogów i plików w jeden plik
+	kompresja - to kompresja
+
+	$ tar -zcvf doku.tar.gz Documents/
+	..to polecenie weźmie katalog Dokumenty z jego plikami
+	..zarchiwizuje je programem tar (-c)
+	..skompresuje programem gzip (-z)
+	..wyświetli karzdy elementpocesu (-v)
+	..utworzy podany w pierszym ragumencie plik doku.tar.gz
+	$ tar -zxf doku.tar.gz
+	..rozpakowuje archiwium tar (-x) i gzip (-z) z poanego pliku (-f)
+	 tar bomb - powstaje gdy spakujemy katalog pod którym aktualnie jesteśmy
+	$ tar -zcf ../doku.tar.gz .
+	..przy rozpakowywani wysypie przypadkowe pliki i katalkogi jakie złapały się w paczkę
+
+	dzielenie sesji tmux
+	https://www.howtoforge.com/sharing-terminal-sessions-with-tmux-and-screen
+
+	komentwanie w polecieniach
+	$ echo "this is my ${wariable}th beer"
+	this is my 10th beer
+	..zakładając że mamy zmiena $wariable o warości 10
+
+	$ echo "there are `wc -l /etc/grups`lines in /etc/grups"
+	there are 69 lines in /etc/grups
+	..inna forman komentowania znakiem `
+	..wewnątrz niego wykonyje się polecienie powłoki
+
+	$ num_lines=`ls $HOME |wc -l`
+	$ echo $num_lines
+	11
+	..stworzyliśmy zmienna z polecenia powłki i zmiennej systemowej
+
+	uruchamianie skryptów
+	$ source skrypt.sh
+	..source sparwi że uruchomimy skrypt i przy okazji wszystkie zmienne które 
+	..zawierał będą ostępne w aktualnej sesji bash(powłki)
+	$. skrypt.sh
+	..inny sposób na spurce-owe uruchomienie, czyli tak samo..
+
+	pisanie testów kompatyblinych z Solaris albo BSD
+	if [ test ];then
+	fi
+	..w nowoczesnej powłoce takiej jaki bash piszemy
+	[[ test ]]
+	..czyli powójne nawiasy kwadratowe
+
+	..inna ciekawosta związana z starymi powłokami jest taka 
+	..że test [ 1 != 2 ] się nie wykona gdyż != jest tylko dla stinów
+	..a dla integerów trzeba napisać np; [ 1 -ne 2 ]
+	..na szczęście w basz pierwszy przykład już zaziała 
+	..chyba że napiszemy tak (( 1 != 2 )) 
+	..taki zapis w starej notacji  się już sprawdzi
+
+	substarkcja stringa. Od do..
+	#!/bin/bash
+	Str="Learn Linux from LinuxHint"
+	subStr=${Str:6:5}
+	echo $subStr
+	..da wynik
+	Linux
+
+	paczki AUR
+	..na wiki archa można wyszukiawć paczek AUR (arch user repo.)
+	..po ścignięcu możemy zrobić paczkę
+	$ makepkg -is paczka.tar.gz
+	..i jak Install
+	..s jak ependencieS
+	..bez 'i' terz da rade tylko potem trzeba zainstalowć pakmanem
+	$ pacman -U paczka.tar.gz
+	.. o istalowania pazek AUR można urzyć jakiegoś programu np: YEY
+	..poszukaj takich HELPERÓW i jak je zainstalować
+
+	cheat,sh
+	..program do pogląu przykładów poleceń i nie tylko
+	https://github.com/chubin/cheat.sh
+	..trzeba mnieć zainstalownay CURL
+	$ curl cheat.sh/tar
+	..pokarze nam przykłady polecenia tar
+	$  curl cheat.sh/python/lambda
+	..pokarze funkcje lambda w pythonie
+	..można też zadawać złożone pytania łącząć je +
+	..można też do vima oinsatlowaś plugin krówy bęzie odpowiedzi umieszczał w wybramy buforze
+
+	Zmienna PATH
+	..zawiera oczywiście ścierzki wedle których powłoka ma szukać programów
+	/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+	..możemy dodać (appen) kolejne ścierzki do zminnej
+	$ PATH=$PATH:/some/dir
+	..albo umieścić je na początku wyszukiwania
+	$ PATH=/root:$PATH
+	..warto w skryptach podawać pełne ścierzki aby uniknąć pułapki gdy ktoś namiesza w zmienej PATH
+	..w pliku .bash_profile urzytkownika można umieścić
+	#  PATH=$PATH:/$HOME/bin
+	..gdy np. urzytkownik ma swoje programy które mają być ukryte przed innymi
+	..ddobrze jest właśnie tam zmieniać tą zmienną jeśli potrzebujemy po coś
+	..domyślne ustawienia PATH znajdują się w 
+	/etc/profile 
+
+	SCRIPT - polecenie
+	..polecenie nagrywa sesje z terminala
+	$ script
+	..bez argumentu zapisze informacje z konsoli do somyślnie nazwanego pliku 'typescript'
+	..aby przestać nagrywać
+	$ exit 
+	..albo ^c
+	$ script nazwaloga.log
+	..log o konkretnej nazwie
+	$ script log.log -t timestamp.log
+	..można tez napisać --timing=timing.log 
+	..stworzone pliki możemy otworzyć tak jak byśmy ogląali na żywo
+	$ scriptreplay -s log.log -t timestamp.log
+	$ script -c 'netstat -tupln' netstat.log
+	..zrobimy sobie log z wynikiem polecenia
+
+	LSOF - polecenie
+	..lista otwartych plików
+	$ lsof /ścierzka/do/pliku
+	..zobaczymy jakie procesy otwierały plik, np.jakiś log
+	$ lsof -p 1984 
+	..zobaczymy o jakich plików zaglądał program o pid 1984
+
+	Port forwarding
+	$ ssh -L 1234:localhost:9999 remotuser@remotehost
+	..local forwardig
+	..z kąd do kąd się łączymy
+	.. jak na końcu oamy flagę -N -to znaczy że nie chcemy powłoki
+
+
+	..Jakie porogramy nasluchują:
+
+	Netstat
+	..jak nie mamy zainstalowanego
+	$ which netstat
+	..to jest on czecią paczki net-tools
+	$ pacman -S net-tools
+	..aby poddejrzeć porty
+	$ suddo netstat -tulpn
+	..jak nam coś nie nie pooba to możemy zatrzymać
+	$ systemctl stop sshd
+	..albo wogóle
+	$ systemctl disable sshd
+	..i jak nam nie potzrbne traz ssh to je zatrzymaliśmy i wyłączyliśmy
+
+
+	Arch-audit
+	..podglą zainsatlowanych paczek i ich vulnerability
+	$ arch-audit
+	..pokarze zestaw informacji z pośrod których możyemy spopiować numer CVE
+	..następniew w przegląarce poczytać coś o tych vulnerability
+	$ arch-audit --upgradable --quiet
+	..jeżeli będą jakieś uprady dla poszczegulnych paczek to się pojawią

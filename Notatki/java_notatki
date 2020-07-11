@@ -1,0 +1,601 @@
+
+DAY 1
+#####
+	..ze strony helionu, z książki do javy można pobrać przykłady
+	..https://helion.pl/ksiazki/java-podstawy-wydanie-xi-cay-s-horstmann,javp11.htm
+
+	..ze strony Oracle pobrać można JAVE JDK
+	..https://www.oracle.com/java/technologies/javase-downloads.html
+	..rozpakowujemy gdzie tylko:
+	$ tar -xvf ~/Download/jdk14.0.1...tar.gz
+
+	..do ".bashrc" dodaj linie:
+	# export PATH=/home/$USER/Java/jdk14.0.1/bin:PATH
+	.. scieżka do binbarki w katalogu gdzie wypakowaliśmy
+	$ javac -version
+	..sprawzimy czy się powioło i zobaczymy versje kompilatora
+	
+	..w katalogu jdk14.0.1/lib powinien byc plik "src.zip"
+	.. w katalogu głównym wypakuj go do karalogu np: javasrc
+
+	..przejdź do przykłaowych plkiów ze srony heliona
+	$ javac Welcome.java
+	..'javac' to kompilator, zmieniła "Welcome.java" na Welcome.class
+	.. kompilator wymaga podania klasy
+	$ java Welcome
+	..uruchomi VM 'java' i wykona kod bitowy "Welcome"
+	.. przy uruchamiani programu podawanie klasy jest zbene
+	
+	..możma pobrać sroowisko programistyczne np: eclipse
+	..https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2020-03/R/eclipse-java-2020-03-R-linux-gtk-x86_64.tar.gz
+	.. lub z AUR
+
+	.."appletviewer" jest w wesji jdk_9 ale nowsze nie będą go suportować
+
+DAY 2
+######
+	ReturnType Name() {
+	}1
+
+	.."void" nie zwraca żadnej wartości
+	..w nawiasach sa parametry
+	.. lewy nawias klamrowy musi buyć w tej samej lini co nazwa
+
+	..każda funkcja(metoda) powinna być cześcią jakieś klasy
+
+	public class Main {
+		public static void main() {
+		}1
+	}
+	..każda funcja i klasa zawira moyfikatory ostępu, tu "public"
+	.. co znaczy że inne klasy i funkje mają ostęp 
+	.. KlasyPowinnoSiePisacTak -pascal notation
+	.. metodyTak -camel case notation
+	.. metoda main powinna być static (niezmienna przez inne metody)
+
+	..ZMIENNE
+	.. można inicjalizować w jenej lini kilka ale jest to mało czytelene
+	int wiek = 20 , wzrost = 2 ;
+	.. mienne można zainicjować i odrazu nadać in wartość, albo zrobić to poźniej
+	int zmienna;
+	zmienna = 12;
+	..albo
+	int znienna = 12;
+
+	..STAŁE
+	final duble srenica = 2.5;
+	..'final' to satła (constant) której wartości nie może zmienić żada metoda
+
+	public statoc strictftp voidd main(string[] args]
+	..'strictftp'Java strictfp keyword ensures that you will get the same result on every platform if you perform operations in the floating-point variable. The precision may differ from platform to platform that is why java programming language have provided the strictfp keyword, so that you get same result on every platform. So, now you have better control over the floating-point arithmetic.
+	.. The strictfp keyword can be applied on methods, classes and interfaces.
+	strictfp class A{}//strictfp applied on class
+  
+	
+	..IMPORT STATYCZNY (BIBLIOTEKA)
+	import static java.lang.Math.*;
+	..taki nagłówke pozwala uniknąć pisania przerosta math przed metodami
+	import static java.lang.Math.*;
+
+	public class Functions {
+	  public static void main(String[] args){
+	  int a = -125;
+	  int b = 3;
+	  System.out.println(pow(a, b));
+	  System.out.println(abs(a));
+	  System.out.println(sqrt(pow(a,b)));
+	  }
+	}
+	..Dzięki wykorzystaniu importu statycznego możemy zapisać pow(a, b), zamiast Math.pow(a, b).
+
+	..TYPY PRIMITYWNE
+	bite 1 bit -128,127 (przezial liczowy)
+	short 2	   -32k,32k
+	int 4	   -2B,2B		
+	long 8
+	float 4 dla zmienno przeciknowych
+	double 8 jak wyrzej
+	char 2 znak unicode
+	boolean 1 true/fase
+	
+	..w liczbach można urzywać _ podkeślenia dla lepszej czytelności
+	int liczba = 123_456_789 ;
+	.. kompilator sobie usunie pokreślenia
+	..jeżeli liczba jest za duża na 'int' i chcemy znienić ją na 'long'
+	..musimy odać na koncu sufix 'L' albo 'l'
+	long liczba = 3_123_456_789L ;
+	.. dzieje się tak ponieważ by default Java rozunie liczby całkowite jako 'int'
+	.. tak samo jest z zmiennoprzecinkowymi jako 'double'
+	float cena = 9.99F ;
+	..'F' albo 'f'
+
+	..wartości moża zapisywać binarnie
+	0b1001
+	..ważny przedrostek '0b' a liczba to 9
+
+	char litera = 'A' ;
+	..char zamykamy w pojedyńczych cudzysłowiach
+
+	boolean isEligible = true;
+
+	..TYPY REFERENCYJNE
+	..słurzy o przeechowywania skomplikowanych obiektów jak data, mail
+	..objekt to instancja klasy, np; jan, bob, john to instancje kalasy człowiek
+	.. tworząc typ referencyjny musimy zaalokować pamięć, zwolnić już nie musimy bo robi to Java
+	Date now = new Date();
+	..zalokowaliśmy pamięć
+	..stworzyliśmy objekt 'now'
+	System.out.printnl(now);
+	..kasa 'System' członek 'out' metoda 'printnl'
+	..TYPY referecyjne zawierają ares pamięci w której znajuje się wartość np;
+	Point point1 = new Point(x:1, y:1)
+	Point point2 = point1
+	..point 1 i 2 wskazują na tą samą pamięć z warościami x i y
+
+	..STRINGI (ŁAŃCYCHY)
+	..łancychy to typy referncyjne ale że są czesto urzywane definiować je można jak prymitywne
+	String message = "Hello world" + "!!"
+	.. plus to konkatenacja;
+	System.out.printnl(message.lenght());
+	..drukujemy członka 'message' klasy 'String' funkcją 'lenght()'
+	.. w wyniku ostaniemy 13 czyli długość
+	message.index0f("H")
+	.. osteniemy 0 bo to pierwsza litera
+	.. -1 jeśli takiego ciągu nie ma
+	message.replace(target:"!" , replacment:"*")
+	.. target i replacment to 'parametry' funkcji
+	.. a '!' i '*' to 'argumenty'
+	.. oba ! zostaną zastąpine *
+	..ten sposób nie zmoyfikuje stringa bo Stringi są 'niemutowalne'
+	.. to znaczy że tworzymy nowy objekt sring z nowymi wartościami
+	message.trim() 
+	..usówa biłe znaki
+
+	..PODŁAŃCYCHY (SUBSTRING)
+	String greeting = ("czesc!");
+	String s = greeting.substring(0,3);
+	..ostaniemy "cze" czyli 0,1,2 znak ze stringa, z wyłączeniem 3 i dalej
+	.. liczy się od zera 
+
+
+	String message = "znak\" ucieczki"
+	.. jak w bash
+	..'\n' -new line
+	..'\t' tab 
+	.. i jak bash n-new line, r-karetka
+
+	..TABLICE
+	.. długości tablic w Java są stałe, nie można zmieniać ich przełużać czy skaracać
+	.. o tego sa specjalne kalasy
+	int[] numbers = new int[6];
+	numbers[0] = 1;
+	..zamisujemy pierwszą wartość tablicy jako 1
+	int[] numbers = { 2, 3, 7, 8, 9, 2}
+	..jak znamy wartości to możemy je odrazu zdefiniować za pomocą {} 
+	System.out.printnl(Arrays.toString(numbers));
+	..do wyświetlenia zawartości tablicy urzywamy klasy "Arrays" i metody "toString()"
+	.. wyświetlenie po prostu atblicy wyświetki adres pamięci
+	Arrays.sort() 
+	.. sortuje 
+	
+	..TABLICEE 2 i 3 wymiarowe
+	.. jak w c++
+	int[][] numbers = new int[6][4];
+	albo
+	int[][] numbers ={{1,2,3}{4,5,6}};
+	System.out.printnl(Arrays.deepToString(numbers));
+	..a tak wyświetkimy
+
+	..OPERATORY ARYTMETYCZNE
+	..nic szczegulnego poza dzieleniem liczb całkwiytych które zwraca liczbe całkowitą
+	.. jak chcemy zamiennoprzecinkową to musimy:
+	double wynik =(double)10 / (double)3;
+	.. tak otrzymamy 3.333 a nie 3
+	
+	..INKREMNTORY
+	..jak c++ 
+	x++ 
+	..inkremencja po działaniu
+	++x 
+	..inkremencja przed dziłaniem
+	x += 2;
+	..to samo co x = x + 2
+	.. czyli inkrementacja o 2
+
+	..INPLICIT CASTING
+	.. czyli taka konwesja typów która nie powouje utraty okłaności (działa automatycznie)
+	byte > short > int > long > float > double
+	..EXPLICIT CASTING
+	.. robimy to sami
+	double x = 1.1 ;
+	int y = (int)x + 2 ;
+	.. otrzymamy 3
+	..rzutownie (casting) można robić bez problemy na typach kompatybilnych
+	.. jednak jak mamy 'string' i chcemy 'int' to
+	String x = "1";
+	int y = Integer.parseInt(x) + 2 ;
+	.. ostaniemy 3 
+	.. inne są nazwy fukcji dla float, byte itd. w klasie 'Integer' 
+
+	int wynik = Math.round(1.1F) ;
+	.. zaokrągli 
+	floor()
+	celi()
+	.. poddłoga i sufit
+	.. z tym że funkcje zwracją 'int' więc trzeba rzutować int na float
+	int wynik = (int)Math.celi(1.1F);
+
+	double wynik = Math.round(Math.random() * 100);
+	..'random' daje 'float number' mięzy 0 a 1
+	.. pomnożone przez 100 daje mięzdzy 0 a 100
+	.. zaokrąglamy do jeddnego miejsca po przecinku
+	.. a jak chcemy int to musimy zmiecić 'wynik' na int
+	int wynik = (int) Math.round(Math.random() * 100);
+	.. jeddnak metoda 'round' daje 'float' więc musimy zrobić rzutowanie na 'int'
+	int wynik = (int) (Math.random() * 100);
+	.. ten sam efekt bez funkcji 'round'
+
+	..TYP WYLICZENIOWY
+	enum rozmiar {mały. sreni. duzy. e_duzy};
+	rozmiar s = rozmiar.sreni;
+
+DAY 3
+######
+
+	..KLASY ABSTRAKCYJNE
+	..'NumberFormat' jest taką klasą, nie można jej zainicjować metodą 'new'
+	..urzywa się jej tak że się odwołuje bezpośrednio do jej metody a ona tworzy (alokuje pamięć) nowy obiekt
+	..taka metda jest nazywana "factory method" bo tworzy
+	NumberFormat waluta = NumberFormat.getCurrencyInstance();
+	.. zmienna waluta zawiera teraz przestrzeń na "instancje wlauty"
+	String wynik = waluta.format(number:1234.5678);
+	..metoda format przyjmuje wartość string, wiec robimy taką zmienna i podajemy jej jakiś ciąg
+	.. wynikiem będzie " $123456.78 "
+	NumberFormat procent = NumberFormat.getPercentInstance();
+	String wynik = procent.format(number:0.3);
+	.. formatujemy na procent
+	.. otrzymamy 30%
+	String wynik = NumberFormat.getPercentInstance().format(number:0.3);
+	.. tak też można, "łancuchowe łączenie mtod"
+
+	import java.text.NumberFormat;
+	..jeszcze taki nagłówke trzba dać aby skorzystać z biblioteki "java.text" gdzie należy 'NumberFormat'
+
+	..INPUT
+	import java.util.Scaner
+	..nagłówek
+	public class main {
+ 		public static void main(String[] args) {
+			Scaner scaner = new Scaner(System.in);
+			byte wiek = scaner.nextByte();
+			System.out.printnl("Jesteś :" + wiek);
+		}
+	}
+	..pobira watrość 'byte' 
+	.. i drukuje
+	.. dla innych wartości jak np: string są inne metody klasy scaner
+	..'scaner.next' pobiera jeden "token" tzn. ala ma kota - pojedyncze słowa rozdddzielone spacjami to tokeny
+	..'scaner.nextLine' pobira całą linie w dosłowny sposób, tj. jak zrobimy TAB z przodu to razem z nim
+	.. ale możemy przyciąć puste znaki członkiem 'trim()' obiektu 'String'
+	byte wiek = scaner.nextLine().trim();
+	..teraz pozbedziemy sie białych znaków z początku lini jeśli takie bedą
+
+	..OPERATORY POROWNANIA
+	System.out.printnl(x == y)
+	..porównujemy x i y
+	.. podobnie ja w bash <= != itd..
+
+	..OPERATORY LOGICZNE
+	.. znowu jak bash 
+	..'&&' and
+	..'||' or
+	..jak przed zmienna postawimy '!' to  owroci to jej sens
+	!tak 	
+	.. czyli not
+
+	..IF STATMENT
+	
+ 		public static void main(String[] args) {
+		int temp = 20;
+		if (temp > 30) {
+			System.out.printnl("goraco");
+			System.out.printnl("pij wode");
+		}
+		else if (temp > 20)
+			System.out.printnl("jest >20");
+		else
+			System.out.printnl("zimno");
+		}
+	..jeżeli instrukcja ma wicej niż jedna linie trzeba robić nawiasy klamrowe	
+	.. ale przy jednej już nie
+	
+	..POTRÓJNY OPERATOR
+		public static void main(String[] args) {
+		int dochod = 120_000;
+		String jakaKlasa = dochod > 100_000 ? "pierwsza" : "dróga";
+	..do zmennej "jakaKlasa" o wartości string zapisujemy jeden z dwoch podanych stringów
+	.. zależnie do wyniku porównania ">"
+
+	..SWITCH
+		public static void main(String[] args) {
+		int kto = 1;
+		switch (role) {
+			case 1:
+			System.out.printnl("goraco");
+			break;
+			case 2:
+			System.out.printnl("zimno");
+			break;
+			default:
+			System.out.printnl("nie wiem");
+		}
+		}
+	..zamiast inta może byc String wtedy
+	case "łańcuch":
+
+	..FOR LOOP
+		public static void main(String[] args) {
+			for (int i = 0;i < 5;i++)
+				System.out.printnl("dupa");
+		}
+
+	..WHILE LOOP
+		public static void main(String[] args) {
+			Scaner pobierz = new Scaner(System.in);
+			String input = "";
+			while (!input.equals("quit")) {
+				System.out.print("liczba: ");
+				input = scaner.next().toLowerCase();
+				System.out.printnl(input);
+			}
+		}
+	..pobieramy z konskoli "system.in"
+	.. lokujemy pusty string
+	.. puszczamy petle, i dopuki watrość NIE jest stringiem "qiut" wykonuj polecenia
+	.. metoda "equals" porównuje zmienne referncyje jak stringi
+	.. bez niej porównywalibyśmy adresy pamięci gdzie sa przechowywane stringi
+	.. "toLowerCase" członek klacy String, zmienia na małe litery (gdyby były różne wielkości)
+	
+
+	..DO WHILE
+	do {
+	instrukcje
+	} while (test);
+	..do while wykonuje kod przynajmniej raz przed zrobieniem testu
+
+
+	..BRAKE i CONTINUE
+		public static void main(String[] args) {
+			Scaner pobierz = new Scaner(System.in);
+			String input = "";
+			while (true) {
+				System.out.print("liczba: ");
+				input = scaner.next().toLowerCase();
+				if (input.equals("pass"))
+				continue;
+				if (input.equals("quit"))
+				brake;
+				System.out.printnl(input);
+			}
+		}
+	..nieskończona petla "true" musi mieć 'barke' inaczej bedzie nieskończone :) 
+	.. podane treści są wywoływane na ekran
+	.. chyba że "pass" wtedy kod wraca na początek i nic nie wyswietla
+	.. jak "quit" to kończy petle i nic nie wyświetla
+
+	..FOR EACH LOOP
+	
+		public static void main(String[] args) {
+			String[] owoce = {"jablko","wisnia","gruszka"};
+			for (String jakiOwoc : owoce)
+				System.out.printnl(jakiOwoc);
+		}
+	..innicjalizujemy tablice stringów "owoce" i zapychamy ją trescią
+	.. dla każdego tokena w tablicy "owace" wykonujemy instrukcje wyświetlają poczegulny token
+	.. pętle for each dziłają tylko "do przodu" nie możemy ich puścić od konca
+	.. nie mamy też dostępu do poszczegulnych indeksów
+	.. taka petla jest jednak czasem wygodniesza
+
+
+	..KOMENTARZE
+	//tak
+	/* lub tak */
+	/**
+	* albo tak
+	*/
+
+DAY 4
+######
+	..nazwy klas i metod to tzw. IDENTYFIKATOR
+	..teści klas to tzw. CZŁONKOWIE (MEMBER)
+	..WŁACIWOSCI to treści przechowujące jakieś dane np. int, string ..
+	..public , private to MODYFIKATORY DOSTĘPU
+	..OBJEKT to instancja kalsy np: Scaner x = new Scaner(System.in);
+	..parametr STATIC sparwaia że nie trzba podawać instancji klasy, i że zminne nie mogą byc zmieniane prze inne metody
+	..PARAMETRY to zmienne do przechowywania argumetów np. String[] args -czyli przchwyć argumenty i przechowaj je w tablicy stingów
+	..ARGUMET to to co przkazujesz do metody, patrz kod niżej
+
+	..DYNAMICZNE APLIKACJE, podawanie argumetów
+	public class MojProgram {
+	 public static void main(String[] args) {
+	 	System.out.printnl("hello" + args[0]);
+	 }
+	}
+	..teraz możemy podać przy uruchamiani programu jakiś parametr i zostanie on odany do "hello"
+	
+	..KONKATENACJA
+	.."Java\u2122" łancuch z znakiem TM (unicode)
+	..wartość polaczona z lancuchem zostaje przekonwertowna na lancuch np: int + string = string
+
+	String wszystkie = String.join("/"."m"."s"."d");
+	..otrzymamy m/s/d 
+	.. tak lonczyc mozna kilka lancuchow
+
+	String greeting = "czesc";
+	greeting = greeting.substring(0,3) + "kaj";
+	..otrzymamy 'czekaj'
+	..tworzymy nowy łancuch
+	..łańcuchy są nizmienialne, tzn nie mozna zmieniac znaków w stringu
+
+	..PORÓWNYWANIE STRINGOW
+	s.equals(t)
+	..zwroci TRUE jesli łańch S jest taki sam jak T
+	s.compareTo("t") 
+	.. inny sposób
+	if (greeting.compareTo("czesc") == 0)
+	..lub tak
+	if (str.length() == 0)
+	..czy lancuch jest rownej dlugosci, (str - to zmienna lancuch)
+	if(str.equals(""))
+	..lub tak
+	if (str == NULL) 
+	..czy jest NULL
+	if (str != NULL && str.length() != 0)
+	..czy jest NULL i czy ma identyczna dlugosc, wazne aby spr null pierwszo
+	
+	char pierwsza = greeting.charAt();
+	..pierwszy znak z stringa
+	
+	..SKLADANIE LANCUCHOW
+	StringBuilder builder = new StringBuilder();
+	builder.append(znak);
+	..tak doddac mozna znak lub łancuch 
+	String gotowyString = builder.toString()	
+	..w tych 3 krokach skaładamy lancuch
+	..inicjalizujemy buildera strinow
+	..dodajemy coś, znak/string
+	..tworzymy nowy string (bo strigi sa niezmienialne) z nową wartościa
+
+DAY 5
+#####
+	..WYJSCIE WEJSCIE
+	import java.util.*;
+	scanner wejscie = new Scanner(System.in);
+	int wiek = wejscie.nextInt();
+	..dla zmiennoprzecinkowych "nextDouble"
+
+	Console con = System.console();
+	String nazwaUsera = con.readLine("nazwa użytkownika: ");
+	char[] passwd = con.readPassword("hasło: "):
+	..klasa 'Console' nie jest wioczna dla wszyskich jak 'Scanner'
+
+	..FORMATOWANIE DANYCH WYJSCIOWYCH
+	System.out.printf("%8.2f",x);
+	..printf działa jak w C
+	..tu X jest równe np: 3.333333..
+	.. a my wyrukujemy 'floating point' -f tylko 8 znaków, i dwoma miejscami po przecinku
+	%f - floating piont
+	%c - character
+	%s - string
+	%d - int
+	import java.util.Date;
+	System.out.printf("%1$s %2$te %2$tB %2$tY" , "data", new Date());
+	..otrzymamy: data 20 Czerwca 2020
+	.. wartość indeksów argumentów zaczynają sią od 1
+	.. albo tak:
+	"%s %te %<tB %<ty=Y"
+	..zank ' < ' oznacza użyj ponownie co we wczesniejzej specyfikacji
+
+	..ZAPIS I ODCZYT Z PLIKU
+	Scanner in = new Scanner(Paths.get("plik.txt");
+	..inicjalizujemy obkiet z danymi z pliku
+	.. pilk jest wzgledny mijscu gdzie jest kod
+	PrintWriter out = new PrintWriter("mojPlik.txt");
+	..inicjalizaja obiktu zapisujacego dane do pliku
+	.. jeżeli plik nie istnieje można uzyć: print,printnl,printf -jak przy drukowaniu Scanner-em
+	Public static void main(String[] args) throws IOEsceptions
+	{	
+	 Scanner in = new Scanner(Paths.get("plik.txt"),"UTF-8");
+	}
+	..'throws IOEsceptions' mówi kompilatorowi że to okej jeżeli plik nie istnieje
+	.. Można tez przy uruchamianiu programu przekierować za pomocom systemu:
+	$ java tenProgram < plik.txt > plik.out
+	.. w celu unikniecia pisania IOEsceptions
+
+DAY 6
+######
+
+	static final double STALA = 20.3;
+	..'final' to stała (constant), zwyczajowo zapisywana wielkimi literami
+
+	System.out.println(Float.MAX_VALUE);	
+	System.out.println(Double.MAX_VALUE);	
+	..wypiszemy sobie największe rozmiary flota i doubla jakie możemy otrzymać na naszej maszynie
+
+	char kodAscii = 65;
+	..wyświetlimy 'A'
+
+	^
+	..Xor czyli jedno musi być true a drugie false
+
+	case 'b'
+	case 'B'
+	System.out.println("wybrales b/B");
+	..jeden case akceptujacy obie wersje b
+
+	..POLIMORFIZM
+	..czyli dwie lub wiecej metod mogą mieć takie same nazwy ale różne 'parametry'
+	.. to jest tzw: "przeciążanie metody"
+	..inny rodzaj polimorfizmu to 'napisywanie' czyli jeśli pobieramy ją metode z innego pliku
+	.. a mamy w naszym kodzie już taką samą o takich samych parametrach to ta nasza 'nadpisze' tamtą
+
+	..DZIEDZICZENIE
+	public class Przykład1 extends Przykład2 { ... }
+	..'extends' znaczy że dzieziczymy matody z klasy Przykład2 które też możemy w naszej urzywać
+	..ta pierwsza to tzw."subklasa"
+	.. a druga "super kalsa"
+
+	while (i <=20) {
+		if (i == 3){
+		i+=2; 
+		continue;
+		}
+	System.out.println(i);
+	i++
+	}
+	..prosty licznik, pomijamy 3 i 4
+	.. 'continue' wraca na początek while
+
+	if ((i%2) == 0)
+	..jeśli jest reszta z dzielenia przez 2 znaczy że 'i' jest nieparzysta
+
+	int n , m ;
+	for (n=1 , m=2 ; n <=9 ;n+=2 , m+=2) {
+	System.out.println(n + "\n" + m); }	
+	..długi sposób na rukowanie od 1 ddo 10
+	.. po przecinku may dwie zmienne
+
+	..metody 'static' mogą być wykonywane tylko przez klase do której należa
+	
+DAY 7
+######
+
+	..clasy np: string. to też typy danych
+
+	..prymitywne typy też mogą być objektami
+	Integer y = new Integer 5 ;
+	.. albo jak przy stringu
+	Integer y = 5 ;
+	.. oba sposoby tak samo walidalne
+	.. oczywiście w tym kroku obywają się dwie rzeczy
+	.. deklaracja zmiennej oraz inicjalizacja
+
+	..w "byte" type można przchowywać znaki ASCII, C i 67 przechowywane są tak samo
+	byte b = 'C' ;
+
+	long l = 50L ;
+	..trzeba pomiętać o 'L' na końcu
+	.. tak jak 'f' przy "folat"
+
+	..technicznie motoda jest przyłączona do klasy
+	klasa.metoda
+	.. a funkcja nie
+
+	double x = 5 / 2 ;
+	..otrzymamy dwa ponieważ używamy nielenia na liczbach całkowitych (int)
+	double x = 5.0 / 2 ;
+	.. a teraz dzielimy zmiennoprzecinkowo
+	double x = (double) 5 / 2 ;
+	..albo taka deklaracja, przyatna gdyby zamiast 5 była zmienna np:a
+	.. "5 + 5" to opratory binarne
+	.. "a + 5" to opratory uniarene

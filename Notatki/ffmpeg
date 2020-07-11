@@ -1,0 +1,12 @@
+Ekstrakcja audio z filmu
+$ ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
+..-vn is no video
+..-acodec copy says use the same audio stream that's already in there. 
+
+Konwersja
+$ ffmpeg -i input.mp3 output.ogg
+..z jednego audio na drugie
+$ ffmpeg -i input.mp4 output.webm
+..z jednego video na drugie
+..matroska mkv przyjmuje dowolny strumień wiec
+..konwertujac mp4 na mkv możesz otrzymać nie te codeki co chciałeś
