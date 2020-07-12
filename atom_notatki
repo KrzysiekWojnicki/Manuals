@@ -1,0 +1,18 @@
+C:\Users\Winkiano\AppData\Local\atom\app-1.48.0\resources\app\apm\bin>
+
+w .atom\...build\packages\ide-java w pliku packages.jason zmień linie 0.9.5
+na 0.9.9
+
+npt install
+..inataluje zależności ??
+
+apm rebulid ide-java
+..przebuduje paczkę ide-java
+
+..jak nie pomoże odinstaluj ide-java
+..i zainstaluj z CMD
+apm install https://github.com/rajivshah3/ide-java
+.. to ostatnie pomogło
+
+ctrl+RShift+b
+..odpala kod
