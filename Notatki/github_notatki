@@ -25,7 +25,7 @@ JAK ZACZĄĆ (repozytorium na github.com)
 
 Drugi sposób jest taki że sam tworzysz katalog do którego przechodzisz i piszesz # git init - tworzy katlog .git , później piszesz # git remote add nazwa_po_jakiej_chcesz_się_odwoływać "link_twojego_zdalnego_repo" - ten sam co w poprzedniej metodzie , aby teraz ściągnąć pliki z zdalnego repo piszesz # git pull twoja_nazwa_odwołująca_się_do_repo i_nazwa_gałęzi(master lub testing)- oczywiście wybieramy tą na której pracujemy , Teraz już powinniśmy mieć nasze pliki z remote repo.
 
-7. Aby bezpiecznie łączyć się z remote repo możemy zamiast zwykłego linku http użyć ssh , w tym przypadku najpierw generujemy klucz ssh # ssh-keygen -tworzy nam się klucz w .ssh/id_rsa , teraz trzeba go podejrzeć na poleceniem cat i skopiować , następnie na stronie github wchodzimy w opcji -> klucze ssh i tam tworzymy nowy klucz i wklejamy nasz skopiowany , wracamy do terminala i synchronizujemy połączenie poleceniem # ssh -T git@github.com , i już.
+7. Aby bezpiecznie łączyć się z remote repo możemy zamiast zwykłego linku http użyć ssh , w tym przypadku najpierw generujemy klucz ssh # ssh-keygen -tworzy nam się klucz w .ssh/id_rsa.pub , teraz trzeba go podejrzeć na poleceniem cat i skopiować , następnie na stronie github wchodzimy w opcji -> klucze ssh i tam tworzymy nowy klucz i wklejamy nasz skopiowany , wracamy do terminala i synchronizujemy połączenie poleceniem # ssh -T git@github.com , i już.
 
 8. Jak wpiszesz  $ git status - zobaczysz jakie pliki są w strefie "pracy" a jakie w "staging area" (czyli na scenie)(jak jeszcze nic nie dodałeś albo nie zmieniłeś to wyświetli odpowiadający temu sanowi rzeczy komunikat
 
