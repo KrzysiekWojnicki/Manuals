@@ -1,0 +1,233 @@
+drugim razem zrobile³ LVM na raid
+najpierw zrobi³em raid
+i jak to skonczysz to wróc tu.
+
+LVM NA RAID
+	# pvcreate /dev/mdX
+	# vgcreate vg1	/dev/mdX
+	"vg1" to nazwa
+	mozomy podejrzec
+	# vgdisplay
+
+	teraz tworzymy konkretne woluminy
+	# lvcreate vg1 --name root --size 15G
+	# lvcreate vg1 --name home --size 15G
+	albo
+	# lvcreate vg1 --name home -l 100%FREE
+	w tedy wykorzystmy pozosta³e wolne miejsce	
+	mozemy podejrzec 
+	# lvs
+
+	partycje vlm musza byc typu lvm
+	i robimy file system
+	PRO tip zainastaluj lvm2 na maszynie
+	i pamietaj o dodaniu w mkinicpio w sekcji hook sd-lvm2
+
+TWORZENIE TABLICY RAID
+	tu raid 1
+	stwó¿ partycje na jednym z dysków
+	np: na boot, root, home
+	boot -musi byc oznaczona flaga "bootable" dla MBR
+	partycje maj¹ typ "linux raid"
+
+	z drugim dyskiem zrób to samo
+	np: przy urzyciu ponizszej komendy:
+	root@host # sfdisk -d /dev/sda | sfdisk /dev/sdb
+
+	przy pomocy narzedzia "mdadm" tworzymy tablice(array) raid
+	root@host # mdadm --create /dev/md0 --level=1 --metadata=1.0 --raid-devices=2 /dev/sda1 /dev/sdb1
+	powy¿ej tworzymy "/dev/md0" raid1
+	"metadata 1.0" to limitacja przy bootowaniu z syslinux v4.07
+	i dwa urzadzenia (ich konkretne partycje)
+	!!!!!
+	WARZNE
+	!!!!!
+	dla partycji boot lepiej urzyæ metadata=0.9
+
+	przed urzyciem mdadm trzeba za³adowac modu³y dla poziomu raid jakiego bedziesz urzywa³
+	# modprobe raid1
+
+	to samo robimy dla pozosta³ych partycji
+	root@host # mdadm --create /dev/md1 --level=1 --raid-devices=2 /dev/sda2 /dev/sdb2
+	root@host # mdadm --create /dev/md2 --level=1 --raid-devices=2 /dev/sda3 /dev/sdb3
+	ale bez metadata bo te nie sa boot
+
+	teraz dyski beda siê synchronizowac
+	mo¿na to podejrzec:
+	root@host # watch cat /proc/mdstat
+	natomiast szczego³owe info np. dla md1:
+	# mdadm --misc --detail /dev/md1
+
+	trzeba enable raid suprt, dla raid1 to:
+	# modprobe raid1
+
+	to powienno byc nizej, jak juz chroot-ujesz sie na zamontowane partycje
+	jezeli plik /etc/mdadm.conf nie istniej nale¿y go stworzyc i z palca uzupelnic
+	albo
+	root@host # mdadm --detail --scan >> /etc/mdadm.conf
+	powyzsze polecenie zalatwia sprawe
+
+	
+	robimy mkfs na partycjach
+	!!!! WARZNE
+	 ... z jakiegos powodu nie uda³o mi siê pierwszym razem zainstalowac gruba
+	 ... spróbuj zmienic typ partycji boot na "bios boot" je¿lli robisz gpt
+	 ... jak nie zadziala spr. zrezygnowaæ z raid dla partycji boot i w tedy zrób "bois boot"
+	!!!!
+	root@host # mkfs -t ext2 -L'boot' /dev/md0
+	albo
+	# mkfs.ext4 /dev/md0
+	albo
+	jakkolwiek robisz partycje boot i pozosta³e
+
+	teraz trzeba zamontowac tablice 
+	# mount /dev/md1 /mnt
+	# mkdir /mnt/boot
+	# mount /dev/md0 /mnt/boot
+	# mkdir /mnt/home
+	# mount /dev/md2 /mnt/home	
+
+
+	daleje jest instalacja linuxa, ale info jakie by³o tu: 
+	https://edoceo.com/sys/mdadm-raid1
+	nie rozumienm
+
+	pacstrap /mnt base base-devel linux-lts vim
+	mdamd -aby móc obs³ugiwac raid
+	dhcpcd -daemon dhcpcd (nie to sammo co server dhcp)
+	..itd.
+
+	po zamontowaniu robimy packstrap base itp.
+	nastepnie znowu trzeba updatejtowac mdadm 
+	# mdadm --detail --scan >> /mnt/etc/mdadm.conf
+
+	Once the configuration file has been updated the array can be assembled using mdadm:
+	..ten krok po ARCH-CHROOT
+	.. i musi byc zainstalowany mdadm
+	# mdadm --assemble --scan
+	..dla wszytkich znalezionych
+	lub
+	# mdadm --assemble /dev/md0 --name <name>
+	..dla konkretnej
+
+	!!!!!
+	 Note: To prevent failure of mdmonitor.service at boot (enabled by default), you will need to uncomment MAILADDR and provide an e-mail address and/or application to handle notification of problems with your array at the bottom of mdadm.conf. See #Mailing on events
+	!!!!!	
+	
+	..z innego Ÿród³a
+	https://www.7l.com/blog/installing-arch-linux-with-software-raid-and-ssh/
+/	sa nastepujace kroki
+	HOOKS dla raid1 - nie wiem jeszcze
+	Add mdadm_udev to the HOOKS section of the mkinitcpio.conf to add support for mdadm into the initramfs image:
+	/etc/mkinitcpio.conf
+	...
+ 	HOOKS=(base udev autodetect keyboard modconf block mdadm_udev filesystems fsck)
+	...
+
+	# mkinitcpio -p linux-lts
+	!!!!!
+	 Note: Every time when you make changes to /etc/mdadm.conf, the initramfs needs to be regenerated.
+	!!!!!
+
+	edycja fstab dla tablic, w pliku /etc/fstab dopisujemy
+	/dev/md2                /home   ext4 	    defaults        0       0
+	/dev/md1                /    	ext4        defaults        0       1
+	/dev/md0                /boot   ext4        defaults        0       0
+
+	ewentualnie mozna spr. skopiowac UUID dla poszczegunych i wpisac zamiast /dev/mdX
+	sprawdzic mozna poleceniem "blkid"
+	polecenia "mount -a" czyta plik fstab i m¹tuje pliki
+	w ten sposów mozna sprawdzic czy wszystko dzi³a poprawnie
+
+	"""""?????""""""
+	After setting up your RAID-1 on /boot, you have to install GRUB onto each drive in the RAID-1 array.
+
+	How to boot after RAID failure (software RAID)?
+
+	This particular example shows how to setup a 3-way RAID-1 mirror so that all three drives are bootable with GRUB.
+
+	# grub
+	grub> find /grub/stage1
+	 (hd0,0)
+ 	 (hd1,0)
+	 (hd2,0)
+	grub> device (hd0) /dev/sda
+	grub> root (hd0,0)
+	grub> setup (hd0)
+	grub> device (hd0) /dev/sdb
+	grub> root (hd0,0)
+	grub> setup (hd0)
+	grub> device (hd0) /dev/sdc
+	grub> root (hd0,0)
+	grub> setup (hd0)
+	grub> quit
+	"""""?????"""""""
+
+	"""""?????"""""""
+	bootowanie z gruba??
+	Then specify the raid array you’re booting from in /mnt/boot/grub/menu.lst like:
+
+	 # Example with /dev/array/root for / & /dev/md1 for /boot:
+	   kernel /kernel26 root=/dev/md3 ro  md=1,/dev/hda1,/dev/hdb1 md=3,/dev/hda3,/dev/hdb3
+	
+	albo
+	root=/dev/md/MyRAIDArray
+	If booting from a software raid partition fails using the kernel device node method above, an alternative way is to use one of the methods from Persistent block device naming, for example:
+
+	""""""??????""""""
+
+	""""""??????""""""
+	RAID Maintenance
+	https://wiki.archlinux.org/index.php/RAID#Installation
+	""""""??????""""""
+
+	USUWANIE TABLIC RAID
+	--------------------
+	przed usunieciem zrób backup danych je¿eli ich potrzebujesz
+	jesli tablica jest zamontowana i dzia³a
+	trzba ja odmatowaæ poleceniem
+	# umount /dev/mdX
+	nastepnie trzeba j¹ zarzymac
+	# mdadm --stop /dev/mdX
+	i usunaæ
+	# mdadm --remove /dev/mdX
+	czasami nie da siê tego zrobic bo
+	OS usun¹³ ja przy zatrzymaniu
+	mo¿na spr.
+	# cat /proc/mdstat
+	i jeszcze czyszczenie superbloków partycji
+	# mdadm --zero-superblock /dev/sdXY
+
+	USUWANIE PARTYCJI LVM
+	---------------------
+	# lvdisplay
+	podgladmy jakie sa partycje
+	
+	# vim /etc/fstab
+	usuwamy wpis danego woluminu
+
+	# umount <wolunim>
+		
+	unieruchamiamy wolumin
+	# lvchange -an /dev/volumeGroup1/lvX
+	po tym kroku nie mia³em juz partycji-V do usuniecia
+
+	i usuwamy
+	# lvremove <nazwa>
+	usunie nam partycje danej nazwy
+
+	jezeli potrzeba usun¹c grupe to tak samo
+	# lvchange -an volumeGroup1
+	unieruchamiamy
+	# lgremove volumeGroup1
+
+	i fizyczny wolumin grupy
+	# pvremove /dev/sdX
+
+	CZYSZCZENIE DYSKU/PARTYCJI
+	----------------------------
+	dd if=/dev/zero of=/dev/sdX bs=512 
+	block size nie jezeli nie zdefiniowany to domyslny
+	jest wlasnie 512 (najmniejszy jaki mozna odczytac)
+
+	

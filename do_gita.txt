@@ -1,0 +1,110 @@
+.gitignore
+
+# wszystkie pliki koncz¹ce siê na o lub a
+*.[oa] 
+
+# wszystkie plki tymczasowe (podczas edycji zakonczone tyld¹
+*~
+
+# ale uwzglêdnij lib.a , pomino ignorownia *.a
+!lib.a
+
+# ignoruj pliki TODO w katalogu g³ównym ale nie podkatalogu/TODO
+/TODO
+
+# ignoruj doc/notatki.txt ale nie doc/server/arch.txt
+doc/*.txt
+
+# (abc) - dowolny znak
+# (!) - negacja
+# (/) - katalog
+# [0-9] - znak z przedzia³u
+# (?) - pojedyñczy znak
+
+-------
+git log -p -2
+# p poazuje ró¿nice wprowadzone z ka¿d¹ rewizj¹
+# 2 ost. wpisy
+# --stat skrócone ststystyki
+
+ git log --pretty=format:"%h - %an - %ar - %s"
+# %H - suma kontrolna zmiany
+# %h - skrócona suma kontroln zmiany
+# %T -suma kotrolna drzewa
+# %an - Nazwisko autora
+# %ar - wzglêdna data autora
+# %s - temat
+# %ce - adres email zatwirdzaj¹cego zmiany
+# %t - skrócona suma kontrolna drzewa
+# %P - sumy kotrolne rodziców
+# %p -skrócone..
+# %ad - data autora (format respektuje opcje -date=)
+# %cd - data zatwierdzaj¹cego zmiany
+# %cr - data zatwirdzaj¹cego zmiany , wzglêdna
+ 
+--online #karzda zmiana w pojedynczej lini
+--graph #graf histori ga³êzi
+# jest kilka formatów wyœwietlania oraz mo¿liwoœci ich sortowania
+
+git commit --amend
+# dodaje pliki z strefy add (poczekalnia) do poprzedniego commita
+# gdy zapome do³¹czyæ jakiegoœ pliku po commici, wtedy robie
+# add plik - i commit --amend
+
+ git reset HEAD <file>
+#usówa plik z poczekalni , HEAD -to chyab master branch , ale trzeba by 
+# zrobiæ git status ¿eby spr.
+
+git pull 
+# pobiera dane z serwera na bazie którego orginalnie stw. repo
+# i próbuje auto. scaliæ zmiany z kodem roboczym
+# nad który aktualnie pracujesz
+ 
+git fetch 
+# bobiera dane z repo których nie masz . Jednak ga³êzie 
+# scaliæ trzeba rêcznie
+
+git push [nazwa-repo] [nazwa-ga³êzi]
+# robi to co myœlisz :)
+
+ git push orgin master
+# jak masz sklonowane repo to wypchniesz zmiany do g³ównej ga³êzi tego¿
+
+ git remote show orgin 
+# wiele info. o repo i jego ga³êziach , które masz , których tam nie ma
+
+git remote rename du dupa
+# zmieni nzawe odnoœnika do repo z du na dupa
+# zmieni siê terz nzawa ga³êzi dupa/ga³¹Ÿ
+
+gir remote rm dupa
+# usuniemy dupe
+
+git tag 
+# listuje wszystkie etykiety
+
+git tag -l 'v1.2.*'
+# wyszuka szystkie wersje po nazwie 
+
+git tag -a v1.4 -m 'moja wersja 1.4'
+# tworzy etykiete opisan¹
+
+git show tag v1.4
+# info o etykiecie
+
+git tag -s v1.5 -m 'my signed 1.5 tag'
+# etykieta podpisana prwatnym kluczem
+
+git tag v1.4-lw
+# etykietowanie lekkie , nie przechowuje dodatkowych info.
+# jest to suma kotrolna rewizji przechowywana w pliku
+
+git tag -v v.1.4.1
+# weryfikowanie etykiety
+
+git push orgin [nazwa-etykiety]
+# etykiety trzeba osobno wypychaæ
+
+git push orgin --tags
+# doda wszystkie tagi z komputera
+ 

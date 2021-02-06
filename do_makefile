@@ -1,0 +1,49 @@
+####### MAKE FILE ########
+
+coœtam coœtam coœtam coœtam coœtam \
+coœtam coœtam coœtam 
+# \ slasz pomaga przy d³ugich liniach
+
+objekty = main.o cos.o
+edit : $(objekty)
+	cc -o edit $(objekty)
+main.o : main.c main.h
+	cc -c main.c
+cos.o : cos.c cos.h
+	cc -c cos.c
+clean :
+	rm edit $(objekty)
+# zmienna edit to alias objekty
+
+objekty = main.o cos.o
+edit : $(objekty)
+	cc -o edit $(objekty)
+main.o :  main.h
+cos.o : cos.h
+.PHONY : clean clean :
+	rm edit $(objekty)
+# kompiluj¹c pojedyñczy plik .o make automatycznie znajduje
+# odpowiadj¹cy mu .c , pozostaje dodaæ inne takie jak .h
+# .phony : clean clean - taki zapis sprawia i¿ mo¿na unikn¹æ
+# pomy³ki z aktualnym plikiem clean - gdyby taki istnia³
+
+-f ablo --file=nazwa
+# domyœlnie make szuka plików GNUmakefile , makefile , i Makefile
+# jednak jak chcemy zmieniæ nazwe to robimy to tak.
+# przy zmianie domyœlne nazwy nie bêda wyszukiwane w pierwszej
+# kolejnoœci . mo¿na miæ kilka nazw na ró¿ne pliki make
+
+include nazwy_plików
+# do³¹cza pliki np; *.jp - wszystkie pliki jp
+# $(pliki) - wszystkie pliki zawarte w aliasie
+
+-include albo sinclude 
+# dzia³a jak include , ale w przypadku gdy nie znajduje
+# pliku nie wysy³a info. o blêdzie
+
+-I albo --include-dir
+# okrœla directries gdzie mog¹ znajdowaæ siê pliki
+# include -ale nie doczyta³em tego jeszcze wiêc nie wiem jak
+# na przwde to dzia³a
+
+

@@ -1,0 +1,2 @@
+	Aby copy i paste w urxvt:
+	#pacman -S xclip

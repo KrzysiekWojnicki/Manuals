@@ -1,0 +1,160 @@
+	
+Po minimalnej trzeba jeszcze:
+
+time zone
+	$ ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+synchronizujemy zegar hardwerowy
+	$ hwclock --systohc --utc
+lokalizacje, locale conf, aby klawiature ustawiæ p.AIG
+	$ vim /etc/locale.gen 
+	.. wybieramy poskie utf-8 i mo¿e usa, zapisujemy i wychodzimy
+	$ locale-gen
+ustawiamy sobie jêzyk, ale takie rzeczy mo¿na pomin¹æ
+	..domyslnie jest: en_US.UTF-8
+	..ale mo¿na:
+	$ export LANG=pl_PL.UTF-8
+ustawic edytor
+	$ export EDITOR=vim
+	..inne zmienne srodowiskowe mozna podej¿ec
+	$ printenv
+
+dodac u¿ytkownika
+	$ useradd -m -g users -s /bin/bash Jaœ
+	..ma³e 'g' to grupa primery, wilkie 'G' to dodatkowe grupy ma¿na pomin¹æ
+	..oraz passwd usera
+	$ passwd Jaœ 
+	$ *****	
+
+wypada doinstalowac:
+	$ pacman -Syy base-devel
+	.. tu jest miedzy innymi visudo
+	
+dodajemy uprawinienia
+	$ visudo
+	.. edytujemy jak uwarzamy np: odchaczmy grupe sudo i
+	$ usermod -a -G sudo Jaœ
+	.. dodajemy jasia daj¹c mu uprawnienia sudo
+	..jak grupa nie istnieje
+	$ getent group
+	..to ja tworzymy
+	$ groupadd sudo
+
+
+Instalacja xorga
+	$ pacman -Syyy  -rekurentna synchronzacja repozutoriów
+	$ pacman -S xorg-server xorg-xinit
+	.. ¿eby wystartowaæ Xserver wpisujemy 'xinit' albo 'startx'
+	.. to oplecenie czyta plik ~/.xinitrc
+	$ lspci  -szukamy jak¹ mamy karte graficzn¹
+	.. Zak³adamy ¿e mamy intela
+	$ pacman -S xf86-video-intel libgl mesa
+	.. Dla nvidi
+	$ pacman -S nvidia nvidia-lts nvidia-libgl mesa
+	.. Dla ati	
+	$ pacman -S mesa xf86-video-amdgpu
+	.. Najlepiej sparwdziæ na arch wiki co za sterowniki
+ 
+INSTALACJA I3
+-------------
+1. instalacja
+	pacman -S i3-wm
+	albo
+	pacman -S i3-gaps
+	a tak¿e
+	i3status  --status bar
+	dmenu	--run prompt, rozwijane menu
+	rxvt-unicode	--terminal
+	xsel --clipboard menager, bo rxvt nie ma domyslnie funcki ctrl+c ctrl+v
+	nm-applet	--network menager
+	noto-fonts --paczki fontów 
+	(mo¿na zobaczyæ fonty na arch wiki i zobaczyæ inne fonty i wybraæ konkretn¹)
+	w razie problemów z fontami mo¿na edytowæ plik
+	`/.config/fontconfig/fonts.conf
+2.edycja .xinitrc
+	dopisujemy:
+	exec i3
+	(jesli s¹ tam jakieœ inne to odkometówujemy)
+	dla innych widow menagerów trzeba czasem dopisaæ inne polecenie, patrz w wiki
+	np.: exec xfce4-session
+3.I3 mo¿e byæ niekompadtbilne z menagerem logowania
+	wiêc lepiej go wy³¹czyæ jeœli jest w³¹czony
+	sudo systemctl stop gdm
+4.reboot
+5.startx
+
+6. Je¿eli chcemy mo¿emy zainstalowaæ menad¿era (agenta)logowania
+	sudo pacman -S lightdm lightdm-gtk-greeter
+	sudo systemctl enable ligtdm.service
+	
+?? - enable(przy starcie)
+?? - start(teraz)
+
+##########################################
+PROBLEM Z KLUCZAMI PACMANA
+---------------------------
+	 pacman-key --list-sigs Master
+	 wybieramy nas interesuj¹cy
+	 pacman-key --delete 91FFE0700E80619CEB73235CA88E23E377514E00
+	 pacman-key --populate archlinux
+	ewentualnie
+	pacman -Sy
+	pacman -S archlinux-keyring
+	pacman -Su
+INNE CIEKAWE
+-----------------------------
+smartmontools  --Na pakiet smartmontools sk³adaj¹ siê dwa programy smartctl i smartd. 
+	..Pierwszy z nich to uniwersalne narzêdzie od konfiguracji, uruchamiania testów i odczytywania z dysku informacji o jego stanie. 
+	..Smartd odpowiada natomiast za monitorowanie dysku.
+	smartctl -i /dec/sda	-info o dysku sda
+	opcja '-H' pokazjue heath
+	opcja '-a' pokazuje ca³oœæ
+	dmesg	--eventy stsyemd
+	je¿eli w raid 1 od³¹czy na siê dysk to po ponownym go wpiêciu aby zsynchronizowaæ dyski
+	mdadm /dev/mdX --add /dev/sdX		--X oczywiœcie jest to dowlna litera
+	w podstawoje instalacji linuxa powinna byæ funkcja smartctl, jak jej nie mam mo¿na j¹ zainstalowaæ
+	dziêki niej mo¿na podgl¹dn¹æ dane tech dysku
+
+
+	
+ Czcionka konsoli i mapa klawiatury 
+	..nie jest super konieczne bo moze zostac US
+	.. chodzi g³ownie a kodowanie polkich znaków diakretycznych
+	aby to uczynic skonfiguruj poleceniem:
+	loadkeys pl
+	setfont Lat2-Terminus16
+ 	..polecenie wyrzej nie wprowadza sta³ych zmian, po reboocie wróci do domyslnych	
+	Wyedytuj równie¿ plik „vconsole.conf”: 
+	vim /etc/vconsole.conf
+	dodaj do niego dwie linie:
+	KEYMAP=pl
+	FONT=Lat2-Terminus16
+
+
+
+
+27?. Swap.	
+	plik swap:
+	a. tworzymy plik
+	touch swapfile-name
+	b. formatujemy plik za pomoc¹ dd
+	dd if=/dev/zero of=swapfile-name bs=1024k count=MB-num
+	c. formatujem plik na swap
+	mkswap swapfile-name
+	d. aktywujemy swap
+	swapon swapfile-name
+	e. dopisujemy do pliku /etc/fstab:
+	/swapfile-name none swap sw 0 0 
+	dziêki tej ostatniej czynnoœci swap bêdziê nam dzi³a³ przy boot-cie
+
+28. Innaczej uruchomiony swap file
+	fallocate -l 2G /swapfile
+	chmod 600 /swapfile
+	mkswap /swapfile
+	swapon /swapfile
+	echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+	to ostatnie to dopisanie do fstab
+
+
+
+
+

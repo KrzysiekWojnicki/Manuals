@@ -1,0 +1,53 @@
+
+KROTKA MINIMALAN INSTALACJA 
+Z UWZGLEDNIENIEM RAID ORAZ LVM
+------------------------------
+
+pacstrap /mnt base linux-lts dhcpcd mdadm lvm2
+
+genfstab -U /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt
+
+dla raid1
+mdadm --detail --scan >> /etc/mdadm.conf
+--examine ?
+
+mdadm --assemble --scan
+	..dla wszytkich znalezionych
+
+Nastêpnie dopisujem do sekcji HOOK w pliku /etc/mkinitcpio.conf
+	'encrypt lvm2' po 'udev' , 'block' i przed 'filesystem' , jak nie szyfrujemy to crypt mo¿na opuœciæ
+	!!! Dla initramfs opartych na systemd:
+	HOOKS=(base systemd ... block sd-lvm2 filesystems)
+	albo !!!! 
+	lvm2 
+	je¿eli jest initramfs udev
+
+oraz dla RAID1
+mdadm_udev 
+
+..i aktulalizujemy mkinitcpio 
+# mkinitcpio -p linux-lts
+
+edytujemy hosta w /etc/hosts
+	127.0.0.1        localhost
+	::1              localhost
+	127.0.1.1        myhostname.localdomain        myhostname
+
+systemctl enable dhcpcd
+to moze juz dzia³aæ, ale po rebucie spr.
+
+pacman -S grub
+
+grub-install --verbose /dev/sdX
+
+grub-mkconfig -o  /boot/grub/grub.cfg
+
+passwd
+
+exit
+
+umount -R /mnt
+
+reboot

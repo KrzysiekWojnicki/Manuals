@@ -1,0 +1,14 @@
+	
+
+	journalctl -p 3 -xb	-b³êdy w logach systemomych
+	systemctl --failed	-sprawdzmy czy jakies us³ugi pad³y
+	pacman -Syu	-full update, zawsze rob full
+	pacman -Qtd	-sparawdza osierocone paczki
+	LC_ALL=C pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h
+		-to wy¿ej to wszytkie paczki i ich rozmiary
+	pacman -Ss {keyWordHere}		-szukanie paczek
+	sudo pkgfile --update		-mo¿na te¿ szukaæ programem pkgfile (jak go zainstalujesz),tylko przed trzeba udejtowaæ
+	pkgfile {keyWordHere}		-i tak siê szuka
+	# pacman -Rs package_name	-To remove a package and its dependencies which are not required by any other installed package
+	$ pacman -Qs string1 string2	-To search for already installed packages
+	$ pacman -Qe 	-List all explicitly installed packages
