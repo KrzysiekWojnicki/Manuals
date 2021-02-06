@@ -34,6 +34,10 @@ Drugi sposób jest taki że sam tworzysz katalog do którego przechodzisz i pisz
 	..i dodac klucz
 	$ ssh-add ~/.ssh/id_rsa 
 	Kroki te powinno sie przed niektorymiz punktu wyzej
+	Dodatkowo
+	$ git remote set-url origin git@github.com:USERNAME/Repo.git
+	..ustawia url na urzywanie ssh zamiast https
+	..zmien username/repo.git na swoje
 
 8. Jak wpiszesz  $ git status - zobaczysz jakie pliki są w strefie "pracy" a jakie w "staging area" (czyli na scenie)(jak jeszcze nic nie dodałeś albo nie zmieniłeś to wyświetli odpowiadający temu sanowi rzeczy komunikat
 
