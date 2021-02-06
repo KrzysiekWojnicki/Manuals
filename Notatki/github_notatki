@@ -27,6 +27,14 @@ Drugi sposób jest taki że sam tworzysz katalog do którego przechodzisz i pisz
 
 7. Aby bezpiecznie łączyć się z remote repo możemy zamiast zwykłego linku http użyć ssh , w tym przypadku najpierw generujemy klucz ssh # ssh-keygen -tworzy nam się klucz w .ssh/id_rsa.pub , teraz trzeba go podejrzeć na poleceniem cat i skopiować , następnie na stronie github wchodzimy w opcji -> klucze ssh i tam tworzymy nowy klucz i wklejamy nasz skopiowany , wracamy do terminala i synchronizujemy połączenie poleceniem # ssh -T git@github.com , i już.
 
+7.1 
+	nie koniecznie,
+	..jescze trzeba zaincjowac agenta ssh
+	$ eval `ssh-agent -s`
+	..i dodac klucz
+	$ ssh-add ~/.ssh/id_rsa 
+	Kroki te powinno sie przed niektorymiz punktu wyzej
+
 8. Jak wpiszesz  $ git status - zobaczysz jakie pliki są w strefie "pracy" a jakie w "staging area" (czyli na scenie)(jak jeszcze nic nie dodałeś albo nie zmieniłeś to wyświetli odpowiadający temu sanowi rzeczy komunikat
 
 9.Nowe pliki , albo zmienione są w strefie roboczej( czy tam pracy) , poleceniem git add - ijego warjacjami dodajesz świerze pliki do staging area ,teraz są tu pliki o aktualnych zmianach 
