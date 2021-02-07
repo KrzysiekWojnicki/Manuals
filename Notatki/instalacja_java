@@ -1,0 +1,17 @@
+$ sudo pacman -sS java | grep jre
+..runtime environment aby moc urzywac programow GUI
+
+$ sudo pacman -S jre-openjdk
+..insatlujemy
+
+$ sudo pacman -sS java | grep jdk
+..jdk
+
+$ sudo pacman -S jdk-openjdk
+..instalacja jdk
+
+$ java --version
+..czy jest zainstalowany
+
+$ which java
+..gdzie

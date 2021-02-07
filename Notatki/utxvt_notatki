@@ -12,3 +12,13 @@ ROZSZERZENNIA
 KONFIGURACJE
 ------------
 	https://manpages.debian.org/stretch/rxvt-unicode-256color/urxvt.1.en.html
+
+	po ustawieniu konfiguracji nalezy rebootowac plik
+	..w ktorym sa np: .Xresources
+	& xrdb ~/.Xresources
+
+	jezeli po zalogowniu ustawienia nie laduja sie automatycznie
+	..nalezy w pliku .xinitrc dopisac
+	[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
+

@@ -1,9 +1,12 @@
+polecam zobaczyc
+https://ranger.github.io/
+https://wiki.archlinux.org/index.php/Ranger#Hidden_files
 
 # config
 ########
 	..w config/ranger/rc.conf jest plikiem konfiguracyjnym, jak go nie ma to go zrup lol
 
-set show_hidden
+set show_hidden true
 	..pokarze ukryte pliki
 
 # poecenia
@@ -15,6 +18,9 @@ set show_hidden
 	..sortowenie względem daty moyfikacji
 :sort ctime
 	..sortowenie względem daty utworzenia
+:edit <plik>
+	..otworzy w domyslmym edytorze
+	..a jak nie istnieje to stworzy i otworzy do edycji
 
 
 # skróty

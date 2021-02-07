@@ -134,6 +134,9 @@ INNE RZECZY KTÓRE MO¯EMY DOPIAÆ DO CONFIG
 	gaps inner 15
 	gaps outer 15	--jak gaps to gaps
 
+	bindsym #mod+Shift+e exec i3-msg exit
+	..wyjedziemy z i3 skrotem bez konieczosci odpowiadania na ptatnie tak/nie
+
 
 
 CIEKAWOSTKI

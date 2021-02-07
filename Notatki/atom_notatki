@@ -1,3 +1,6 @@
+JAVA IDE dla windows
+---------------------
+
 C:\Users\Winkiano\AppData\Local\atom\app-1.48.0\resources\app\apm\bin>
 
 w .atom\...build\packages\ide-java w pliku packages.jason zmień linie 0.9.5
@@ -14,5 +17,30 @@ apm rebulid ide-java
 apm install https://github.com/rajivshah3/ide-java
 .. to ostatnie pomogło
 
+
+JAVA IDE dla linux
+------------------
+zainstaluj dodatek java-jdk
+..oraz
+script
+..aby moc uruchamiac skrypty wewnatrz atom
+
+jak masz juz jave na linuxie to kopilator w atom powinien ddzialc prawilowo
+..ewentualnie jest jescze opcja aby poddac scierzke do kompilatora javy
+..w opcjach paczki java-ide
+..ale nie wiem u czym to pomoga na razie, choc jest blad ze bez path tylko syntax error
+
+SKROTY ATOM
+-----------
+
 ctrl+RShift+b
-..odpala kod
+..odpala kod (w moim lap)
+
+USTAWIENIA
+----------
+zobacz:
+-scrolling pas end
+
+PACZKI
+-----
+pigment (ma ciekawe ustawieenia)
